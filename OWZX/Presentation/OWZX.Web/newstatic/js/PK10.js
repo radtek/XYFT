@@ -47,23 +47,50 @@ $(function() {
 	//筹码设置
 	$("ul.chip-money li span").each(function(i, v) {
 		$(v).click(function() {
-			var txt = $(v).html();
-			var html = " ";
-			if($(v).is(".cl")) {
-				$(this).removeClass("cl");
-				$(".chip-choice span").each(function(i, c) {
-					if($(v).text() == $(c).text()) {
-						$(c).remove();
-					}
-				})
-				$(".chip-choice").children(txt).remove();
-			} else {
-				$(this).addClass("cl");
-				html += '<span class="cl1">' + txt + '</span>';
-				$(".chip-choice").append(html);
+			// var txt = $(v).html();
+			// var html = " ";
+			// if($(v).is(".cl")) {
+			// 	$(this).removeClass("cl");
+			// 	$(".chip-choice span").each(function(i, c) {
+			// 		if($(v).text() == $(c).text()) {
+			// 			$(c).remove();
+			// 		}
+			// 	})
+			// 	$(".chip-choice").children(txt).remove();
+			// } else {
+			// 	$(this).addClass("cl");
+			// 	html += '<span class="cl1">' + txt + '</span>';
+			// 	$(".chip-choice").append(html);
+			// }
+			if ($(v).is(".cl")) {
+				$(v).removeClass("cl");
+			}else{
+				if ($(".cl").length==4||$(".cl").length>4) {
+                    return;
+				}else{
+					$(v).addClass("cl");
+				}
 			}
+
 		})
 	});
+	$(".define").click(function(){
+		if ($(".cl").length<4) {
+			alert("请选择4个金额设置筹码。");
+		}else{
+			var array1=[];
+			for (var i = 0; i < 4; i++) {
+				array1[i]=$(".cl").eq(i).text();
+			}
+			
+			for (var j = 0; j < 4; j++) {
+				$("#transport-options-o>a i").eq(j).text(array1[j]);
+			}
+			$(".chip-set").hide();
+		}
+		
+
+	})
 	//====================================================================
 	//pk10 投注
 

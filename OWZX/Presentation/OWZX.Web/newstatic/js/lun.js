@@ -5,15 +5,24 @@ var mDLen = Math.sqrt(2 * Math.pow(mWidth,2));
 var width = document.body.clientWidth/2;
 var height = document.body.clientHeight/2;
 var wd = document.body.clientWidth;
-if (height>300){
-	height = height - 20;
-	$("#bg").css("margin-top","90px");
+console.log(document.body.clientHeight);
+console.log(height);
+//300
+if (height > 83) {
+    if (height > 300) {
+        height = height - 20;
+        $("#bg").css("margin-top", "90px");
+    } else {
+        height = 310;
+        $("#bg").css("margin-top", "70px");
+    }
 }else{
 	height = 290 ;
 	$("#bg").css('margin-top',"70px");
 }
 if(wd>400){
-	$("#bg").css('margin-top',"150px");
+    //$("#bg").css('margin-top',"150px");
+    $("#bg").css('margin-top', "70px");
 }
 //第1菜单块中心点与以o(width,width)为圆心的的X轴的夹角为-90(-PI/2), 求菜单块中心点坐标
 var m1X = parseInt( (Math.cos( -1 * Math.PI / 2 ) * (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );
@@ -37,18 +46,18 @@ $("#m3").height(mWidth);
 $("#m3").offset( {top:m3Y,left:m3X} );
 
 //第4菜单块中心点与以o(width,width)为圆心的的X轴的夹角为45(PI/4), 求菜单块中心点坐标
-var m4X = parseInt( (Math.cos( Math.PI / 8 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );
-var m4Y = parseInt( (Math.sin( Math.PI / 8 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + height - mWidth/2 );
-$("#m4").width(mWidth);
-$("#m4").height(mWidth);
-$("#m4").offset( {top:m4Y,left:m4X} );
-
-//第5菜单块中心点与以o(width,width)为圆心的的X轴的夹角为90(PI/2), 求菜单块中心点坐标
-var m5X = parseInt( (Math.cos( Math.PI / 2 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );
-var m5Y = parseInt( (Math.sin( Math.PI / 2 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + height - mWidth/2 );
+var m5X = parseInt( (Math.cos( Math.PI / 8 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );
+var m5Y = parseInt( (Math.sin( Math.PI / 8 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + height - mWidth/2 );
 $("#m5").width(mWidth);
 $("#m5").height(mWidth);
 $("#m5").offset( {top:m5Y,left:m5X} );
+
+//第5菜单块中心点与以o(width,width)为圆心的的X轴的夹角为90(PI/2), 求菜单块中心点坐标
+var m4X = parseInt( (Math.cos( Math.PI / 2 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );
+var m4Y = parseInt( (Math.sin( Math.PI / 2 ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + height - mWidth/2 );
+$("#m4").width(mWidth);
+$("#m4").height(mWidth);
+$("#m4").offset( {top:m4Y,left:m4X} );
 
 //第6菜单块中心点与以o(width,width)为圆心的的X轴的夹角为135(0.75PI), 求菜单块中心点坐标
 var m6X = parseInt( (Math.cos( 0.85 * Math.PI ) *  (ir + ((or - ir - mDLen)/2) + mDLen/2) ) + width - mWidth/2 );

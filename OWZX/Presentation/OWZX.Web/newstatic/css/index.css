@@ -68,7 +68,8 @@
 	width: 100%;
 	position: absolute;
 	bottom: 50px;
-	top: 12em;
+	top: 14em;
+	background: rgba(215, 202, 153, 0.24);
 }
 .lunpan{
 	position: relative;

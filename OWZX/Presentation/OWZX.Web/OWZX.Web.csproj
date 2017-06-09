@@ -26,6 +26,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>12.0</OldToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -541,13 +542,6 @@
     <Content Include="newstatic\img\first\sz.png" />
     <Content Include="newstatic\img\first\wf.png" />
     <Content Include="newstatic\img\first\xz.png" />
-    <Content Include="newstatic\img\first\新建文件夹\ft.png" />
-    <Content Include="newstatic\img\first\新建文件夹\login.png" />
-    <Content Include="newstatic\img\first\新建文件夹\ls.png" />
-    <Content Include="newstatic\img\first\新建文件夹\pk.png" />
-    <Content Include="newstatic\img\first\新建文件夹\sz.png" />
-    <Content Include="newstatic\img\first\新建文件夹\wf.png" />
-    <Content Include="newstatic\img\first\新建文件夹\xz.png" />
     <Content Include="newstatic\img\footer.png" />
     <Content Include="newstatic\img\head.jpg" />
     <Content Include="newstatic\img\ico2.png" />

@@ -15,11 +15,37 @@
     <link rel="stylesheet" href="~/newstatic/css/reset.css" type="text/css" />
     <link rel="stylesheet" href="~/newstatic/css/index.css" type="text/css" />
     <link rel="stylesheet" href="~/newstatic/css/footer.css" type="text/css" />
+    <style type="text/css">
+        #gongao {
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            line-height: 30px;
+            font-size: 13px;
+            font-family: '宋体';
+            background: #e1e1e1;
+            color: #333;
+            font-weight: bold;
+        }
+
+            #gongao #scroll_begin, #gongao #scroll_end {
+                display: inline;
+            }
+
+                #gongao #scroll_begin li, #gongao #scroll_end li {
+                    display: inline;
+                    margin-left: 10px;
+                }
+    </style>
     <script src="~/scripts/lottery.js"></script>
     <!--[if IE 6]><http://www.w3.org/2000/svg:feComposite></http:>
         <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
         <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="~/newstatic/js/time.js"></script>
+    <script type="text/javascript" src="~/newstatic/js/jquery.rotate.min.js"></script>
+    
     <title>首页</title>
 </head>
 <body>
@@ -27,65 +53,95 @@
       DataTable dtexp = Model.Tables[1];
       }
     <!-- 开奖 -->
-    <div class="box">
-        <div class="home-div">
-            <img src="~/newstatic/img/top.png" class="img-top" alt="背景" />
-            <div class="lotary">
-                <h3>中国福利彩票</h3>
-                <h4>全国开奖统一</h4>
-                <div class="lot">
-                    @if(dt==null || dt.Rows.Count==0)
-                    {
+<div class="box">
+    <div class="home-div">
+        <img src="~/newstatic/img/top.png" class="img-top" alt="背景" />
+        <div class="lotary">
+            <h3>北京赛车</h3>
+            <h4>全国开奖统一</h4>
+            <div class="lot">
+                @if(dt==null || dt.Rows.Count==0)
+                {
                     <span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span>
+                }
+                else
+                {
+                    string[] opencode = dt.Rows[0]["opencode"].ToString().Split(',');
+                    foreach (string item in opencode)
+                    { 
+                        <span>@item</span>
+                    }
+                }
+            </div>
+            <div class="lot-time">
+                @foreach(DataRow rw in dtexp.Rows)
+                {
+                    if (@rw["expect"].ToString() == "?")
+                    { 
+                        <text><span  id="now">维护中</span>
+                        </text>
                     }
                     else
                     {
-                        string[] opencode = dt.Rows[0]["opencode"].ToString().Split(',');
-                        foreach (string item in opencode)
-                        { 
-                          <span>@item</span>
-                        }
-                    }
-                </div>
-                <div class="lot-time">
-                    @foreach(DataRow rw in dtexp.Rows)
-                    {
-                        if (@rw["expect"].ToString() == "?")
-                        { 
-                        <text><span  id="now">维护中</span>
+                        <text>距离 @rw["expect"] 期开奖倒计时：<span id="time_show">03:55</span><span style="display: none;" id="now">正在开奖</span>
                         </text>
-                        }
-                        else
-                        {
-                            <text>距离 @rw["expect"] 期开奖倒计时：<span id="time_show">03:55</span><span style="display: none;" id="now">正在开奖</span>
-                            </text>
-                        }
                     }
-
-                </div>
-                <script>
-                    var remain=@dtexp.Rows[0]["time"].ToString();
-                    var expect=@dtexp.Rows[0]["expect"].ToString();
-                    $(function(){
-                        GetRTime(10,remain,expect,300,30)
-                    });
-                </script>
+                }
 
             </div>
+            <script type="text/javascript">
+                var remain='@dtexp.Rows[0]["time"].ToString()';
+                var expect='@dtexp.Rows[0]["expect"].ToString()';
+                $(function() {
+                    GetRTime(10, remain, expect, 300, 30);
+                }); 
+                function ScrollImgLeft(){
+                    var speed=30;
+                    var scroll_begin = document.getElementById("scroll_begin");
+                    var scroll_end = document.getElementById("scroll_end");
+                    var scroll_div = document.getElementById("scroll_div");
+                    scroll_end.innerHTML=scroll_begin.innerHTML;
+                    function marQuee(){
+                        if(scroll_end.offsetWidth-scroll_div.scrollLeft<=0)
+                            scroll_div.scrollLeft-=scroll_begin.offsetWidth;
+                        else
+                            scroll_div.scrollLeft++;
+                    }
+                    var MyMar=setInterval(marQuee,speed);
+                    scroll_div.onmouseover=function() {clearInterval(MyMar);}
+                    scroll_div.onmouseout=function() {MyMar=setInterval(marQuee,speed);}
+                }
+            </script> 
         </div>
     </div>
+</div>
+  
+  
     <!-- 开奖 -->
-
-    <div class="main">
+    <div id="gongao">
+        <div style="width:900px;height:30px;margin:0 auto;white-space: nowrap;overflow:hidden;" id="scroll_div" class="scroll_div">
+            <ul id="scroll_begin"> 
+                <li>国庆节放假10天</li>
+                <li>成人高考即开始</li>
+                <li>到黄打黑下单了可根据贷款</li>
+                <li>数据谁看见的风格的</li>
+                <li>肯定见过很多还是赶快打开过贷款机构开发机构开发</li>
+                <li>如同仁堂的价格附近的韩国风景很多时候公司的贷款的时刻</li>
+            </ul>
+            <div id="scroll_end"></div>
+        </div>
+        <script type="text/javascript">ScrollImgLeft();</script>
+    </div>
+    <div class="main"> 
         <div class="mid-container caidan">
             <!-- 轮盘菜单 -->
             <div class="lunpan">
                 <div id="outerDiv" style="width:100%;height:300px;border-radius:150px;position: absolute;">
-                    <div id="bg" style="background: url(newstatic/img/all1.png)no-repeat 0px -60px;width: 140px;height: 140px;margin:100px auto 35px auto;z-index: -1;"></div>
-                    <div id="m8"><a href="pk10.html"><img src="~/newstatic/img/first/pk.png" /><br />北京PK10</a></div>
+                    <div id="bg" style="background: url(/newstatic/img/all1.png)no-repeat;width: 140px;height: 140px;margin:100px auto 0 auto;  z-index: -1;"></div>
+                    <div id="m8"><a href="pk10.html"><img src="~/newstatic/img/first/pk.png" /><br />直播赛区</a></div>
                     <div id="m2"><a href=""><img src="~/newstatic/img/first/ft.png" /><br />幸运飞艇</a></div>
-                    <div id="m4"><a href="logins.html"><img src="~/newstatic/img/first/login.png" /><br />登录、注册</a></div>
                     <div id="m5"><a href="history-message.html"><img src="~/newstatic/img/first/ls.png" /><br />历史资讯</a></div>
+                    <div id="m4"><a href="/account/login"><img src="~/newstatic/img/first/login.png" /><br />登录、注册<br /><span style="font-size: 12px;color: red;">新注册用户立赠28元</span></a></div>
                     <div id="m6"><a class="explain"><img src="~/newstatic/img/first/wf.png" /><br />玩法说明</a></div>
                 </div>
             </div>
@@ -115,41 +171,26 @@
         </div>
         <!-- 玩法说明 -->
         <!-- 底部导航 -->
-        <footer>
-            <ul class="footer">
-                <li><a href="index.html" class="ft-on"><img src="~/newstatic/img/first1.png" /><br />首页</a></li>
-                <li><a href="kefu.html"><img src="~/newstatic/img/kefu.png" /><br />客服</a></li>
-                <li><a href="history.html"><img src="~/newstatic/img/zoushi.png" /><br />历史走势</a></li>
-                <li><a href="Change/index.html"><img src="~/newstatic/img/zhuanqian.png" /><br />存取款</a></li>
-                <li><a href="User/index.html"><img src="~/newstatic/img/my.png" /><br />我的</a></li>
-                <li class="other">
-                    <div class="other-div">余额：<span class="bala-money">0.00</span></div>
-                    <div class="other-div">下注：<span class="bet-money">0.00</span></div>
-                </li>
-            </ul>
-        </footer>
+        @Html.Partial("_footer")
         <!-- 底部导航 -->
     </div>
-
-    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="~/newstatic/js/time.js"></script>
-    <script type="text/javascript" src="~/newstatic/js/jquery.rotate.min.js"></script>
-    <script src="~/newstatic/js/lun.js"></script>
-    <script type="text/javascript">
-        $(function ()
+    
+<script type="text/javascript">
+    $(function ()
+    {
+        $('.explain').click(function ()
         {
-            $('.explain').click(function ()
-            {
-                $(".mid-container").css('display', 'none');
-                $(".pk10").css("display", "block");
-            });
-            $('.close').click(function ()
-            {
-                $(".mid-container").css('display', 'none');
-                $(".caidan").css("display", "block");
-            });
-        })
-    </script>
+            $(".mid-container").css('display', 'none');
+            $(".pk10").css("display", "block");
+        });
+        $('.close').click(function ()
+        {
+            $(".mid-container").css('display', 'none');
+            $(".caidan").css("display", "block");
+        });
+    })
+</script>
+    <script src="~/newstatic/js/lun.js"></script>
 </body>
 </html>
 

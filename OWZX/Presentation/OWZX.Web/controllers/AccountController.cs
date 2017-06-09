@@ -47,7 +47,7 @@ namespace OWZX.Web.Controllers
             }
 
             //ajax请求
-            string accountName = WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName);
+            string accountName = WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName); 
             string password = WebHelper.GetFormString("password");
             string verifyCode = WebHelper.GetFormString("verifyCode");
             int isRemember = WebHelper.GetFormInt("isRemember");
@@ -193,8 +193,9 @@ namespace OWZX.Web.Controllers
             string password = WebHelper.GetFormString("password");
             string confirmPwd = WebHelper.GetFormString("confirmPwd");
             string verifyCode = WebHelper.GetFormString("verifyCode");
+            int invitecode = -1;
+            invitecode = int.Parse(WebHelper.GetFormString("pid")); //介绍用户标识号
 
-            
 
             StringBuilder errorList = new StringBuilder("[");
             
@@ -408,7 +409,7 @@ namespace OWZX.Web.Controllers
                 userInfo.RankCredits = 0;
                 userInfo.VerifyEmail = 0;
                 userInfo.VerifyMobile = 0;
-
+                userInfo.UserId = Randoms.CreateRandomValue(8);
                 userInfo.LastVisitIP = WorkContext.IP;
                 userInfo.LastVisitRgId = WorkContext.RegionId;
                 userInfo.LastVisitTime = DateTime.Now;
@@ -423,7 +424,7 @@ namespace OWZX.Web.Controllers
                 userInfo.RegionId = WebHelper.GetFormInt("regionId");
                 userInfo.Address = WebHelper.HtmlEncode(WebHelper.GetFormString("address"));
                 userInfo.Bio = WebHelper.HtmlEncode(WebHelper.GetFormString("bio"));
-
+                userInfo.InviteCode = invitecode;
                 #endregion
 
                 //创建用户

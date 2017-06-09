@@ -78,7 +78,7 @@ namespace OWZX.RDBSStrategy.SqlServer
 
                 end
                 ", type);
-                return RDBSHelper.ExecuteDataset(sql, null);
+                return RDBSHelper.ExecuteDataset(sql);
             }
         }
 //        /// <summary>

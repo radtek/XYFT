@@ -5,105 +5,274 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>用户登录-@{@WorkContext.ShopConfig.SiteTitle}</title>
-    @Html.Raw(WorkContext.ShopConfig.SEOKeyword)
-    @Html.Raw(WorkContext.ShopConfig.SEODescription)
-    <link href="@{@WorkContext.CSSCDN}/css/base.css" rel="stylesheet" type="text/css" />
-    <link href="@{@WorkContext.CSSCDN}/css/account.css" rel="stylesheet" type="text/css" />
-    <link href="@{@WorkContext.CSSCDN}/css/lgstyle.css" rel="stylesheet" />
-    <script src="@{@WorkContext.ScriptCDN}/scripts/jquery.js" type="text/javascript"></script>
-    <script src="@{@WorkContext.ScriptCDN}/scripts/account.js" type="text/javascript"></script>
+    <meta charset="utf-8" />
+    <title>登录</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1" />
+    <link rel="stylesheet" href="~/newstatic/css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="~/newstatic/css/login.css" />
+    <link rel="stylesheet" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" href="~/newstatic/css/footer.css" type="text/css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript">
         returnUrl = "@Model.ReturnUrl";
         shadowName = "@Model.ShadowName";
-        $(function ()
-        {
-            $(".cf input").on("keydown", function ()
-            {
+        $(function () {
+            $(".cf input").on("keydown", function () {
                 if (event.keyCode == 13) login();
             });
         })
-        
+
     </script>
-    <style>
-            
-    </style>
 </head>
 
-<body >
+<body>
 
-<div id="loginTop" class="box">
-    <a href="/" class="left"><img src="@{@WorkContext.ImageCDN}/images/logo.png" width="186" height="42" /></a>
-    <h2>欢迎登录</h2>
-    <div class="clear"></div>
-</div>
-
-@*<div class="box login">*@
-    <!--登录-->
-    <div style="width:1220px;margin:27px auto;background:white;">
-        <div style="width:390px; height:270px;margin-left:220px;margin-right:160px;float:left;margin-top:60px;">
-            <img src="@{@WorkContext.ImageCDN}/images/banner_01.png" />
-        </div>
-        <div style="float:left;">
-            <div class="lanrenzhijia">
-                <div class="title cf">
-                    <ul class="title-list fr cf ">
-                        <li>微信登录</li>
-                        <li class="on">账号登录</li>
-                        <p><b></b></p>
-                    </ul>
-                </div>
-                <div class="product-wrap">
-                    <!--案例1-->
-                    <div class="product">
-                        <div style="display:block;">
-                            <span style="position: relative;width: 141px;height: 141px;left: 70px;display: block;text-align: center;">
-                                <img src="@{@WorkContext.ImageCDN}/images/wxlg.png" width="140" height="140" style="margin:auto; border: 1px solid #efefef;" />
-                            </span>
-                        <span style="display: block;text-align: center;font-size: 14px;margin-top:15px;">微信扫码  快速登录</span>
-                        </div>
-                                
-                           
-                    </div>
-                    <!--案例2-->
-                    <div class="product show">
-                        <form name="loginForm" action="">
-                            <ul class="cf">
-                                <li class="ml0">
-                                    <input class="b1" type="text" name="@Model.ShadowName" id="@Model.ShadowName" placeholder="用户名/手机号" value="" /><br />
-                                        <span class="phone" style="font-size:12px;color:red;height:22px;"></span><br />
-                                    <input class="b1" type="password" id="password" name="password" placeholder="密码" value="" /><br />
-                                        <span class="password" style="font-size:12px;color:red;height:22px;"></span>
-                                </li>
-                                <li style=" height:25px;line-height:25px;margin-top:10px;text-align:center;">
-                                    <span style="float:left;"><input style="width:15px; height:15px;margin-top:5px;outline: medium;" name="isRemember" type="checkbox" /></span>
-                                    <span style="text-align:center;float:left; margin-left:12px;">下次自动登录</span>
-                                    <span style="float:right; margin-left:115px; color:#3b3b3b;"><a style="color:#3b3b3b;" href="@Url.Action("findpwd")">忘记密码?</a></span>
-                                </li>
-                                <li class="loginBt">
-                                    <a class="redBT loginIn" style="text-align:center;" href="javascript:void(0)" onclick="login()">立即登录</a>
-                                </li>
-                                <li style="float:right;margin-top:10px;"><a style="color:#9e9e9e;" href="@Url.Action("register")">免费注册</a></li>
-                            </ul>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="clear"></div>
+    <div class="logfix"></div>
+    <div class="logbox logbox1" id="log">
+        <i class="ico02 close"></i>
+        <h2>登录</h2>
+        <p><input type="text" id="@Model.ShadowName" placeholder="请输入账号" /></p>
+        <p><input type="password" id="PassWord" placeholder="请输入密码" /></p>
+        <p style="height:1.2em;"><a class="reg fl">马上注册</a> <a href="kefu.html" class="fr">联系客服</a></p>
+        <p><button type="submit" class="btn" id="btn" style=" width: 100%;border-radius: 10em;">登录</button></p>
     </div>
 
-              @*<div class="openID">
-              <h4>使用其他账号登录：</h4>
-              @foreach (PluginInfo info in Model.OAuthPluginList)
-              {
-                IOAuthPlugin instance = (IOAuthPlugin)info.Instance;
-                <a href="@Url.Action(instance.LoginAction, instance.LoginController)">@info.FriendlyName</a> @:&nbsp;&nbsp;
-              }
-          </div>*@
+    <div class="logbox regbox" style="height:26em;top:150%;display: none;">
+        <i class="ico02 close"></i>
+        <h2>注册</h2>
+        <p><input type="text" id="R-UserName" placeholder="请输入需注册的账号" /></p>
+        <p><input type="password" id="R-PassWord" placeholder="请输入密码" /></p>
+        <p><input type="password" id="R-PassWord1" placeholder="请确认密码" /></p>
+        <p><input type="text" name="confirm" size="6" id="inputRandom" maxlength="4" style="display:inline-block;float: left;text-align: center;width:60%;text-indent: 0;" placeholder="验证码" /><input type="text" id="autoRandom" size="3" maxlength="4" readonly="readonly" style="background: #eee;border: none;outline: none;text-align: center;width: 35%;float: right;font-weight: bold;font-size: 13px;text-indent: 0;" /></p>
+        <if condition="$SonId neq ''">
+            <!--<p><input type="text" value="{$SonId}" id="SonId" disabled></p>-->
+            <else />
+            <p><input type="text" id="SonId" placeholder="推荐人账号,没有留空" /></p>
+        </if>
+        <p style="height: 1.2em;">
+            <input type="radio" style="height:1em;width:1em;float:left;" id="Yes" checked=checked checked=checked />
+            <a class="fl">同意注册协议</a>
+            <a href="kefu.html" class="fr">联系客服</a>
+        </p>
+        <p><button type="submit" class="btn" id="R-btn" style="width:100%;border-radius:10em;">注册</button></p>
+        <p style="margin-top: 4em;font-size: 13px;text-align: center;color:#fe2367; ">国家福利彩票全国同步，开奖结果任意福彩店可查，百度可核对</p>
+    </div>
 
+    <div class="w-loin">
+    </div>
+    <!-- 底部导航 -->
     @Html.Partial("_footer")
-    </body>
-    </html>
+    <!-- 底部导航 -->
 
+    <div class="betbg"></div>
+    <div class="tishi">
+        <div class="ts">提示</div>
+        <div class="tsnr"></div>
+        <div class="btn" style="width:80%;">确定</div>
+    </div>
+</body>
+<script type="text/javascript">
+     
+
+
+    function jump(href) {
+        if (href == 1)
+            href = "";
+        window.location.href = "" + href;
+    }
+
+    $(".setyzm").click(function () {
+        var Tel = $("#tel").val();
+        $.ajax({
+            url: URL + '/tel',
+            type: "POST",
+            dataType: 'text',
+            timeout: 5000,
+            data: {
+                Tel: Tel
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    tishi("发送成功");
+                    var a = 60;
+                    var innter = setInterval(function () {
+                        a--;
+                        $("#M").html(a);
+                        if (a <= 0) {
+                            clearInterval(innter);
+                            $("#M").html("发送验证码");
+                        }
+
+                    }, 1000)
+                }
+                else if (data == 51) {
+                    tishi("短信账户余额不足请联系客服处理");
+                }
+                else if (data == 50) {
+                    tishi("与上次获取时间小于60秒");
+                } else if (data == -1) {
+                    tishi("信息发送失败！");
+                }
+            }
+        });
+
+    })
+
+
+    $("#R-btn").click(function() {
+
+        var SonId = $("#SonId").val();
+        var UserName = $("#R-UserName").val();
+        var Tel = $("#tel").val();
+        var Yzm = $("#yzm").val();
+        var Pwd1 = $("#R-PassWord").val();
+        var Pwd2 = $("#R-PassWord1").val();
+        if (Pwd1 != Pwd2) {
+            alert("两次密码输入不一致");
+        } else {
+        
+            if (UserName == '') {
+                alert("请输入注册账号"); return false;
+            } 
+            if (Yzm == '') {
+                alert("请输入密码账号"); return false;
+            } 
+            var inputRandom = document.getElementById("inputRandom");
+            var autoRandom = document.getElementById("autoRandom");
+            if (inputRandom.value != autoRandom.value /*&&  */) {
+                alert("验证码输入有误"); return false;
+            }
+            $.post('/Account/register',{
+                    pID: SonId,
+                    loginname: UserName,
+                    password: Pwd1,
+                    confirmPwd:Pwd2,
+                    Yzm: Yzm,
+                    Tel: Tel
+                },
+                function(data) { 
+                    var result =eval('('+data+')');// content
+                    if (result.state == "success") {
+                        tishi("登录成功");
+                        window.location.href = "/Home/Index";
+                    } else {
+                        if (result.content.length>0)
+                            tishi(result.content[0].msg);
+                    }
+                });
+        }
+    });
+
+    $(".tishi .btn").click(function () {
+        $(".betbg").fadeOut(100);
+        $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
+
+    });
+
+    $("#btn").click(function() {
+        $(".loadings").show();
+        $(" .overlay").show();
+        if (document.readyState == "complete") {
+            setTimeout(function() {
+                    $(".loadings").hide();
+                    $(" .overlay").hide();
+                },
+                3000);
+        }
+        var LoginName = $('#' + shadowName).val();
+        var PassWord = $("#PassWord").val();
+        if (LoginName== '') {
+            alert("用户名不能为空"); return false;
+        }
+        if (PassWord == '') {
+            alert("请输入密码"); return false;
+        } 
+        $.post('/Account/Login',
+            { @Model.ShadowName: LoginName, password: PassWord },
+            function (data) {
+                var result =eval('('+data+')');// content
+                if (result.state == "success") {
+                    tishi("登录成功");
+                    window.location.href = "/Home/Index";
+                } else {
+                    if (result.content.length>0)
+                        tishi(result.content[0].msg);
+                }
+                    
+            });
+    });
+    function tishi(nr) {
+        if (nr == "登录成功")
+            window.location.reload;
+        $(".betbg").fadeIn(100);
+        $(".tsnr").html(nr);
+        $(".tishi").animate({ top: "50%", marginTop: "-3.5em" }, 300);
+    }; 
+    $(".ufmenu, .ufup").click(function () {
+        $(".ufix").animate({ height: "0" });
+        $("header").show();
+    });
+
+    $(".menu").click(function () {
+        $(".ufix").animate({ height: "100%" });
+        $("header").hide();
+
+    }); 
+    function loginbox() {
+        $(".logfix").css({ display: "block" });
+        $(".w-loin").css("display", "block");
+        $(".logfix").animate({ opacity: "1" }, 200);
+        $("#log").animate({ top: "50%" }, 300);
+    }
+    $(".reg").click(function () {
+        $(".logfix").css({ display: "block" });
+        $(".regbox").show(300);
+        $("#log").animate({ top: "150%" }, 100);
+        $(".regbox").animate({ top: "20%" }, 300);
+    });
+    $(".close").click(function () {
+        $("#log").animate({ top: "25%" }, 300);
+        $(".regbox").css("display", "none");
+    });
+    $("#log .close").click(function () {
+        $(".regbox").css("display", "none");
+        window.location.href = '/home/index';
+    }); 
+    window.onload = function () { 
+        var autoRandom = document.getElementById("autoRandom"); 
+        var oa = document.getElementsByTagName("a")[0];  
+
+        function change() {
+            var seed = new Array('abcdefghijklmnpqrstuvwxyz', '123456789');               //创建需要的数据数组
+            var idx, i;
+            var result = '';   //返回的结果变量
+            for (i = 0; i < 4; i++) //根据指定的长度
+            {
+                idx = Math.floor(Math.random() * 2); //获得随机数据的整数部分-获取一个随机整数
+                result += seed[idx].substr(Math.floor(Math.random() * (seed[idx].length)), 1);//根据随机数获取数据中一个值
+            }
+            return result; //返回随机结果
+        };
+
+        autoRandom.value = change();
+
+        autoRandom.onclick = function () {
+            autoRandom.value = change();
+        } 
+    }
+
+    $(function () {
+        $("input:not('#autoRandom')").focus(function () {
+            $(this).css("background-color", "#eee");
+        });
+        $("input:not('#autoRandom')").blur(function () {
+            $(this).css("background-color", "#ffffff");
+        });
+    });
+
+</script>
+</html>
