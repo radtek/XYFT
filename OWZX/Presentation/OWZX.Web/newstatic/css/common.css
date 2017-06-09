@@ -1,0 +1,36 @@
+header{width: 100%;height: 44px;background: #000;color: #fff;z-index:22;text-align: center;line-height: 44px;position: fixed;top: 0;}
+header h2{position: relative;} 
+header h2 span{
+	position: absolute;
+	left: 0.4em;
+	top: 0.4em;
+}
+.icon {
+	display: inline-block;
+	height: 1.6em;
+	width: 1.6em;
+	background: url(../img/ico2.png) no-repeat;
+	background-size: cover;
+	background-position: 0 -1.6em;
+}
+
+a { -webkit-tap-highlight-color:rgba(0,0,0,0);}
+    
+.headblank{width: 100%;height: 44px;}
+.footblank{width: 100%;height: 54px;}
+.btn{height: 2.5em;
+    background: #D81E06;
+    color: #fff;
+    display: inline-block;
+    width: 4.5em;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 2.5em;
+	border:0
+	}
+.btn:hover,.btn:active{background: #FD645E;}
+
+.betbg{background:rgba(0, 0, 0, 0.5);height:100%;  width: 100%; position:fixed;left:0;top:0;z-index:98;display:none;}
+.tishi{width:80%;position:fixed;top:100%;left:10%;background:#fff;z-index: 999;  border-radius: 5px;text-align:center;padding-bottom:1em;}
+.tishi .ts{line-height:2em;border-bottom:#eee solid 1px;font-size:1.2em;font-weight:700;}
+.tishi .tsnr{line-height:2em;margin:1em .5em}

@@ -1,0 +1,155 @@
+﻿@model DataSet
+@{
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!--[if lt IE 9]>
+        <script type="text/javascript" src="lib/html5shiv.js"></script>
+        <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="~/newstatic/css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="~/newstatic/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="~/newstatic/css/footer.css" type="text/css" />
+    <script src="~/scripts/lottery.js"></script>
+    <!--[if IE 6]><http://www.w3.org/2000/svg:feComposite></http:>
+        <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+        <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>首页</title>
+</head>
+<body>
+    @{DataTable dt = Model.Tables[0];
+      DataTable dtexp = Model.Tables[1];
+      }
+    <!-- 开奖 -->
+    <div class="box">
+        <div class="home-div">
+            <img src="~/newstatic/img/top.png" class="img-top" alt="背景" />
+            <div class="lotary">
+                <h3>中国福利彩票</h3>
+                <h4>全国开奖统一</h4>
+                <div class="lot">
+                    @if(dt==null || dt.Rows.Count==0)
+                    {
+                    <span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span>
+                    }
+                    else
+                    {
+                        string[] opencode = dt.Rows[0]["opencode"].ToString().Split(',');
+                        foreach (string item in opencode)
+                        { 
+                          <span>@item</span>
+                        }
+                    }
+                </div>
+                <div class="lot-time">
+                    @foreach(DataRow rw in dtexp.Rows)
+                    {
+                        if (@rw["expect"].ToString() == "?")
+                        { 
+                        <text><span  id="now">维护中</span>
+                        </text>
+                        }
+                        else
+                        {
+                            <text>距离 @rw["expect"] 期开奖倒计时：<span id="time_show">03:55</span><span style="display: none;" id="now">正在开奖</span>
+                            </text>
+                        }
+                    }
+
+                </div>
+                <script>
+                    var remain=@dtexp.Rows[0]["time"].ToString();
+                    var expect=@dtexp.Rows[0]["expect"].ToString();
+                    $(function(){
+                        GetRTime(10,remain,expect,300,30)
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+    <!-- 开奖 -->
+
+    <div class="main">
+        <div class="mid-container caidan">
+            <!-- 轮盘菜单 -->
+            <div class="lunpan">
+                <div id="outerDiv" style="width:100%;height:300px;border-radius:150px;position: absolute;">
+                    <div id="bg" style="background: url(newstatic/img/all1.png)no-repeat 0px -60px;width: 140px;height: 140px;margin:100px auto 35px auto;z-index: -1;"></div>
+                    <div id="m8"><a href="pk10.html"><img src="~/newstatic/img/first/pk.png" /><br />北京PK10</a></div>
+                    <div id="m2"><a href=""><img src="~/newstatic/img/first/ft.png" /><br />幸运飞艇</a></div>
+                    <div id="m4"><a href="logins.html"><img src="~/newstatic/img/first/login.png" /><br />登录、注册</a></div>
+                    <div id="m5"><a href="history-message.html"><img src="~/newstatic/img/first/ls.png" /><br />历史资讯</a></div>
+                    <div id="m6"><a class="explain"><img src="~/newstatic/img/first/wf.png" /><br />玩法说明</a></div>
+                </div>
+            </div>
+            <!-- 轮盘菜单 -->
+            <div class="set-div">
+                <div class="set">
+                    <a href="User/set.html">
+                        <img src="~/newstatic/img/first/sz.png" alt="设置" /><br />设置
+                    </a>
+                </div>
+                <div class="app">
+                    <a href="">
+                        <img src="~/newstatic/img/first/xz.png" alt="APP下载" /><br />APP下载
+                    </a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <!-- 玩法说明 -->
+        <div class="mid-container pk10" style="display: none">
+            <h3>北京赛车PK10玩法说明 <i class="close" title="关闭"></i></h3>
+            <!--<p>1、<font style="color:#f00; font-size:16px">猜冠军， 即前一</font>，猜开奖号码的<font style="color:#f00; font-size:16px">第一位</font>，奖金<font style="color:#f00; font-size:16px">10</font>元，例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>。第一位是1，那么投注第一位包含<font style="color:#f00; font-size:16px"> 1 </font>时，即为中奖。</p><br>
+            <p>2、<font style="color:#f00; font-size:16px">猜冠亚军 ，即前二</font>，猜开奖号码的<font style="color:#f00; font-size:16px">前二位</font>，奖金<font style="color:#f00; font-size:16px">10</font>元，例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>；那么投注<font style="color:#f00; font-size:16px">第一位包含1，第二位包含2</font>时，即为中奖。选2中2，奖金55元。选2中1，奖金2元。</p><br>
+            <p>3、<font style="color:#f00; font-size:16px">猜冠亚季军 ，即前三</font>，猜开奖号码的<font style="color:#f00; font-size:16px">前三位</font>。例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>；那么投注<font style="color:#f00; font-size:16px">第一位包含1，第二位包含2时，第三位包含3</font>时，即为中奖。选3中3，奖金160元。选3中2，奖金10元。选3中1，奖金2元。</p>-->
+            <img src="~/newstatic/img/js.jpg" width="100%" />
+            <br /><br /><br />
+        </div>
+        <!-- 玩法说明 -->
+        <!-- 底部导航 -->
+        <footer>
+            <ul class="footer">
+                <li><a href="index.html" class="ft-on"><img src="~/newstatic/img/first1.png" /><br />首页</a></li>
+                <li><a href="kefu.html"><img src="~/newstatic/img/kefu.png" /><br />客服</a></li>
+                <li><a href="history.html"><img src="~/newstatic/img/zoushi.png" /><br />历史走势</a></li>
+                <li><a href="Change/index.html"><img src="~/newstatic/img/zhuanqian.png" /><br />存取款</a></li>
+                <li><a href="User/index.html"><img src="~/newstatic/img/my.png" /><br />我的</a></li>
+                <li class="other">
+                    <div class="other-div">余额：<span class="bala-money">0.00</span></div>
+                    <div class="other-div">下注：<span class="bet-money">0.00</span></div>
+                </li>
+            </ul>
+        </footer>
+        <!-- 底部导航 -->
+    </div>
+
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="~/newstatic/js/time.js"></script>
+    <script type="text/javascript" src="~/newstatic/js/jquery.rotate.min.js"></script>
+    <script src="~/newstatic/js/lun.js"></script>
+    <script type="text/javascript">
+        $(function ()
+        {
+            $('.explain').click(function ()
+            {
+                $(".mid-container").css('display', 'none');
+                $(".pk10").css("display", "block");
+            });
+            $('.close').click(function ()
+            {
+                $(".mid-container").css('display', 'none');
+                $(".caidan").css("display", "block");
+            });
+        })
+    </script>
+</body>
+</html>
+

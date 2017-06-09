@@ -1,0 +1,132 @@
+.bg-hide{
+	display: none;
+}
+/*=================================================
+ * 首页头部中国福利彩票 开奖倒计时
+ * ================================================*/
+.home-div{
+	width: 100%;
+	height: 12em;
+	position: relative;
+	display: inline-block;
+}
+.img-top{
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+.lotary{
+	position: absolute;
+	top: 0.5em;
+	color: #fff;
+	width: 100%;
+	text-align: center;
+}
+.lotary h3{
+	font-size: 2.2em;
+}
+.lotary h4{
+	font-size: 1.2em;
+	margin-top: 0.2em;
+}
+.lotary .lot {
+	margin: 1em 0;
+}
+.lotary .lot span{
+	display: inline-block;
+	color: #DF0024;
+	margin-right: 1px;
+	width: 1.8em;
+	height: 1.8em;
+	line-height: 1.8em;
+	background: url(../img/first/spanbg.png);
+	background-size: cover;
+	text-align: center;
+	font-weight: bold;
+}
+.lot-time{
+	line-height: 2em;
+	text-align: center;
+	margin: .5em 0;
+}
+.lot-time span{
+	display: inline-block;
+	width: 5em;
+	height: 2em;
+	line-height: 2em;
+	background:#fff;
+	color: #DF0024;
+	font-weight: bold;
+	font-size: 1.3em;
+	border-radius: 4px;
+}
+
+/* ===================================================
+ * 轮盘菜单
+ * ==================================================== */
+.mid-container{
+	width: 100%;
+	position: absolute;
+	bottom: 50px;
+	top: 12em;
+}
+.lunpan{
+	position: relative;
+}
+.lunpan img{
+	width: 50px;
+	height: 50px;
+}
+#outerDiv div{
+	text-align: center;
+}
+#outerDiv div a{
+	display: block;
+}
+.set-div{
+	width: 100%;
+	height:64px;
+	position: absolute;
+	bottom: 1em;
+}
+.set-div a{
+	display: inline-block;
+}
+.set-div .set{
+	float: left;
+	margin-left: 20px;
+	text-align: center;
+	width: 45px;
+	height: 45px;
+}
+.set-div img{
+	width: 45px;
+	height: 45px;
+}
+.set-div .app{
+	float: right;
+	margin-right: 20px;   
+}
+/*===========================================================
+     玩法说明 
+ * ==========================================================*/
+.pk10 h3{
+	text-align: center;
+	font-size: 1.8em;
+	padding: .5em 0 1em;
+	position: relative;
+}
+.pk10 h3 i{
+	position: absolute;
+	right: 1em;
+	top: 0.6em;
+	background: url(../img/close.png)no-repeat;
+	background-size: cover;
+	width:1.5em;
+	height: 1.5em;
+}
+.pk10 p{
+	padding: 0 1em;
+	font-size: 1em;
+	line-height: 2em;
+}

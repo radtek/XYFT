@@ -1,0 +1,294 @@
+
+/*=============================================================
+ 赛车动画
+ *============================================================= */
+.car{
+	width: 100%;
+	z-index: 12;
+}
+.count{
+	width: 98%;
+    margin: 0 auto;
+    margin-top: 220px;
+    background: #fff;
+    padding-top: 0.2em;
+    position: fixed;
+    z-index: 999;
+    height: 30px;
+    padding-top: 5px;
+    padding-left: 5px;
+    vertical-align: middle;
+    line-height: 25px;
+}
+.count .ct-down{
+	width: 45%;
+	float: left;
+}
+.ct-down span{color: #DA2020;}
+.cut-choice{
+	width: 55%;
+	float: left;
+	height: 2em;
+	line-height: 2em;
+}
+.cut-choice li{
+	float: left;
+	width: 30%;
+	/*padding: 0 .25em;*/
+	margin: 0 .1em;
+	background: #D81E06;
+	color: #fff;
+	text-align: center;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius:4px;
+	-o-border-radius:4px;
+}
+
+.mid{
+	position: absolute;
+	top: 260px;
+	width: 100%;
+	bottom: 50px;
+	z-index:1;
+}
+.mid-pk{
+	position: relative;
+	margin-bottom: 65px;
+	width: 100%;
+}
+/*====================================================================
+ * 筹码设置
+ *====================================================================*/
+.chip-set,.rule,.bet,.self{
+	width: 90%;
+    z-index: 12;
+    margin: 0 5%;
+    background: pink;
+    border: 1px solid #f0f0f0;
+    position: absolute;
+    top: 0px;
+}
+.rule,.bet{
+	bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.bet{background: #F0F0F0;}
+.chip-set:before{
+	left: 52%;
+}
+.rule:before{
+	right: 25%;
+}
+.bet:before{
+	right: 10%;
+}
+.chip-set:before,.rule:before,.bet:before{
+	position: absolute;
+	content: ' ';
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	border-bottom-color: pink;
+	top: -11px;
+	z-index: 12;
+}
+.chip-set i,.self i{
+	background: url(../img/close.png)no-repeat;
+	position: absolute;
+	top: 0em;
+	right: 0em;
+	width: 2.5em;
+	height: 2.5em;
+	background-size: cover;
+}
+.chip-set .chip-money ,.self .chip-money{
+	width: 80%;
+	margin: .5em auto 0;
+	text-align: center;
+}
+.chip-money li{
+	width: 100%;
+	height: 3em;
+}
+.chip-money li span{
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	margin: 0.2em .2em;
+	border: 1px solid #000;
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	-ms-border-radius: 20px;
+	-o-border-radius: 20px;
+	color: #000;
+	text-align: center;
+}
+.chip-money .cl,.cl1{
+	color: #fff;
+	background: #D81E06;
+	border-color: #D81E06;
+} 
+.chip-choice span{
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	margin: 0.2em .2em;
+	border: 1px solid;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	text-align: center;
+}
+.chip-choice {
+	width: 82%;
+	min-height: 3em;
+	margin: 0 auto;
+}
+.chip-set input,.self input{
+	width: 4em;
+	height: 2em;
+	border: none;
+	margin: 0 .5em .5em;
+}
+.chip-set .define,.self .define{
+	margin-left: 34%;
+	background:#f00;
+	color: #fff;
+}
+.self{z-index: 9999999;}
+/*===========================================================
+ *   玩法说明 
+ * ==========================================================*/
+.rule h3{
+	text-align: center;
+	font-size: 1.8em;
+	padding: .5em 0 1em;
+	position: relative;
+}
+.rule h3 i{
+	position: fixed;
+	right: 1em;
+	background: url(../img/close.png)no-repeat;
+	background-size: cover;
+	width: 1.5em;
+	height: 1.5em;
+}
+.rule p{
+	padding: 0 1em;
+	font-size: 1em;
+	line-height: 2em;
+}
+/*================================================================
+ * 下注明细
+ *=================================================================*/
+.bet-detail{
+	max-height: 26rem;
+	overflow-y:auto;
+	overflow-x: hidden;
+	width: 98%;
+	margin: 0.4em auto 0.4em;
+	position: relative;
+}
+.bet-detail li{
+	width: 100%;
+	margin: .2em 0 0;
+	padding: 0 .5em;
+	background: #fff;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+}
+
+.bet-detail li h3{
+	color: #D81E06;
+	font-size: 1.5em;
+	position: relative;
+}
+.bet-detail li h3 span{
+	position: absolute;
+	right: 1em;
+}
+/*================================================================
+ * 下注
+ *=================================================================*/
+.champion{
+	width: 98%;
+	margin: 0 1%;
+	min-height: 2em;
+}
+.one{
+	width: 5em;
+	float: left;
+	height: 2.8em;
+	margin-left: 1em;
+	vertical-align: middle;
+	line-height: 3.2em;
+}
+
+
+.cha-first div:nth-child(3),.cha-first div:nth-child(4),.cha-first div:nth-child(6){
+	background: dodgerblue;
+}
+.cha-first div:nth-child(2),.cha-first div:nth-child(5),.cha-first div:nth-child(7){
+	background: red;
+}
+.cha-first div i{color: #fff;}
+.cha-car{
+	clear: both;
+	margin-left: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.9em;
+}
+.cha-car div:nth-child(1){
+	background: #d6d637;
+}
+.cha-car div:nth-child(2){
+	background: #0099FF;
+}
+.cha-car div:nth-child(3){
+	background: #666666;
+}
+.cha-car div:nth-child(4){
+	background: #FF9900;
+}
+.cha-car div:nth-child(5){
+	background: #66CCCC;
+}
+.cha-car div:nth-child(6){
+	background: #9075ff;
+}
+.cha-car div:nth-child(7){
+	background: #CCCCCC;
+}
+.cha-car div:nth-child(8){
+	background: #ef69e3;
+}
+.cha-car div:nth-child(9){
+	background: #ff7171;
+}
+.cha-car div:nth-child(10){
+	background: #44e244;
+}
+
+.btn{
+	width: 4em;
+}
+
+.champion img{
+	width: 3.8rem;
+	height:1.4rem;
+	margin-top: 0.1em;
+}
+
+.big .btn-toolbar{width: 15%!important;}
+

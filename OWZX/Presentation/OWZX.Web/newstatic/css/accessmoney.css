@@ -1,0 +1,70 @@
+div.main{padding: 0;}
+div.tabpayways{
+	width: 100%;
+	height: 2em;
+	line-height: 2em;
+}
+.tabpayways li{
+	width: 50%;
+	float: left;
+	text-align: center;
+	font-style: none;
+}
+.paywayscur{
+	background-color: #D81E06;
+	color: #fff;
+}
+.btn{
+	width:60%;margin:1.5em auto 1em;display:block;border-radius:3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;
+	background: #0099FF;height: 2em;color: #fff;border: none;line-height: 2em;
+}
+div.main h3{width: 94%;height: 3em;line-height: 3.5em;background: #efefef;font-weight: 300;padding-left: 6%;}
+
+div.main .jine{
+	width:100%;
+	background:#ffffff;
+	margin-top:1rem;
+}
+div.main .jine p{
+	margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;
+}
+
+div.main .jine a,div.main .jine input{
+	display:inline-block;
+	vertical-align:middle;
+	width:28%;
+	height:1.5rem;
+	line-height:1.8rem;
+	color:1.2rem;
+	outline:1px solid #EEEEEE;
+	text-align:center;
+	margin-left:4%;
+	color:gray;
+	margin-bottom: 0.5rem;
+}
+div.main .jine input
+{
+	height:1.6rem;
+	outline:medium;
+	border:1px solid #eee;
+}
+
+
+div.main .jine p span{
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.overlay{position: fixed;top: 0;bottom: 0;left:0;right:0;background: #333;z-index: 999999;opacity: 0.8;}
+.tipwindow{width: 20rem;border-radius: 3px;display: none;z-index: 1000000;position: absolute;top: 27%;left: 50%;margin-left: -10rem;}
+.tipwindow p:first-child{border-bottom: 1px solid #ddd;text-align: center;padding: 1em 0 0.6em;}
+.tipwindow p:nth-child(2){text-align: center;margin-top:0.6em;padding: 0 0.6em 0 1em;font-size: 1.1em;}
+.fl{float: left;}
+.fr{float: right;}
+.borbtn{display: inline-block;padding: 0.3em 0.6em;border:1px solid #DA2020;color: #DA2020;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;}
+
+.main2{width: 98%;margin: 0.4em auto 0;}
+.tixian select, .tixian input{width:100%;height:2em;line-height:2em;margin-top:1em;    border: #eee solid 1px;background:#fff;}
+  .tixian h3{line-height:3em;color: #3b85ff;font-size:1.2em;font-style: normal;}
+  .tixian .txxz{line-height:1.5em;background:#fff;padding: .5em;border-radius: 5px;    border: #eee solid 1px;}
+   .tixian .txxz i{color:red;padding:0 2px;}

@@ -1,0 +1,52 @@
+/*=======================================================
+ *底部导航栏
+ *===================================================== */
+footer{
+	width: 100%;
+	height: 49px;
+	border-top: 1px solid #eee;
+	background: -webkit-gradient(linear,center top,50% 40%,from(rgba(255, 255, 255, 0.5)),to(rgba(255, 255, 255, 0.99)));
+	position: fixed;
+	bottom: 0;
+	z-index:99;
+	display: block;
+}
+br{padding: 0;margin: 0;}
+footer ul{
+	width: 100%;
+	height: 4.0833333em;
+}
+footer ul li:not(.other){
+	float: left;
+	width: 15%;
+	height: 100%;
+	text-align: center;
+}
+footer ul.footer li.other{
+	float: left;
+	width: 25%;
+	height: 100%;
+}
+.footer li a{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	color: #5b5b5b;
+	font-size: 12px;
+}
+.footer li a img{
+	margin-top: .5em;
+	width: 20px;
+}
+.footer .other-div{
+	width: 100%;
+	height: 2.04em;
+	line-height: 2.04em;
+}
+.footer .other-div span{
+	color: #D81E06;
+}
+.footer .ft-on{
+	color: #D81E06;
+}

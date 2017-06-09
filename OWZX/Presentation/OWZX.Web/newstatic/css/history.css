@@ -1,0 +1,78 @@
+
+/*===========================================================
+ *历史走势
+ *============================================================*/
+/*历史记录表格标题*/
+*{-webkit-text-size-adjust:none;
+font-size: 7px;}
+
+.table-head{
+	width: 125%;
+	position: absolute;
+	top: 40px;
+	height: 2.85em;
+}
+.table-head table{width: 100%;border-spacing: 0;border-collapse:collapse;}
+.table-head table thead {
+	background: #de6b5c;
+	width: 100%;
+	border: none;
+}
+.table-head table thead tr:first-child{
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.6em;
+	font-size: 14px;
+	border: none;
+}
+.table-head table thead tr:last-child td{
+	color: #333;
+	text-align: center;
+	empty-cells:show;
+	border: none;
+}
+/* 历史记录 */
+.mid-table{
+	position: absolute;
+	top: 74px;
+	bottom: 50px;
+	width: 125%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.mid-table table{
+	width: 100%;
+}
+
+.mid-table table tbody{
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.mid-table table tbody tr{
+	height: 2.4em;
+	line-height: 2.4em;
+}
+.mid-table table tbody tr td{
+	text-align: center;
+}
+.mid-table table tbody tr:nth-child(odd){
+	background-color: #F0F0F0;
+}
+.mid-table table tbody tr td:nth-child(2) span,.mid-table table tbody tr td:nth-child(11) span,.mid-table table tbody tr td:nth-child(3) span,.mid-table table tbody tr td:nth-child(4) span,.mid-table table tbody tr td:nth-child(5) span,.mid-table table tbody tr td:nth-child(6) span,.mid-table table tbody tr td:nth-child(7) span,.mid-table table tbody tr td:nth-child(8) span,.mid-table table tbody tr td:nth-child(9) span,.mid-table table tbody tr td:nth-child(10) span{
+	color: #eee;
+	/* border: 1px solid blue; */
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	border-radius: 3px;
+}
+.mid-table tbody tr td:nth-child(12),.mid-table tbody tr td:nth-child(13),.mid-table tbody tr td:nth-child(14){
+	background: #DBDDDC;
+}
+.mid-table table tbody tr td:nth-child(12){
+	color: #bf1111;
+}
+
+
+table{font-size:12px;-webkit-transform:scale(.8);margin-left: -10%;}

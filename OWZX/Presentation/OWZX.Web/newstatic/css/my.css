@@ -1,0 +1,47 @@
+header{position: fixed;}
+.headblank{width: 100%;height: 42px;}
+.uc{margin:0 0 50px;}
+.uc .uctop1{background:url(../img/img_wd_tx_diban.png)no-repeat 0 -6em;background-size:100% auto;padding:3.3em 1em 2em;}
+.uc .head{color:#fff;font-size:1.2em; }
+.uc .head div{display: inline-block;position:absolute;color:#fff; line-height: 1.5em;margin-top:0em;margin-left: 1em;font-size: 1.3em;}
+.uc .head div i{color:#fff;font-size: 0.7em!important;}
+
+.uc .head img {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 4px;
+    font-size: 1.5em;
+    display: inline-block;
+	vertical-align: top;
+    margin-left: .3em;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+}
+.ucmelu {padding: 0.8em;}
+.ucmelu li{  font-size: 1.2em;
+    height: 2.5em;
+    line-height: 2.5em;
+    background: #fff;
+    margin-bottom: 0.4em;
+    padding: 0 1em 0 1.5em;
+    border-radius: 3px;
+    font-weight: 500;}
+.ucmelu li span{ font-size:.8em;color:#D81E06;float:right;}
+.ico3 {
+    display: inline-block;
+    height: 2em;
+    width: 2em;
+    background: url(../img/ico3.jpg) no-repeat;
+    background-size: cover;
+}
+.uc .ucmelu li em{float: right;display:inline-block;height:1.6em;width:1.6em;background:url(../img/ico3.jpg) no-repeat right -28.8em;background-size:cover;margin:.1em 0 0 0}
+.uc .ucmelu li i{float:left;margin:.6em 1em 0 0;width:1.6em;height:1.6em;}
+.uc .ucmelu li:nth-child(1) i{background-position:0 0;}
+.uc .ucmelu li:nth-child(2) i{background-position:0 -1.6em;}
+.uc .ucmelu li:nth-child(3) i{background-position:0 -3.2em;}
+.uc .ucmelu li:nth-child(4) i{background-position:0 -4.8em;}
+.uc .ucmelu li:nth-child(5) i{background-position:0 -6.4em;}
+.uc .ucmelu li:nth-child(6) i{background-position:0 -16em;}
+.uc .ucmelu li:nth-child(7) i{background-position:0 -9.6em;}
