@@ -24,11 +24,11 @@ namespace OWZX.Web.Controllers
             string returnUrl = WebHelper.GetQueryString("returnUrl");
             if (returnUrl.Length == 0)
                 returnUrl = "/";
-            
+
             //if (WorkContext.ShopConfig.LoginType == "")
             //    return PromptView(returnUrl, "商城目前已经关闭登陆功能!");
-            //if (WorkContext.Uid > 0)
-            //    return PromptView(returnUrl, "您已经登录，无须重复登录!");
+            if (WorkContext.Uid > 0)
+                return Redirect("/Home/Index");
             if (WorkContext.ShopConfig.LoginFailTimes != 0 && LoginFailLogs.GetLoginFailTimesByIp(WorkContext.IP) >= WorkContext.ShopConfig.LoginFailTimes)
                 return PromptView(returnUrl, "您已经输入错误" + WorkContext.ShopConfig.LoginFailTimes + "次密码，请15分钟后再登陆!");
 
@@ -146,7 +146,11 @@ namespace OWZX.Web.Controllers
                 LoginFailLogs.DeleteLoginFailLogByIP(WorkContext.IP);
                 //更新用户最后访问
                 Users.UpdateUserLastVisit(partUserInfo.Uid, DateTime.Now, WorkContext.IP, WorkContext.RegionId);
-                
+                WorkContext.Uid = partUserInfo.Uid;
+                WorkContext.UserName = partUserInfo.UserName;
+                WorkContext.UserEmail = partUserInfo.Email;
+                WorkContext.UserMobile = partUserInfo.Mobile;
+                WorkContext.NickName = partUserInfo.NickName;
                 //将用户信息写入cookie中
                 ShopUtils.SetUserCookie(partUserInfo, (WorkContext.ShopConfig.IsRemember == 1 && isRemember == 1) ? 30 : -1,"web");
 
@@ -164,9 +168,9 @@ namespace OWZX.Web.Controllers
                 returnUrl = "/";
 
             if (WorkContext.ShopConfig.RegType.Length == 0)
-                return PromptView(returnUrl, "商城目前已经关闭注册功能!");
+                return PromptView(returnUrl, "目前已经关闭注册功能!");
             if (WorkContext.Uid > 0)
-                return PromptView(returnUrl, "你已经是本商城的注册用户，无需再注册!");
+                return Redirect("/Home/Index");
             if (WorkContext.ShopConfig.RegTimeSpan > 0)
             {
                 DateTime registerTime = Users.GetRegisterTimeByRegisterIP(WorkContext.IP);

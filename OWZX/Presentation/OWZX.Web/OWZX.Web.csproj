@@ -768,6 +768,7 @@
     <Content Include="views\news\details.cshtml" />
     <Content Include="views\home\down.cshtml" />
     <Content Include="views\home\message.cshtml" />
+    <Content Include="views\ucenter\set.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

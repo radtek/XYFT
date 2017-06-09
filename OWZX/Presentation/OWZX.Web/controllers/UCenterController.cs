@@ -710,7 +710,28 @@ namespace OWZX.Web.Controllers
 
         #endregion
 
+        #region Set
 
+        public ActionResult Set()
+        { 
+            return View();
+        }
+        public ActionResult UnionPay()
+        {
+            return View();
+        }
+
+        public ActionResult Set()
+        {
+            return View();
+        }
+
+        public ActionResult Set()
+        {
+            return View();
+        }
+
+        #endregion
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);

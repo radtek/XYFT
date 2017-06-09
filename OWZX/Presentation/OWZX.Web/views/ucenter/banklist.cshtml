@@ -1,0 +1,71 @@
+﻿@model OWZX.Web.Models.SafeVerifyModel
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" /> 
+    </HEAD>
+
+    <BODY>
+        <header>
+            <h2><span onclick="history.go(-1)"><i class="icon"></i></span>收款账户</h2>
+        </header>
+        <div class="headblank"></div>
+        <div class="ch-head">
+            <table class="cha">
+                <tr>
+                    <th>类型</th>
+                    <th>姓名</th>
+                    <th>账户</th>
+                </tr>
+            </table>
+        </div>
+        <div class="main table">
+            <table class="cha">
+                <foreach name="list" item="vo">
+                    <tr>
+                        <td>
+                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
+                                <!--{$vo.Branch}-->
+                                中国工商银行
+                            </a>
+                        </td>
+                        <td>
+                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
+                                <!--{$vo.UserName}-->
+                                包丽丽
+                            </a>
+                        </td>
+                        <td>
+                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
+                                <!--{$vo.Account}-->
+                                4567789987
+                            </a>
+                        </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="3"><!--{$PageButton}--></td>
+                </tr>
+            </table>
+            <a class="btn" style="width:80%;margin:2em auto;display:block;" href='/AddBank'>添加收款账户</a>
+
+        </div>
+        <!-- 底部导航 -->
+
+        @Html.Partial("_footer")
+        <!-- 底部导航 --> 
+        <script src="~/newstatic/js/jquery-1.11.3.min.js"></script> 
+     
+
+
+</body>
+</html>
