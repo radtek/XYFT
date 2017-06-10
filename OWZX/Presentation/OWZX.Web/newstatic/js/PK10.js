@@ -47,50 +47,23 @@ $(function() {
 	//筹码设置
 	$("ul.chip-money li span").each(function(i, v) {
 		$(v).click(function() {
-			// var txt = $(v).html();
-			// var html = " ";
-			// if($(v).is(".cl")) {
-			// 	$(this).removeClass("cl");
-			// 	$(".chip-choice span").each(function(i, c) {
-			// 		if($(v).text() == $(c).text()) {
-			// 			$(c).remove();
-			// 		}
-			// 	})
-			// 	$(".chip-choice").children(txt).remove();
-			// } else {
-			// 	$(this).addClass("cl");
-			// 	html += '<span class="cl1">' + txt + '</span>';
-			// 	$(".chip-choice").append(html);
-			// }
-			if ($(v).is(".cl")) {
-				$(v).removeClass("cl");
-			}else{
-				if ($(".cl").length==4||$(".cl").length>4) {
-                    return;
-				}else{
-					$(v).addClass("cl");
-				}
+			var txt = $(v).html();
+			var html = " ";
+			if($(v).is(".cl")) {
+				$(this).removeClass("cl");
+				$(".chip-choice span").each(function(i, c) {
+					if($(v).text() == $(c).text()) {
+						$(c).remove();
+					}
+				})
+				$(".chip-choice").children(txt).remove();
+			} else {
+				$(this).addClass("cl");
+				html += '<span class="cl1">' + txt + '</span>';
+				$(".chip-choice").append(html);
 			}
-
 		})
 	});
-	$(".define").click(function(){
-		if ($(".cl").length<4) {
-			alert("请选择4个金额设置筹码。");
-		}else{
-			var array1=[];
-			for (var i = 0; i < 4; i++) {
-				array1[i]=$(".cl").eq(i).text();
-			}
-			
-			for (var j = 0; j < 4; j++) {
-				$("#transport-options-o>a i").eq(j).text(array1[j]);
-			}
-			$(".chip-set").hide();
-		}
-		
-
-	})
 	//====================================================================
 	//pk10 投注
 
@@ -166,28 +139,43 @@ $(function() {
 	});
 
 	$(".a").each(function(){
-		$(this).click(function(){
+	    $(this).click(function ()
+	    {
+	        var btmoney;
+	        var bttype;
 			if (!$(this).parent().hasClass("add")) {   //投注数目于左上角
                 $(".cur .bar-a").text($(this).find("i").text());
 				$("#transport-options-o,.arrow").hide();
 				$(".cur").unbind().bind("click",function(){
 					btnToolbar(2,$(this));
 				})
+			    //投注
+				 btmoney = $(this).find("i").text();
+				 bttype = $(".cur .bar-a").parent().find("i").text();
+                
 			}else{   //加注数目于左上角
                 $(".cur .bar-a").text(parseInt($(this).find("i").text())+parseInt($(".cur .bar-a").text()));
                 $(this).parent().removeClass("add").hide();
                 $(".arrow").hide();
+			    //投注
+                 btmoney = $(this).find("i").text();
+                 bttype = $(".cur .bar-a").parent().find("i").text();
 			}
+
+			bett(btmoney, bttype, lotterytype, expect);
 		})
 	})
 
-	$(".b").eq(0).click(function(){    //撤销投注
+	$(".b").eq(0).click(function ()
+	{    //撤销投注
+	    var bttype = $(".cur .bar-a").parent().find("i").text();
         $(".cur .bar-a").text("");
         $("#transport-options-p,.arrow").hide();
         $(".cur").unbind().bind("click",function(){
 			btnToolbar(1,$(this));
 		})
-		$(".cur").removeClass("cur");
+        $(".cur").removeClass("cur");
+        delbet(bttype,lotterytype, expect);
 	})
 	
 	$(".b").eq(1).click(function(){    //加注投注
@@ -247,3 +235,43 @@ $(function() {
 		$(".self").hide();
 	})
 })
+
+function bett(money, type, lotterytype,expect)
+{
+    layer.load(2);
+    $.post("/nwlottery/bett", { "expect": expect, "money": money, "lotterytype": lotterytype, "bttype": type }, function (data)
+    {
+        setTimeout(function ()
+        {
+            layer.closeAll('loading');
+        }, 2000)
+        var dt = JSON.parse(data);
+        if (dt.state == "success")
+        {
+            layer.msg("投注成功");
+        } else
+        {
+            layer.alert(dt.biz_content, {"title":"提示",icon:2});
+        }
+    })
+}
+
+function delbet(type, lotterytype, expect)
+{
+    layer.load(2);
+    $.post("/nwlottery/delbett", { "expect": expect, "lotterytype": lotterytype, "bttype": type }, function (data)
+    {
+        setTimeout(function ()
+        {
+            layer.closeAll('loading');
+        }, 2000)
+        var dt = JSON.parse(data);
+        if (dt.state == "success")
+        {
+            layer.msg("撤销成功");
+        } else
+        {
+            layer.alert(dt.biz_content, { "title": "提示", icon: 2 });
+        }
+    })
+}
