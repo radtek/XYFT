@@ -95,6 +95,75 @@ function GetRTime(type, ctime, fcnum, totalime, stoptime)
    
 }
 
+var lottime;
+function LotRTime(type, ctime, fcnum, totalime, stoptime)
+{
+    clearTimeout(lottime);
+
+    var nS = parseInt(ctime);
+
+    //ns 开奖时间
+    nS = nS - 1;
+    if (nS <= -30)
+        clearTimeout(lottime);
+    if (nS > -30)
+        lottime = setTimeout("LotRTime(" + type + "," + nS + "," + fcnum + "," + totalime + "," + stoptime + ")", 1000);
+
+    if (nS > 0)
+    {
+        if (nS > stoptime && nS <= totalime)
+        {
+            var rems = nS - stoptime;
+            //bett
+            if (type != 13)
+            {
+                $(".ct-down").html(
+                    '距离下期封盘倒计时：<span class="ct-time">' + rems + '</span> 秒');
+            } else
+            {
+                
+            }
+            StrTimeOut = 1;
+        }
+        else if (nS >= 0 && nS <= stoptime)
+        {
+            if (type != 13)
+            {
+                $(".ct-down").html(
+                '距离下期开奖倒计时：<span class="ct-time">' + nS + '</span> 秒');
+            } else
+            {
+               
+            }
+
+            StrTimeOut = -1;
+        }
+
+    } else
+    {
+        //加载下一期
+        $.post("/nwlottery/lastlottery", { "type": type }, function (data)
+        {
+            var dt = JSON.parse(data);
+            if (dt.state == "success")
+            {
+                if (dt.biz_content.time == "已停售" || dt.biz_content.time == "维护中")
+                {
+                    $(".ct-down").html(
+                               dt.biz_content.time);
+                } else
+                {
+                    setTimeout("LotRTime(" + type + "," + dt.biz_content.time + "," + dt.biz_content.expect + "," + 300 + "," + 30 + ")", 1000);
+                }
+            } else
+            { }
+        })
+    }
+    
+
+}
+
+
 function formatSeconds(value)
 {
     var theTime = parseInt(value);// 秒 

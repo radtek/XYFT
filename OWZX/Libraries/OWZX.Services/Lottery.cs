@@ -676,16 +676,10 @@ namespace OWZX.Services
         /// <summary>
         /// 验证投注信息是否正确
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="expect"></param>
-        /// <param name="money"></param>
-        /// <param name="room"></param>
-        /// <param name="vip"></param>
-        /// <param name="bttypeid"></param>
         /// <returns></returns>
-        public static string ValidateBett(string account, string expect, string money, string room, string vip, int bttypeid)
+        public static string ValidateBett(string uid, string expect, string money, string bttype)
         {
-            return OWZX.Data.Lottery.ValidateBett(account, expect, money, room, vip, bttypeid);
+            return OWZX.Data.Lottery.ValidateBett(uid, expect, money,bttype);
         }
         #endregion
 
@@ -724,9 +718,9 @@ namespace OWZX.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool DeleteBett(string id)
+        public static bool DeleteBett(string uid, int lotterytype, string expect, string bttype)
         {
-            string result = OWZX.Data.Lottery.DeleteBett(id);
+            string result = OWZX.Data.Lottery.DeleteBett(uid,lotterytype,expect,bttype);
             if (result.EndsWith("成功"))
             {
                 return true;
@@ -1088,6 +1082,15 @@ namespace OWZX.Services
         {
             return OWZX.Data.Lottery.GetProfitListNoLottery(type, pageSize, pageNumber, condition);
         }
+        #endregion
+
+        #region 获取竞猜页用户信息
+
+        public static DataTable GetLotteryUserInfo(int uid, int lotterytype)
+        {
+            return OWZX.Data.Lottery.GetLotteryUserInfo(uid, lotterytype);
+        }
+
         #endregion
     }
 }

@@ -721,16 +721,6 @@ namespace OWZX.Web.Controllers
             return View();
         }
 
-        public ActionResult Set()
-        {
-            return View();
-        }
-
-        public ActionResult Set()
-        {
-            return View();
-        }
-
         #endregion
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {

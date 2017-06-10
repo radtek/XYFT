@@ -39,18 +39,16 @@ namespace OWZX.RDBSStrategy.SqlServer
                 if(@type=10) 
                 begin
 
-                if exists(select top 1 1 from owzx_lotteryrecord where type=10 and status !=2 and 
-                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<0) order by lotteryid )
+                if exists(select top 1 1 from owzx_lotteryrecord where type=10 and 
+                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0) order by lotteryid )
                 begin
                 select top 1 @expect=expect, 
-                --@min=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))/60),
-                --@sec=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))%60),
                 @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
-                from owzx_lotteryrecord where type=10 and status  !=2  and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<0)
+                from owzx_lotteryrecord where type=10  and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0)
                 order by lotteryid
 
                 select @expect expect,@totalsec time
-                --select @expect expect,(replicate('0',2-len(@min))+rtrim(@min)) +'分'+(replicate('0',2-len(@sec))+rtrim(@sec)) +'秒' time
+               
                 end
                 else
                 begin
@@ -61,12 +59,12 @@ namespace OWZX.RDBSStrategy.SqlServer
                 else if(@type=11) 
                 begin
 
-                if exists(select top 1 1 from owzx_lotteryrecord where type=11 and status  !=2  and 
-                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<0) order by lotteryid )
+                if exists(select top 1 1 from owzx_lotteryrecord where type=11 and 
+                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0) order by lotteryid )
                 begin
                 select top 1 @expect=expect, 
                 @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
-                from owzx_lotteryrecord where type=11 and status  !=2 and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<0)
+                from owzx_lotteryrecord where type=11 and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0)
                 order by lotteryid
 
                 select @expect expect,@totalsec time
@@ -903,6 +901,48 @@ select count(1) from #list where DATEDIFF(SECOND,opentime,getdate())>=210
         /// <summary>
         /// 验证投注信息是否正确
         /// </summary>
+        
+        /// <returns></returns>
+        public string ValidateBett(string uid, string expect, string money, string bttype)
+        {
+            string sql = string.Format(@"declare @account varchar(15)='{0}',@expect varchar(100)='{1}',@money decimal(18,2)={2},
+ @bttypeid int={5}
+  
+  if  not exists(select 1 from owzx_lotteryset where rtrim(item)=@bttype )
+  or not exists(select 1 from owzx_users where uid=@uid )
+  begin
+  select '投注信息异常' msg
+  end
+  --else if exists(select 1 from owzx_bett a join owzx_users b on a.uid=b.uid and  uid=@uid and a.lotterynum=@expect)
+  --begin
+  --select '已经投注,不能重复投注' msg
+  --end
+  else if not exists(select 1 from owzx_lotteryrecord where expect=@expect)
+  begin
+  select '竞猜信息不存在' msg
+  end
+  else if exists(select 1 from owzx_lotteryrecord where expect=@expect and status=1)
+  begin
+  select '已封盘,禁止投注' msg
+  end
+  else if exists(select 1 from owzx_lotteryrecord where expect=@expect and (status=2 or convert(varchar(19),opentime,120)<=convert(varchar(19),getdate(),120)))
+  begin
+  select '竞猜已结束,禁止投注' msg
+  end
+  else if exists(select 1 from owzx_users where uid=@uid  and isnull(totalmoney,0)<@money)
+  begin
+  select '账户余额不足,请充值' msg
+  end
+  else
+  begin
+  select '' msg
+  end", uid, expect, money, bttype);
+
+            return RDBSHelper.ExecuteScalar(sql).ToString();
+        }
+        /// <summary>
+        /// 验证投注信息是否正确
+        /// </summary>
         /// <param name="account"></param>
         /// <param name="expect"></param>
         /// <param name="money"></param>
@@ -910,7 +950,7 @@ select count(1) from #list where DATEDIFF(SECOND,opentime,getdate())>=210
         /// <param name="vip"></param>
         /// <param name="bttypeid"></param>
         /// <returns></returns>
-        public string ValidateBett(string account,string expect,string money,string room,string vip,int bttypeid)
+        public string ValidateBettForRoom(string account,string expect,string money,string room,string vip,int bttypeid)
         {
             string sql = string.Format(@"declare @account varchar(15)='{0}',@expect varchar(100)='{1}',@money decimal(18,2)={2},
   @room varchar(10)='{3}',@vip varchar(10)='{4}',@bttypeid int={5}
@@ -961,32 +1001,28 @@ select count(1) from #list where DATEDIFF(SECOND,opentime,getdate())>=210
         {
             DbParameter[] parms = {
                                     GenerateInParam("@account", SqlDbType.VarChar, 20, bett.Account),
-                                    GenerateInParam("@room", SqlDbType.VarChar, 20, bett.Room),
-                                    GenerateInParam("@vip", SqlDbType.VarChar, 20, bett.Vip),
+                                    GenerateInParam("@lotteryid", SqlDbType.Int, 4, bett.Lotteryid),
                                     GenerateInParam("@lotterynum", SqlDbType.VarChar, 50, bett.Lotterynum),
                                     GenerateInParam("@money", SqlDbType.Int, 4, bett.Money),
-                                     GenerateInParam("@bttypeid", SqlDbType.Int, 4, bett.Bttypeid),
+                                     GenerateInParam("@bttype", SqlDbType.VarChar, 10, bett.Bttype),
                                     };
             string commandText = string.Format(@"
 begin try
 begin tran t1
 
-INSERT INTO owzx_bett([uid],[lotteryid],[roomid],[vipid],[bttypeid],[lotterynum],[money],isread)
-    select (select uid from owzx_users where rtrim(mobile)=@account),
-   (select type  from owzx_lotteryrecord where expect=@lotterynum),
-   (select systypeid from owzx_sys_basetype where rtrim(type) like '%'+@room+'%'),
-   (select systypeid from owzx_sys_basetype where lower(rtrim(type))=lower(@vip)),
-   @bttypeid,@lotterynum,@money,0
+INSERT INTO owzx_bett([uid],[lotteryid],[bttypeid],[lotterynum],[money],isread)
+    select rtrim(@account),@lotteryid,
+   (select bttypeid from owzx_lotteryset where roomtype=20 and rtrim(item)=@bttype),@lotterynum,@money,0
    
 
 --扣除用户金额
 update a 
 set a.totalmoney=a.totalmoney-@money
-from owzx_users a where rtrim(a.mobile)=@account
+from owzx_users a where uid=rtrim(@account)
 
 --账变记录
 INSERT INTO [owzx_accountchange]([uid],[changemoney],[remark])
-select (select uid from owzx_users where rtrim(mobile)=@account),-@money,'投注'
+select rtrim(@account),-@money,'投注'
 
 select '添加成功' state
 commit tran t1
@@ -1046,13 +1082,48 @@ end catch
             //return RDBSHelper.ExecuteScalar(CommandType.Text, commandText, parms).ToString();
             return "";
         }
-
         /// <summary>
         /// 删除投注记录
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string DeleteBett(string id)
+        public string DeleteBett(string uid, int lotterytype,string expect, string bttype)
+        {
+            string commandText = string.Format(@"
+            begin try
+            if exists(select 1 from owzx_lotteryrecord where type={3} and expect={1} and status=0)
+            begin
+            if exists(  select 1 from owzx_bett a 
+  join owzx_lotteryset b on a.bttypeid=b.bttypeid
+  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}')
+            begin
+            delete a from owzx_bett a 
+  join owzx_lotteryset b on a.bttypeid=b.bttypeid
+  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}'
+            select '删除成功' state
+            end
+            else
+            begin
+            select '记录已被删除' state
+            end
+            end
+            else
+            begin
+             select '当期竞猜已经封盘，不能撤销投注' state
+            end
+            end try
+            begin catch
+            select ERROR_MESSAGE() state
+            end catch
+            ", uid, expect, bttype, lotterytype);
+            return RDBSHelper.ExecuteScalar(commandText).ToString();
+        }
+        /// <summary>
+        /// 删除投注记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string DeleteBettForId(string id)
         {
             string commandText = string.Format(@"
             begin try
@@ -2336,6 +2407,18 @@ end catch
 ", type, condition);
             DataTable dt = RDBSHelper.ExecuteTable(sql, parms)[0];
             return dt;
+
+        }
+        #endregion
+
+        #region 获取竞猜页用户信息
+
+        public DataTable GetLotteryUserInfo(int uid, int lotterytype)
+        {
+            string sql = string.Format(@"select lotteryid,uid,SUM(money) total_bett,
+(select ISNULL(totalmoney,0) from owzx_users where uid={1}) ac_money from owzx_bett 
+where lotteryid={0} and uid={1} group by lotteryid,uid",lotterytype,uid);
+            return RDBSHelper.ExecuteTable(sql,null)[0];
 
         }
         #endregion

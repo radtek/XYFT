@@ -40,7 +40,7 @@ namespace OWZX.Web.Controllers
                 }
                 
                 string room = parmas["room"].Trim();
-                string msg = Lottery.ValidateBett(parmas["account"], parmas["expect"], parmas["money"], room, parmas["vip"], int.Parse(parmas["bttypeid"]));
+                string msg = "";// Lottery.ValidateBett(parmas["account"], parmas["expect"], parmas["money"], room, parmas["vip"], int.Parse(parmas["bttypeid"]));
                 if (msg != string.Empty)
                 {
                     return APIResult("error", msg);

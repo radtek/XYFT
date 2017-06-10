@@ -141,14 +141,9 @@ namespace OWZX.Core
         /// <summary>
         /// 验证投注信息是否正确
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="expect"></param>
-        /// <param name="money"></param>
-        /// <param name="room"></param>
-        /// <param name="vip"></param>
-        /// <param name="bttypeid"></param>
+        
         /// <returns></returns>
-        string ValidateBett(string account, string expect, string money, string room, string vip, int bttypeid);
+        string ValidateBett(string uid, string expect, string money, string bttype);
         #endregion
 
         #region 投注
@@ -165,12 +160,12 @@ namespace OWZX.Core
         /// <returns></returns>
         string UpdateBett(MD_Bett bett);
 
-        /// <summary>
+         /// <summary>
         /// 删除投注记录
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        string DeleteBett(string id);
+        string DeleteBett(string uid, int lotterytype, string expect, string bttype);
 
         /// <summary>
         ///  获取投注记录(分页)
@@ -380,6 +375,12 @@ namespace OWZX.Core
         /// <param name="condition"></param>
         /// <returns></returns>
         DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string condition = "");
+        #endregion
+
+        #region 获取竞猜页用户信息
+
+        DataTable GetLotteryUserInfo(int uid, int lotterytype);
+        
         #endregion
 
     }

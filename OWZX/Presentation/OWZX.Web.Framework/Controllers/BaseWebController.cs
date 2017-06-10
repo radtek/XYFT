@@ -245,7 +245,8 @@ namespace OWZX.Web.Framework
             ControllerBase ctb = filterContext.Controller;
 
             string result = WebHelper.GetPostStr();
-
+            NameValueCollection parmas = WebHelper.GetParmList(result);
+            WorkContext.postparms = parmas;
             //if (filterContext.ActionDescriptor.ActionName.ToLower() == "existsdrawpd")
             //    Logs.Write("请求参数：" + result);
             //if (result != string.Empty)
