@@ -209,7 +209,8 @@ end catch
         public string UpdateDrawCardInfo(MD_DrawAccount drawa)
         {
             DbParameter[] parms = {
-                                      GenerateInParam("@account", SqlDbType.VarChar, 15, drawa.Account),
+                                      GenerateInParam("@drawaccid", SqlDbType.Int, 4, drawa.Drawaccid),
+                                      GenerateInParam("@uid", SqlDbType.Int, 4, drawa.Account),
                                       GenerateInParam("@username", SqlDbType.VarChar, 20, drawa.Username),
                                       GenerateInParam("@card", SqlDbType.VarChar, 20, drawa.Card),
                                       GenerateInParam("@cardnum", SqlDbType.VarChar, 20, drawa.Cardnum),
@@ -219,7 +220,7 @@ end catch
 
             string commandText = string.Format(@"
 begin try
-if exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and b.mobile=@account)
+if(@drawaccid>0 and exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and b.uid=@uid where drawaccid=@drawaccid) )
 begin
 
 update a set 
@@ -227,15 +228,13 @@ a.username=@username,
 a.card=@card,
 a.cardnum=@cardnum,
 a.cardaddress=@cardaddress
-from owzx_userdrawaccount a 
-join owzx_users b on a.uid=b.uid and b.mobile=@account
+from owzx_userdrawaccount a where drawaccid=@drawaccid
 
 end
 else
 begin
 insert into owzx_userdrawaccount([uid],[username],[card],[cardnum],[cardaddress])
-select uid,@username,@card,@cardnum,@cardaddress
-from owzx_users where mobile=@account
+select @uid,@username,@card,@cardnum,@cardaddress 
 end
 
 select '更新成功'
@@ -256,27 +255,26 @@ end catch
         public string UpdateDrawPWD(MD_DrawAccount drawa)
         {
             DbParameter[] parms = {
-                                      GenerateInParam("@account", SqlDbType.VarChar, 15, drawa.Account),
+                                      GenerateInParam("@uid", SqlDbType.VarChar, 15, drawa.Uid),
                                       GenerateInParam("@drawpwd", SqlDbType.VarChar, 50, drawa.Drawpwd)
                                   };
 
 
             string commandText = string.Format(@"
 begin try
-if exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and rtrim(b.mobile)=@account)
+if exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and b.uid=@uid)
 begin
 
 update a set 
 a.drawpwd=@drawpwd
 from owzx_userdrawaccount a 
-join owzx_users b on a.uid=b.uid and b.mobile=@account
+join owzx_users b on a.uid=b.uid and b.uid=@uid
 
 end
 else
 begin
 insert into owzx_userdrawaccount([uid],drawpwd)
-select uid,@drawpwd
-from owzx_users where mobile=@account
+select @uid,@drawpwd 
 end
 
 select '更新成功'
@@ -315,7 +313,26 @@ end
 ");
             return RDBSHelper.ExecuteScalar(CommandType.Text, sql, parms).ToString();
         }
+        public string ValidateDrawPwdByUid(int uid, string pwd)
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@uid", SqlDbType.Int, 4, uid),
+                                      GenerateInParam("@drawpwd", SqlDbType.VarChar, 50, pwd)
+                                  };
+            string sql = string.Format(@"
 
+if exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and  b.uid=@uid and a.drawpwd=@drawpwd)
+begin
+select '成功'
+end
+else
+begin
+select '失败'
+end
+
+");
+            return RDBSHelper.ExecuteScalar(CommandType.Text, sql, parms).ToString();
+        }
         /// <summary>
         /// 是否设置提现密码
         /// </summary>
@@ -339,7 +356,30 @@ end
 ");
             return RDBSHelper.ExecuteScalar(CommandType.Text, sql, parms).ToString();
         }
+        /// <summary>
+        /// 是否设置提现密码
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public string ValidateDrawPwdByUid(int uid)
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@uid", SqlDbType.Int, 4, uid)
+                                  };
+            string sql = string.Format(@"
 
+if exists(select 1 from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid and b.uid=@uid and isnull(a.drawpwd,'')!='' )
+begin
+select '成功'
+end
+else
+begin
+select '失败'
+end
+");
+            return RDBSHelper.ExecuteScalar(CommandType.Text, sql, parms).ToString();
+        }
+        
 
         /// <summary>
         /// 删除提现账号

@@ -103,6 +103,10 @@ namespace OWZX.Data
         {
             return BSPData.RDBS.ValidateDrawPwd(account, pwd);
         }
+        public static string ValidateDrawPwdByUid(int uid, string pwd)
+        {
+            return BSPData.RDBS.ValidateDrawPwdByUid(uid, pwd);
+        }
         /// <summary>
         /// 删除提现账号
         /// </summary>
@@ -121,6 +125,10 @@ namespace OWZX.Data
         public static string ValidateDrawPwd(string account)
         {
             return BSPData.RDBS.ValidateDrawPwd(account);
+        }
+        public static string ValidateDrawPwdByUid(int uid)
+        {
+            return BSPData.RDBS.ValidateDrawPwdByUid(uid);
         }
         /// <summary>
         ///  获取提现账号(分页)

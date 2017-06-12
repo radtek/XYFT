@@ -12,12 +12,8 @@
     <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
     <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
-    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
-    <style>
-       .tishi{width:80%;position:fixed;top:100%;left:10%;background:#fff;z-index: 999;  border-radius: 5px;text-align:center;padding-bottom:1em;}
-        .tishi .ts{line-height:2em;border-bottom:#eee solid 1px;font-size:1.2em;font-weight:700;}
-        .tishi .tsnr{line-height:2em;margin:1em .5em}
-    </style>
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" /> 
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
 </HEAD>
 
 <BODY>
@@ -29,10 +25,10 @@
         <form method="post" action="">
             <ul class="form">
                 <if condition="$Info['CarryPwd'] neq ''">
-                    <li><label>原密码</label><input type="text" id="oldpwd"></li>
+                    <li><label>原密码</label><input type="password" id="oldpwd"></li>
                 </if>
-                <li><label>新密码</label><input type="text" id="pwd1"></li>
-                <li><label>确认密码</label><input type="text" id="pwd2"></li>
+                <li><label>新密码</label><input type="password" id="pwd1"></li>
+                <li><label>确认密码</label><input type="password" id="pwd2"></li>
                 <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">修改</a>
             </ul>
         </form>
@@ -41,63 +37,40 @@
     <div class="footblank"></div>
 <!-- 底部导航 --> 
     @Html.Partial("_footer")
-<!-- 底部导航 -->
-    <!-- 提示框 -->
-    <div class="betbg"></div>
-    <div class="tishi">
-        <div class="ts">提示</div>
-        <div class="tsnr"></div>
-        <div class="btn" style="width:80%;">确定</div>
-    </div>
-    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+<!-- 底部导航 -->  
+<script type="text/javascript">
+    $(function() { 
 
-    <script>
-     $("#btn").click(function(){
-      var URL='__URL__';
-      var oldpwd = $("#oldpwd").val();
-      var pwd1 = $("#pwd1").val();
-      var pwd2 = $("#pwd2").val();
-      if(pwd1 != pwd2)
-      {
-          tishi("两次密码输入不一致");
-          return false;
-      }
-      else if(pwd1 == "" || oldpwd =="")
-      {
-          tishi("密码不可为空");
-          return false;
-      }
-      $.ajax({
-          url: URL+'/carrypwd',
-          type:"POST",
-          dataType: 'text',
-          timeout: 5000,
-          data:{
-              oldpwd:oldpwd,
-              pwd:pwd1
-          },
-          dataType:"json",
-          success: function(data){
-              if(data == 1)
-                  tishi("修改成功");
-              else if(data == 2)
-                  tishi("旧密码有误");
-              else
-                  tishi("修改失败");
-          }
-      });
- })
+        $("#btn").click(function() {
+            var oldpwd = $("#oldpwd").val();
+            var pwd1 = $("#pwd1").val().trim();
+            var pwd2 = $("#pwd2").val().trim();
 
-$(".tishi .btn").click(function(){
-  $(".betbg").fadeOut(100);
-  $(".tishi").animate({top:"100%",marginTop:"0"},300);
-  });
-function tishi(nr){
-    $(".betbg").fadeIn(100);
-    $(".tsnr").html(nr);
-    $(".tishi").animate({top:"50%",marginTop:"-3.5em"},300);
- };
-    </script>
+            if (pwd1 != pwd2) {
+                tishi("两次密码输入不一致");
+                return false;
+            }
+            if (pwd1 == "" || oldpwd == "") {
+                tishi("密码不可为空");
+                return false;
+            } else if (pwd1 == pwd2) {
+                $.post('/APPAccount/DrawPwd',
+                    {
+                        oldpwd: oldpwd,
+                        pwd: pwd1
+                    },
+                    function(data) {
+                        var result = eval('('+data+')'); 
+                        if (result.state == "success")
+                            tishi("修改成功");
+                        else
+                            tishi(result.biz_content);
+                    });
+            }
+        }); 
+    }); 
+
+</script>
 </BODY> 
 
 </HTML>

@@ -90,6 +90,8 @@ namespace OWZX.Core
         /// <param name="account"></param>
         /// <returns></returns>
         string ValidateDrawPwd(string account);
+        string ValidateDrawPwdByUid(int uid);
+        string ValidateDrawPwdByUid(int account, string pwd);
         /// <summary>
         ///  获取提现账号(分页)
         /// </summary>

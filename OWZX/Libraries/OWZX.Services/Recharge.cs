@@ -199,6 +199,24 @@ namespace OWZX.Services
             }
             return false;
         }
+        public static bool ValidateDrawPwdByUid(int uid)
+        {
+            string result = OWZX.Data.Recharge.ValidateDrawPwdByUid(uid);
+            if (result.EndsWith("成功"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool ValidateDrawPwdByUid(int uid,string dpwd)
+        {
+            string result = OWZX.Data.Recharge.ValidateDrawPwdByUid(uid, dpwd);
+            if (result.EndsWith("成功"))
+            {
+                return true;
+            }
+            return false;
+        }
         /// <summary>
         ///  获取提现账号(分页)
         /// </summary>

@@ -37,7 +37,7 @@ namespace OWZX.Web.controllers
                     return APIResult("error", "缺少请求参数");
                 }
                 string account = parmas["account"].Trim().ToLower(); //手机
-                string code = parmas["code"];//验证码
+                string code = Randoms.CreateRandomValue(6);//验证码
                 string type = parmas["type"];
 
                 string body = "【PC蛋蛋】您正在" + type + ",验证码" + code + ",若非本人操作，请勿泄露。";
@@ -165,11 +165,7 @@ namespace OWZX.Web.controllers
         {
             try
             {
-                NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count != 2)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
+                NameValueCollection parmas = WorkContext.postparms; 
 
                 if (Users.IsExistMobile(parmas["account"]))
                 {
@@ -370,11 +366,11 @@ namespace OWZX.Web.controllers
 
                 MD_DrawAccount draw = new MD_DrawAccount
                 {
-                    Account = parmas["account"],
+                    Uid = WorkContext.Uid,
                     Drawpwd = parmas["password"]
                 };
 
-                PartUserInfo partUserInfo = Users.GetPartUserByMobile(parmas["account"]);
+                PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
                 draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
                 if (parmas.AllKeys.Contains("oldpwd"))
@@ -433,33 +429,29 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                //包含imei号
-                if (parmas.Keys.Count != 7)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
-
+                var id = parmas["id"];
                 MD_DrawAccount draw = new MD_DrawAccount
                 {
-                    Account = parmas["account"],
+                    Uid = WorkContext.Uid,
                     Username = parmas["username"],
+                    Drawaccid =Convert.ToInt32(parmas["id"]),
                     Card = parmas["cardname"],
                     Cardnum = parmas["cardnum"],
                     Cardaddress = parmas["cardaddress"],
                     Drawpwd = parmas["pwd"]
                 };
 
-                bool result = Recharge.ValidateDrawPwd(parmas["account"]);
+                bool result = Recharge.ValidateDrawPwdByUid(WorkContext.Uid);
 
                 if (!result)
                     return APIResult("error", "未设置提现密码");
                 
 
-                PartUserInfo partUserInfo = Users.GetPartUserByMobile(parmas["account"]);
+                PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
                 draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
 
-                bool pwdres = Recharge.ValidateDrawPwd(draw.Account, draw.Drawpwd);
+                bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, draw.Drawpwd);
                 if (!pwdres)
                     return APIResult("error", "提现密码错误");
                 bool saveres = Recharge.UpdateDrawCardInfo(draw);
@@ -481,13 +473,58 @@ namespace OWZX.Web.controllers
         {
             try
             {
-                NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count != 2)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
+                NameValueCollection parmas = WorkContext.postparms; 
 
-                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 1, " where rtrim(b.mobile)='" + parmas["account"] + "'");
+                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 20, " where b.Uid=" +WorkContext.Uid+ "");
+                if (draw.Count > 0)
+                {
+                    JsonSerializerSettings jsetting = new JsonSerializerSettings();
+                    jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Drawaccid", "Account", "Username", "Card", "Cardnum", "Cardaddress" }, true);
+                    string data = JsonConvert.SerializeObject(draw, jsetting).ToLower();
+                    return APIResult("success", data, true);
+                }
+                else
+                {
+                    return APIResult("error", "没有提现账户信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                return APIResult("error", "获取失败");
+            }
+        }
+        public ActionResult GetDrawAccountByid()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
+
+                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1,1, " where a.Draaccid=" + parmas["id"].ToString() + "");
+                if (draw.Count > 0)
+                {
+                    JsonSerializerSettings jsetting = new JsonSerializerSettings();
+                    jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Account", "Username", "Card", "Cardnum", "Cardaddress" }, true);
+                    string data = JsonConvert.SerializeObject(draw[0], jsetting).ToLower();
+                    return APIResult("success", data, true);
+                }
+                else
+                {
+                    return APIResult("error", "没有提现账户信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                return APIResult("error", "获取失败");
+            }
+        }
+
+        public ActionResult BindTel()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
+
+                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 1, " where a.Draaccid=" + id + "");
                 if (draw.Count > 0)
                 {
                     JsonSerializerSettings jsetting = new JsonSerializerSettings();

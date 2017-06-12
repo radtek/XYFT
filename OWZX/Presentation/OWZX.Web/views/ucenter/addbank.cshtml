@@ -1,0 +1,103 @@
+﻿@model OWZX.Web.Models.SafeVerifyModel
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+        <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" /> 
+        <script src="~/newstatic/js/jquery-1.11.3.min.js"></script> 
+    </HEAD>
+
+    <BODY>
+        <header>
+            <h2><span onclick="history.go(-1)"><i class="icon"></i></span>银行卡</h2>
+        </header>
+        <div class="headblank"></div>
+        <div class="main">
+            <ul class="form">
+                <li>
+                    <label>银行名称</label>
+                    <select id="Bank">
+                         
+                    </select>
+                </li>
+                <li><label>开户姓名</label><input type="text" id="TrueName" placeholder=""></li>
+                <li><label>银行卡号</label><input type="text" id="BankNum"></li>
+                <li><label>提现密码</label><input type="text" id="Pwd"></li>
+                <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;"> @(ViewData["ID"].ToString()=="-1"?"新增": "修改")</a>
+            </ul>
+        </div>
+        <!-- 底部导航 -->
+      
+        @Html.Partial("_footer")
+        <!-- 底部导航 --> 
+        
+    <script type="text/javascript">
+        var id = '@ViewData["ID"]'; 
+        $(function() {
+            $.post('/API/Bank', {}, function(data) {
+                var result = eval('(' + data + ')'); 
+                var html = "";
+                if (result.state == "success") {
+                    for (var i = 0; i < result.biz_content.length; i++) { 
+                        html += '<option value="' + result.biz_content[i].type + '">' + result.biz_content[i].type + '</option>';
+                    }
+                    $('#Bank').html(html);
+                }
+               
+                if (id != "-1") {
+                    $.post('/API/GetDrawAccountByid', { id: id },
+                        function (data) {
+                            var t = eval('(' + data + ')');
+                            $('#BankNum').val(t.bz_content[0].cardnum);
+                            $('#TrueName').val(t.bz_content[0].username);
+                            $('#Bank').val(t.bz_content[0].type);
+                        });
+                }
+            });
+            $('#btn').click(function () {
+                var Bank = $("#Bank").val();
+                var TrueName = $("#TrueName").val();
+                var BankNum = $("#BankNum").val();
+                var Pwd = $("#Pwd").val();
+                if (TrueName == "") {
+                    tishi("开户姓名不可以为空");
+                    return false;
+                }
+
+                if (BankNum == "") {
+                    tishi("银行账号不可为空");
+                    return false;
+                }
+
+                if (Pwd == "") {
+                    tishi("提现密码不可为空");
+                    return false;
+                }
+                $.post('/API/Bank', {
+                    id:id,
+                    cardname: Bank,
+                    username: TrueName,
+                    cardnum: BankNum,
+                    pwd: Pwd
+                }, function(data) {
+                    var t = eval('(' + data + ')'); 
+                    if (t.state == "success")
+                        tishi("修改成功");
+                    else
+                        tishi(t.biz_content);
+                });
+            });
+        });
+    </script>
+
+
+</body>
+</html>

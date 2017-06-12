@@ -769,6 +769,11 @@
     <Content Include="views\home\down.cshtml" />
     <Content Include="views\home\message.cshtml" />
     <Content Include="views\ucenter\set.cshtml" />
+    <Content Include="views\ucenter\addbank.cshtml" />
+    <Content Include="views\ucenter\drawpwd.cshtml" />
+    <Content Include="views\ucenter\upwd.cshtml" />
+    <Content Include="views\ucenter\bindtel.cshtml" />
+    <Content Include="views\ucenter\banklist.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

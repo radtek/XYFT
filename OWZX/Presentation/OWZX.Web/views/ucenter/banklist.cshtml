@@ -12,6 +12,8 @@
         <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
         <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
         <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" /> 
+
+        <script src="~/newstatic/js/jquery-1.11.3.min.js"></script> 
     </HEAD>
 
     <BODY>
@@ -29,42 +31,29 @@
             </table>
         </div>
         <div class="main table">
-            <table class="cha">
-                <foreach name="list" item="vo">
-                    <tr>
-                        <td>
-                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
-                                <!--{$vo.Branch}-->
-                                中国工商银行
-                            </a>
-                        </td>
-                        <td>
-                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
-                                <!--{$vo.UserName}-->
-                                包丽丽
-                            </a>
-                        </td>
-                        <td>
-                            <a href='{:U("User/editbank",array("Id"=>$vo["Id"]))}'>
-                                <!--{$vo.Account}-->
-                                4567789987
-                            </a>
-                        </td>
-                    </tr>
-                </foreach>
-                <tr>
-                    <td colspan="3"><!--{$PageButton}--></td>
-                </tr>
+            <table class="cha"> 
             </table>
-            <a class="btn" style="width:80%;margin:2em auto;display:block;" href='/AddBank'>添加收款账户</a>
+            <a class="btn" style="width:80%;margin:2em auto;display:block;" href='/UCenter/AddBank'>添加收款账户</a>
 
         </div>
         <!-- 底部导航 -->
-
         @Html.Partial("_footer")
         <!-- 底部导航 --> 
-        <script src="~/newstatic/js/jquery-1.11.3.min.js"></script> 
-     
+    <script type="text/javascript">
+        $(function() {
+            $.post('/AppAccount/GetDrawAccount', {}, function(data) {
+                var result = eval('(' + data + ')');
+                if (result.state == "success") {
+                    var html = "";
+                    for (var i = 0; i < result.bz_content; i++) {
+                        html += '<tr><td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].card + '</a></td>' +
+                            '<td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].username + '</a></td>' +
+                            '<td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].cardnum + ' </a></td></tr>';
+                    }
+                }
+            });
+        });
+    </script>
 
 
 </body>

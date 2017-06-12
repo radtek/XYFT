@@ -716,11 +716,27 @@ namespace OWZX.Web.Controllers
         { 
             return View();
         }
-        public ActionResult UnionPay()
+        public ActionResult BankList()
         {
             return View();
         }
-
+        public ActionResult UPwd()
+        {
+            return View();
+        }
+        public ActionResult DrawPwd()
+        {
+            return View();
+        }
+        public ActionResult BindTel()
+        {
+            return View();
+        }
+        public ActionResult AddBank(int id=-1)
+        { 
+            ViewData["ID"]= id;
+            return View();
+        }
         #endregion
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {

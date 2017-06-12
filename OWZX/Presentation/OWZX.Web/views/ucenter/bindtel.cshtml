@@ -1,0 +1,93 @@
+﻿@model OWZX.Web.Models.SafeVerifyModel
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" /> 
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+</HEAD>
+
+<BODY>
+<header>
+    <h2><span onclick="history.go(-1)"><i class="icon"></i></span>绑定手机</h2>
+</header>
+<div class="headblank"></div>
+<div class="main">
+
+    <ul class="form">
+        <li><label>手机号</label><input id="tel" type="text"></li>
+        <li><label>验证码</label><input type="text" style="width:7em" id="yzm"> <a id="M" class="setyzm btn" style="height:1.9em;line-height:1.9em;width: 6em;font-size:0.9em;display:inline-block;border-radius:3px;">发送验证码</a></li>
+        <button class="btn" style="width:80%;margin:2em auto;display:block;outline: none;" id="submit">确定</button>
+    </ul>
+
+
+
+</div>
+<!-- 底部导航 --> 
+@Html.Partial("_footer")
+<!-- 底部导航 --> 
+<script type="text/javascript">
+    $(function() {
+        $(".setyzm").click(function () {
+            if (tims == 0) {
+                var Tel = $("#tel").val();
+                $.post('/AppAccount/SendSMS',
+                    {
+                        account: Tel,
+                        type: "绑定账号"
+                    },
+                    function (data) {
+                        var result = eval('(' + data + ')');
+                        if (data.state == "success") {
+                            tishi("发送成功");
+                            var a = 60;
+                            var innter = setInterval(function () {
+                                a--;
+                                $("#M").html(a);
+                                if (a <= 0) {
+                                    clearInterval(innter);
+                                    $("#M").html("发送验证码");
+                                }
+                            },
+                                1000);
+                        } else {
+                            tishi(result.biz_content);
+                        }
+                    });
+            }
+        });
+
+
+        $("#submit").click(function () {
+            var Yzm = $("#yzm").val();
+            var Tel = $("#tel").val();
+            $.post('',
+                {
+                    yzm: Yzm,
+                    Tel: Tel
+                },
+                function (data) {
+                    if (data == 1) {
+                        tishi("验证码错误");
+                    } else {
+                        tishi("绑定失败,请重新尝试");
+                    }
+                });
+        });
+    });
+
+
+
+</script>
+
+
+</body>
+</html>
