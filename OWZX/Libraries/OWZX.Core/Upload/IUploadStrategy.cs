@@ -9,6 +9,12 @@ namespace OWZX.Core
     public partial interface IUploadStrategy
     {
         /// <summary>
+        /// 保存上传的用户头像
+        /// </summary>
+        /// <param name="avatar">用户头像</param>
+        /// <returns></returns>
+        string SaveUploadUserAvatar(HttpPostedFileBase avatar, string url);
+        /// <summary>
         /// 保存上传的文件
         /// </summary>
         /// <param name="file"></param>

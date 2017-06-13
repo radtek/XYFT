@@ -1,0 +1,61 @@
+﻿@model UserInfo
+@{
+    ViewBag.Title = "setinfo";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <link href="~/components/layer/skin/layer.css" rel="stylesheet" />
+    <script src="~/components/layer/layer.js"></script>
+    
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>个人信息</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="main">
+            <ul class="form">
+                <li><label>账号：</label>@Model.UserName</li>
+                <li><label>昵称：</label><input type="text" id="nickname" name="nickname" value="@Model.NickName" /></li>
+                <li><label>签名：</label><input type="text" id="signname" name="signname" value="@Model.SignName" /></li>
+                <button type="submit" class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">修改</button>
+            </ul>
+    </div>
+
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+    <script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+    <script>
+        $("#btn").click(function ()
+        {
+            $.post("/ucenter/updateuserinfo", { "nickname": $("#nickname").val(), "signname": $("#signname").val() }, function (data)
+            {
+                var dt = JSON.parse(data);
+                if (dt.state == "success")
+                {
+                    layer.msg("保存成功");
+                    window.location.href = '/ucenter/index';
+                } else
+                {
+                    layer.msg("保存失败");
+                }
+            })
+        });
+        
+    </script>
+</body>
+</html>

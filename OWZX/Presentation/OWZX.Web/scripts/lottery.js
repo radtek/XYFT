@@ -153,6 +153,9 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
                                dt.biz_content.time);
                 } else
                 {
+                    //新一期开始 更新期号，清除上期投注信息
+                    $(".bar-a").text("");
+                    expect = dt.biz_content.expect;
                     setTimeout("LotRTime(" + type + "," + dt.biz_content.time + "," + dt.biz_content.expect + "," + 300 + "," + 30 + ")", 1000);
                 }
             } else

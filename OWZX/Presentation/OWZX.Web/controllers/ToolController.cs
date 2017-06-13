@@ -108,6 +108,12 @@ namespace OWZX.Web.Controllers
                 string result = Uploads.SaveUploadImg(file, filepath);
                 return Content(result);
             }
+            else if (operation == "uploaduserimg")
+            {
+                HttpPostedFileBase file = Request.Files[0];
+                string result = Uploads.SaveUploadUserAvatar(file, "");
+                return Content(result);
+            }
             return HttpNotFound();
         }
         /// <summary>

@@ -523,7 +523,7 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-
+                int id = int.Parse(parmas["draaccid"].ToString());
                 List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 1, " where a.Draaccid=" + id + "");
                 if (draw.Count > 0)
                 {

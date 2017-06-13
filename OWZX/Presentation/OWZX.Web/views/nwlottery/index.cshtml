@@ -98,7 +98,23 @@
         <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
     <![endif]-->
     <script>
-        lotterytype=@ViewData["lottery"];
+    lotterytype=@ViewData["lottery"];
+    uid=@WorkContext.Uid;
+        $(function(){
+            var type=@ViewData["lottery"].ToString();
+            if(type==10)
+            {
+                setTimeout(function(){
+                    $(".ifsfz").attr("src","https://www.1399p.com/mobile/pk10/");
+                },30000);
+                
+            }
+            else if(type==11)
+            {
+                setTimeout(function(){$(".ifsfz").attr("src","http://www.1399p.com/xyft/h5shipin/");
+                },30000);
+            }
+        })
     </script>
 </head>
 <body style="height:auto">
@@ -163,7 +179,15 @@
             <!-- 筹码设置 -->
             <!-- 玩法规则 -->
             <div class="rule" style="display: none;">
-                <h3>北京赛车PK10玩法说明 <i class="rule-close" title="关闭"></i></h3>
+                <h3>
+                @if(@ViewData["lottery"].ToString()=="10")
+                {
+                   @:北京赛车PK10玩法说明
+                }else
+                {
+                   @:幸运飞艇玩法说明
+                }
+                <i class="rule-close" title="关闭"></i></h3>
                 <p>1、猜冠军， 即前一，猜开奖号码的第一位，奖金10元，例如开奖号码为1,2,3,4,5,6,7,8,9,10。第一位是1，那么投注第一位包含1时，即为中奖。</p>
                 <p>2、猜冠亚军 ，即前二，猜开奖号码的前二位，奖金10元，例如开奖号码为1,2,3,4,5,6,7,8,9,10；那么投注第一位包含1，第二位包含2时，即为中奖。选2中2，奖金55元。选2中1，奖金2元。</p>
                 <p>3、猜冠亚季军 ，即前三，猜开奖号码的前三位。例如开奖号码为1,2,3,4,5,6,7,8,9,10；那么投注第一位包含1，第二位包含2时，第三位包含3时，即为中奖。选3中3，奖金160元。选3中2，奖金10元。选3中1，奖金2元。</p>

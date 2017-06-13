@@ -108,6 +108,7 @@
     <Compile Include="controllers\ErrorController.cs" />
     <Compile Include="controllers\HelpController.cs" />
     <Compile Include="controllers\HomeController.cs" />
+    <Compile Include="controllers\NWLotteryController.cs" />
     <Compile Include="controllers\LotteryController.cs" />
     <Compile Include="controllers\NewsController.cs" />
     <Compile Include="controllers\ToolController.cs" />
@@ -118,6 +119,7 @@
     </Compile>
     <Compile Include="models\AccountModel.cs" />
     <Compile Include="models\HelpModel.cs" />
+    <Compile Include="models\ChangeListModel.cs" />
     <Compile Include="models\NewsModel.cs" />
     <Compile Include="models\UCenterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -475,6 +477,7 @@
     <Content Include="images\mall\zhi.png" />
     <Content Include="images\tr.png" />
     <Content Include="images\dlogo.png" />
+    <Content Include="images\tutu.png" />
     <Content Include="newstatic\css\accessmoney.css" />
     <Content Include="newstatic\css\back.css" />
     <Content Include="newstatic\css\common.css" />
@@ -774,6 +777,15 @@
     <Content Include="views\ucenter\upwd.cshtml" />
     <Content Include="views\ucenter\bindtel.cshtml" />
     <Content Include="views\ucenter\banklist.cshtml" />
+    <Content Include="views\nwlottery\index.cshtml" />
+    <Content Include="views\ucenter\banklist.cshtml" />
+    <Content Include="views\ucenter\drawpwd.cshtml" />
+    <Content Include="views\ucenter\upwd.cshtml" />
+    <Content Include="views\nwlottery\betrecord.cshtml" />
+    <Content Include="views\ucenter\index.cshtml" />
+    <Content Include="views\ucenter\userphoto.cshtml" />
+    <Content Include="views\ucenter\setinfo.cshtml" />
+    <Content Include="views\ucenter\userchange.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

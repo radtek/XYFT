@@ -24,7 +24,7 @@ namespace OWZX.Web.Controllers
         public ActionResult Index()
         {
             int lotterytype = WebHelper.GetQueryInt("type");
-            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid, lotterytype);
+            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid);
             StringBuilder strb = new StringBuilder();
             foreach (DataRow rw in dt.Rows)
             {
@@ -38,6 +38,7 @@ namespace OWZX.Web.Controllers
                 ViewData["lot_msg"] = list.Rows[0]["time"].ToString() == "维护中" ? "" : list.Rows[0]["time"].ToString();
                 ViewData["expect"] = list.Rows[0]["expect"].ToString();
             }
+            List<MD_Bett> list_bet = Lottery.GetBettList(1, 1, " where a.uid="+WorkContext.Uid.ToString()+"  and a.lotterynum='" + ViewData["expect"]+"'");//获取当期投注信息
             return View();
         }
 
@@ -53,6 +54,10 @@ namespace OWZX.Web.Controllers
         {
             try
             {
+                if (WorkContext.Uid == -1)
+                {
+                    return APIResult("error", "请先登录，登录后才能进行投注");
+                }
                 NameValueCollection parmas = WorkContext.postparms;
 
                 string msg = Lottery.ValidateBett(WorkContext.Uid.ToString(), parmas["expect"], parmas["money"], parmas["bttype"]);
@@ -60,7 +65,6 @@ namespace OWZX.Web.Controllers
                 {
                     return APIResult("error", msg);
                 }
-
 
                 int btmoney = int.Parse(parmas["money"]);
                 //判断投注的最高注数 是否有效
@@ -85,7 +89,8 @@ namespace OWZX.Web.Controllers
                 Lotterynum = parmas["expect"],
                 Money = int.Parse(parmas["money"]),
                 Bttype = parmas["bttype"],
-                Lotteryid = int.Parse(parmas["lotterytype"])
+                Lotteryid = int.Parse(parmas["lotterytype"]),
+                Roomid=int.Parse(parmas["btroom"])
             };
 
             bool betres = Lottery.AddBett(bet);
@@ -102,6 +107,11 @@ namespace OWZX.Web.Controllers
         {
             try
             {
+                if (WorkContext.Uid == -1)
+                {
+                    return APIResult("error", "请先登录，登录后才能撤销投注");
+                }
+
                 NameValueCollection parmas = WorkContext.postparms;
 
                 bool msg = Lottery.DeleteBett(WorkContext.Uid.ToString(), int.Parse(parmas["lotterytype"]), parmas["expect"], parmas["bttype"]);
@@ -113,7 +123,7 @@ namespace OWZX.Web.Controllers
                 {
                     return APIResult("success", "撤销成功");
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -396,6 +406,29 @@ namespace OWZX.Web.Controllers
             }
         }
         #endregion
+        /// <summary>
+        /// 本期投注记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult BettList(string expect)
+        {
+            List<MD_Bett> list_bet = Lottery.GetBettList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + "  and a.lotterynum='" + expect + "'");//获取当期投注信息
+            return PartialView("", list_bet);
+        }
+        /// <summary>
+        ///用户投注及余额 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UserBetMoney()
+        {
+            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid);
+            StringBuilder strb = new StringBuilder();
+            foreach (DataRow rw in dt.Rows)
+            {
+                strb.Append(rw["ac_money"].ToString() + "|" + rw["total_bett"].ToString());
+            }
+            return Content(strb.ToString());
+        }
 
 
     }

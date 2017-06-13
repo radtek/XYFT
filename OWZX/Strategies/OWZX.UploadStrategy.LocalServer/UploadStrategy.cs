@@ -14,6 +14,85 @@ namespace OWZX.UploadStrategy.LocalServer
     public partial class UploadStrategy : IUploadStrategy
     {
         /// <summary>
+        /// 保存上传的用户头像
+        /// </summary>
+        /// <param name="avatar">用户头像</param>
+        /// <returns></returns>
+        public string SaveUploadUserAvatar(HttpPostedFileBase avatar, string url)
+        {
+            ShopConfigInfo shopConfig = BSPConfig.ShopConfig;
+            string dirPath = IOHelper.GetMapPath("/upload/user/");
+            string[] sizeList = StringHelper.SplitString(shopConfig.UserAvatarThumbSize);
+            string sourceDirPath = dirPath + "source\\";
+            string sourcePath = string.Empty;
+            string newFileName = string.Empty;
+            if (url == string.Empty)
+            {
+                if (avatar == null)
+                    return "-1";
+
+                string fileName = avatar.FileName + ".png";
+                string extension = Path.GetExtension(fileName);
+
+                if (!ValidateHelper.IsImgFileName(fileName) || !CommonHelper.IsInArray(extension, shopConfig.UploadImgType))
+                    return "-2";
+
+                int fileSize = avatar.ContentLength;
+                if (fileSize > shopConfig.UploadImgSize)
+                    return "-3";
+
+
+                newFileName = string.Format("ua_{0}{1}", DateTime.Now.ToString("yyMMddHHmmssfffffff"), extension);
+
+
+                if (!Directory.Exists(sourceDirPath))
+                    Directory.CreateDirectory(sourceDirPath);
+
+                sourcePath = sourceDirPath + newFileName;
+                avatar.SaveAs(sourcePath);
+            }
+            else
+            {
+
+
+                string fileName = IOHelper.GetMapPath("/") + (url.StartsWith("/") == true ? url.Remove(0, 1) : url);
+                string extension = Path.GetExtension(fileName);
+
+                if (!ValidateHelper.IsImgFileName(fileName) || !CommonHelper.IsInArray(extension, shopConfig.UploadImgType))
+                    return "-2";
+
+                long fileSize = new FileInfo(fileName).Length;
+                if (fileSize > shopConfig.UploadImgSize)
+                    return "-3";
+
+                newFileName = string.Format("ua_{0}{1}", DateTime.Now.ToString("yyMMddHHmmssfffffff"), extension);
+
+
+                if (!Directory.Exists(sourceDirPath))
+                    Directory.CreateDirectory(sourceDirPath);
+
+                sourcePath = sourceDirPath + newFileName;
+                FileInfo info = new FileInfo(fileName);
+                info.CopyTo(sourcePath);
+
+
+            }
+
+            foreach (string size in sizeList)
+            {
+                string thumbDirPath = string.Format("{0}thumb{1}/", dirPath, size);
+                if (!Directory.Exists(thumbDirPath))
+                    Directory.CreateDirectory(thumbDirPath);
+                string[] widthAndHeight = StringHelper.SplitString(size, "_");
+                IOHelper.GenerateThumb(sourcePath,
+                                       thumbDirPath + newFileName,
+                                       TypeHelper.StringToInt(widthAndHeight[0]),
+                                       TypeHelper.StringToInt(widthAndHeight[1]),
+                                       "H");
+            }
+            return newFileName;
+        }
+        /// <summary>
         /// 保存上传的文件
         /// </summary>
         /// <param name="file"></param>

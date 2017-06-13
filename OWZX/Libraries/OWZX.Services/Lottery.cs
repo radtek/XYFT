@@ -1086,7 +1086,7 @@ namespace OWZX.Services
 
         #region 获取竞猜页用户信息
 
-        public static DataTable GetLotteryUserInfo(int uid, int lotterytype)
+        public static DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
         {
             return OWZX.Data.Lottery.GetLotteryUserInfo(uid, lotterytype);
         }

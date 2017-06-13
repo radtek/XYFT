@@ -1005,13 +1005,14 @@ select count(1) from #list where DATEDIFF(SECOND,opentime,getdate())>=210
                                     GenerateInParam("@lotterynum", SqlDbType.VarChar, 50, bett.Lotterynum),
                                     GenerateInParam("@money", SqlDbType.Int, 4, bett.Money),
                                      GenerateInParam("@bttype", SqlDbType.VarChar, 10, bett.Bttype),
+                                     GenerateInParam("@roomid", SqlDbType.Int, 4, bett.Roomid)
                                     };
             string commandText = string.Format(@"
 begin try
 begin tran t1
 
-INSERT INTO owzx_bett([uid],[lotteryid],[bttypeid],[lotterynum],[money],isread)
-    select rtrim(@account),@lotteryid,
+INSERT INTO owzx_bett([uid],[lotteryid],roomid,[bttypeid],[lotterynum],[money],isread)
+    select rtrim(@account),@lotteryid,@roomid,
    (select bttypeid from owzx_lotteryset where roomtype=20 and rtrim(item)=@bttype),@lotterynum,@money,0
    
 
@@ -1152,6 +1153,60 @@ end catch
         /// <param name="condition">没有where</param>
         /// <returns></returns>
         public DataTable GetBettList(int pageNumber, int pageSize, string condition = "")
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
+                                      GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
+                                  };
+
+
+            string commandText = string.Format(@"
+begin try
+if OBJECT_ID('tempdb..#list') is not null
+drop table #list
+
+SELECT ROW_NUMBER() over(order by a.bettid desc) id,
+a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
+e.type lottery,f.type bttype,c.item,cc.luckresult
+into  #list
+FROM owzx_bett a
+join owzx_users b on a.uid=b.uid
+join owzx_lotteryset c on a.bttypeid=c.bttypeid
+join owzx_lotteryrecord aa on a.lotterynum=aa.expect
+left join owzx_bettprofitloss cc on a.uid=cc.uid and aa.lotteryid=cc.lotteryid
+join owzx_sys_basetype e on a.lotteryid=e.systypeid
+join owzx_sys_basetype f on c.type=f.systypeid
+{0}
+
+declare @total int
+select @total=(select count(1)  from #list)
+
+if(@pagesize=-1)
+begin
+select *,@total TotalCount from #list
+end
+else
+begin
+select  *,@total TotalCount from #list where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex
+end
+
+end try
+begin catch
+select ERROR_MESSAGE() state
+end catch
+
+", condition);
+
+            return RDBSHelper.ExecuteDataset(CommandType.Text, commandText, parms).Tables[0];
+        }
+        /// <summary>
+        ///  获取投注记录(分页)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public DataTable GetBettListForRoom(int pageNumber, int pageSize, string condition = "")
         {
             DbParameter[] parms = {
                                       GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
@@ -2413,11 +2468,21 @@ end catch
 
         #region 获取竞猜页用户信息
 
-        public DataTable GetLotteryUserInfo(int uid, int lotterytype)
+        public DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
         {
-            string sql = string.Format(@"select lotteryid,uid,SUM(money) total_bett,
+            string sql = string.Empty;
+            if (lotterytype > 0)
+            {
+                sql = string.Format(@"select lotteryid,uid,SUM(money) total_bett,
 (select ISNULL(totalmoney,0) from owzx_users where uid={1}) ac_money from owzx_bett 
-where lotteryid={0} and uid={1} group by lotteryid,uid",lotterytype,uid);
+where lotteryid={0} and uid={1} group by lotteryid,uid", lotterytype, uid);
+            }
+            else
+            {
+                sql = string.Format(@"select uid,SUM(money) total_bett,
+(select ISNULL(totalmoney,0) from owzx_users where uid={0}) ac_money from owzx_bett 
+where uid={0} group by lotteryid,uid", uid);
+            }
             return RDBSHelper.ExecuteTable(sql,null)[0];
 
         }

@@ -52,7 +52,7 @@
             <p><input type="text" id="SonId" placeholder="推荐人账号,没有留空" /></p>
         </if>
         <p style="height: 1.2em;">
-            <input type="radio" style="height:1em;width:1em;float:left;" id="Yes" checked=checked checked=checked />
+            <input type="radio" style="height:1em;width:1em;float:left;" id="Yes" checked="checked" />
             <a class="fl">同意注册协议</a>
             <a href="kefu.html" class="fr">联系客服</a>
         </p>
@@ -128,7 +128,7 @@
         var SonId = $("#SonId").val();
         var UserName = $("#R-UserName").val();
         var Tel = $("#tel").val();
-        var Yzm = $("#yzm").val();
+        var Yzm = $("#inputRandom").val();
         var Pwd1 = $("#R-PassWord").val();
         var Pwd2 = $("#R-PassWord1").val();
         if (Pwd1 != Pwd2) {
@@ -147,11 +147,11 @@
                 alert("验证码输入有误"); return false;
             }
             $.post('/Account/register',{
-                    pID: SonId,
+                    pid: SonId,
                     loginname: UserName,
                     password: Pwd1,
                     confirmPwd:Pwd2,
-                    Yzm: Yzm,
+                    verifyCode: Yzm,
                     Tel: Tel
                 },
                 function(data) { 

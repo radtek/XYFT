@@ -211,7 +211,7 @@ namespace OWZX.Core
         /// <param name="nickname"></param>
         /// <param name="signname"></param>
         /// <returns></returns>
-        string UpdateUserInfo(string account, string nickname, string signname);
+        string UpdateUserInfo(string account, string nickname, string signname, int uid = -1);
 
 
     }

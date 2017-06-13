@@ -1,0 +1,172 @@
+﻿@model ChangeListModel
+@{
+    ViewBag.Title = "userchange";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <link href="~/components/layer/skin/layer.css" rel="stylesheet" />
+    <script src="~/components/layer/layer.js"></script>
+    <style>
+        body {
+            background: #f0f0f0;
+        }
+
+        .main p {
+            line-height: 1.6em;
+            background: #fff;
+            margin: 1em 0;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+            .main p span.gm {
+                font-size: 1.2em;
+                line-height: 1.8em;
+                color: #FD645E;
+            }
+
+            .main p span.yk {
+                font-size: 1.2em;
+                font-weight: bold;
+                line-height: 1.8em;
+                float: right;
+            }
+
+        .pg a {
+            color: #999;
+            margin-left: .5em;
+            border: #ddd solid 1px;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+
+        .pg span {
+            color: #999;
+            display: inline;
+            margin-left: .5em;
+        }
+
+        .pg a.next {
+            margin-right: 0;
+            position: relative;
+            top: 0;
+            right: 0;
+            z-index: 9999;
+        }
+
+        .pg a.prev {
+            margin-left: 0;
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+        }
+
+        th {
+            border-top-left-radius: 0.5em;
+            background: #D81E06;
+            width: 25%;
+            color: #fff;
+            border-top-right-radius: 0.5em;
+            font-size: 0.8em;
+            height: 1.5em;
+            line-height: 2em;
+        }
+
+        td {
+            font-size: 0.8em;
+            width: 25%;
+        }
+
+        table tr {
+            line-height: 1.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>账变记录</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="ch-head">
+        <table class="cha">
+            <tr>
+                <th>时间</th>
+                <th>金额</th>
+                <th>记录</th>
+                <th>余额</th>
+            </tr>
+        </table>
+    </div>
+    <div class="main table">
+        <table class="cha">
+            @foreach (OWZX.Model.MD_Change info in Model.changeList)
+            {
+                <tr>
+                    <td>@info.Addtime.ToString("MM-dd HH:mm")</td>
+                    <td>
+                        @if (info.Changemoney > 0)
+                        {
+                            <span style="color:#FA322C">+@info.Changemoney</span>
+                        }
+                        else
+                        {
+                            <span style="color:#00FF00">@info.Changemoney</span>
+                        }
+                    </td>
+                    <td>
+                        @info.Remark
+                    </td>
+                    <td>
+                       @info.Accounted
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+    <div id="showlists"></div>
+  <script>
+      var p = @Model.PageModel.PageIndex;
+      if (p == "") p = 1;
+      var stop = true;//触发开关，防止多次调用事件  
+      $(window).scroll(function ()
+      {
+          //当内容滚动到底部时加载新的内容 100当距离最底部100个像素时开始加载.  
+          if ($(this).scrollTop() + $(window).height() + 100 >= $(document).height() && $(this).scrollTop() > 100)
+          {
+              if (stop == true)
+              {
+                  stop = false;
+                  p = p + 1;//当前要加载的页码    
+                  //加载提示信息  
+                  $("#showlists").append("<li class='ajaxtips'><div style='font-size:2em'>加载中.....</div></li>");
+                  $.get("/ucenter/userchange?page="+p, function (data)
+                  {
+                      $(".ajaxtips").hide();
+                      $("#showlists").append(data);//把新的内容加载到内容的后面  
+                      stop = true;
+                  })
+              }
+          }
+      });
+  </script>
+</body>
+</html>

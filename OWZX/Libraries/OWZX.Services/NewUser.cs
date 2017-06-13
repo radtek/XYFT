@@ -348,9 +348,9 @@ namespace OWZX.Services
         /// <param name="nickname"></param>
         /// <param name="signname"></param>
         /// <returns></returns>
-        public static string UpdateUserInfo(string account, string nickname, string signname)
+        public static string UpdateUserInfo(string account, string nickname, string signname, int uid = -1)
         {
-            string result = OWZX.Data.NewUser.UpdateUserInfo(account, nickname, signname);
+            string result = OWZX.Data.NewUser.UpdateUserInfo(account, nickname, signname,uid);
 
             return result;
         }

@@ -507,7 +507,7 @@ if OBJECT_ID('tempdb..#list') is not null
   drop table #list
 
 SELECT ROW_NUMBER() over(order by a.achangeid desc) id
-      ,a.[achangeid],a.[uid],a.[changemoney],a.[remark],a.[addtime],b.mobile account
+      ,a.[achangeid],a.[uid],a.[changemoney],a.[remark],a.[addtime],b.mobile account,a.accounted
   into  #list
   FROM owzx_accountchange a
   join owzx_users b on a.uid=b.uid
@@ -1018,17 +1018,29 @@ end
         /// <param name="nickname"></param>
         /// <param name="signname"></param>
         /// <returns></returns>
-        public string UpdateUserInfo(string account, string nickname, string signname)
+        public string UpdateUserInfo(string account, string nickname, string signname,int uid=-1)
         {
+            StringBuilder strb=new StringBuilder();
+            StringBuilder stbext = new StringBuilder();
+            if (uid > 0)
+            {
+                strb.Append(" where a.uid=" + uid.ToString());
+                stbext.Append(" and uid !=" + uid.ToString());
+            }
+            else
+            {
+                strb.Append(" where rtrim(a.mobile)='" + account + "'");
+                stbext.Append(" and rtrim(mobile) !='" + account + "'");
+            }
             string sql = string.Format(@"
-if not exists(select 1 from owzx_users  where ltrim(RTRIM(nickname))='{1}' )
+if not exists(select 1 from owzx_users  where ltrim(RTRIM(nickname))='{1}' {3}  )
 begin
 
 update a set a.nickname='{1}'  from owzx_users a 
-where rtrim(a.mobile)='{0}'
+{0}
 
 update a set a.signname='{2}'  from owzx_userdetails a 
-join owzx_users b on a.uid=b.uid where rtrim(b.mobile)='{0}'
+join owzx_users b on a.uid=b.uid {0}
 
 select '更新成功'
 
@@ -1037,7 +1049,7 @@ else
 begin
 select '昵称已存在'
 end
-",account,nickname,signname);
+", strb.ToString(), nickname, signname, stbext.ToString());
           return RDBSHelper.ExecuteScalar(sql).ToString();
            
         }

@@ -11,6 +11,15 @@ namespace OWZX.Services
     public partial class Uploads
     {
         private static IUploadStrategy _iuploadstrategy = BSPUpload.Instance;//上传策略
+        /// <summary>
+        /// 保存上传的用户头像
+        /// </summary>
+        /// <param name="avatar">用户头像</param>
+        /// <returns></returns>
+        public static string SaveUploadUserAvatar(HttpPostedFileBase avatar, string url)
+        {
+            return _iuploadstrategy.SaveUploadUserAvatar(avatar, url);
+        }
 
         /// <summary>
         /// 保存上传的文件

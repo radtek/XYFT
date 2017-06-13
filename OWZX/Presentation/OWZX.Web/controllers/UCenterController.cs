@@ -10,6 +10,7 @@ using OWZX.Services;
 using OWZX.Web.Framework;
 using OWZX.Web.Models;
 using OWZX.Model;
+using System.Collections.Specialized;
 
 namespace OWZX.Web.Controllers
 {
@@ -716,6 +717,11 @@ namespace OWZX.Web.Controllers
         { 
             return View();
         }
+        public ActionResult SetInfo()
+        {
+            UserInfo user = Users.GetUserById(WorkContext.Uid);
+            return View(user);
+        }
         public ActionResult BankList()
         {
             return View();
@@ -738,6 +744,93 @@ namespace OWZX.Web.Controllers
             return View();
         }
         #endregion
+
+        public ActionResult Index()
+        {
+           UserInfo info= Users.GetUserById(WorkContext.Uid);
+           return View(info);
+        }
+        public ActionResult UserPhoto()
+        {
+            Load();
+            UserInfo info = Users.GetUserById(WorkContext.Uid);
+            return View(info);
+        }
+
+        /// <summary>
+        /// 更新用户头像
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UpdateImg()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
+                PartUserInfo user = Users.GetPartUserById(WorkContext.Uid);
+                
+                user.Avatar = parmas["img"];
+
+                bool udres = Users.UpdatePartUser(user);
+                if (udres)
+                {
+                    return AjaxResult("success", "更新成功");
+                }
+                else
+                {
+                    return AjaxResult("error", "更新失败");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return AjaxResult("error", "更新失败");
+            }
+        }
+
+        /// <summary>
+        /// 更新用户头像昵称
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UpdateUserInfo()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
+                
+                string udres = NewUser.UpdateUserInfo("", parmas["nickname"], parmas["signname"],WorkContext.Uid);
+                if (udres.EndsWith("成功"))
+                {
+                    return AjaxResult("success", "更新成功");
+                }
+                else if (udres == "昵称已存在")
+                {
+                    return AjaxResult("error", "昵称已存在");
+                }
+                else
+                {
+                    return AjaxResult("error", "更新失败");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return AjaxResult("error", "更新失败");
+            }
+        }
+        /// <summary>
+        /// 账变记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UserChange()
+        {
+            int page = WebHelper.GetQueryInt("page",1);
+            List<MD_Change> list = NewUser.GetAChangeList(page, 25, " where a.uid=" + WorkContext.Uid.ToString());
+            ChangeListModel change = new ChangeListModel { 
+             changeList=list,
+             PageModel=new PageModel(15,1,list.Count>0?list[0].TotalCount:0)
+            };
+            return View(change);
+        }
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);
@@ -750,6 +843,22 @@ namespace OWZX.Web.Controllers
                 else//如果为普通请求
                     filterContext.Result = RedirectToAction("login", "account", new RouteValueDictionary { { "returnUrl", WorkContext.Url } });
             }
+        }
+        private void Load()
+        {
+            string allowImgType = string.Empty;
+            string[] imgTypeList = StringHelper.SplitString(BSPConfig.ShopConfig.UploadImgType, ",");
+            foreach (string imgType in imgTypeList)
+                allowImgType += string.Format("{0},", imgType.ToLower());
+            allowImgType = allowImgType.Replace(".", "");
+            allowImgType = allowImgType.TrimEnd(',');
+
+            string[] sizeList = StringHelper.SplitString(WorkContext.ShopConfig.BrandThumbSize);
+
+            ViewData["size"] = sizeList[sizeList.Length / 2];
+            ViewData["allowImgType"] = allowImgType;
+            ViewData["maxImgSize"] = BSPConfig.ShopConfig.UploadImgSize;
+            ViewData["referer"] = ShopUtils.GetAdminRefererCookie();
         }
     }
 }

@@ -379,7 +379,7 @@ namespace OWZX.Core
 
         #region 获取竞猜页用户信息
 
-        DataTable GetLotteryUserInfo(int uid, int lotterytype);
+        DataTable GetLotteryUserInfo(int uid, int lotterytype=-1);
         
         #endregion
 

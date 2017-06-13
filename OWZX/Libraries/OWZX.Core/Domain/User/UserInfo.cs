@@ -223,6 +223,7 @@ namespace OWZX.Core
         private string _address = "";//所在地
         private string _bio = "";//简介
         private int _invitecode = 0;//邀请码
+        private string _signname = "";//个性签名
         /// <summary>
         /// 最后访问时间
         /// </summary>
@@ -336,7 +337,14 @@ namespace OWZX.Core
             set { _invitecode = value; }
         }
 
-
+        /// <summary>
+        /// 个性签名
+        /// </summary>
+        public string SignName
+        {
+            get { return _signname.TrimEnd(); }
+            set { _signname = value; }
+        }
        
     }
 

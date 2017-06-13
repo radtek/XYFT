@@ -519,7 +519,7 @@ namespace OWZX.Data
 
         #region 获取竞猜页用户信息
 
-        public static DataTable GetLotteryUserInfo(int uid, int lotterytype)
+        public static DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
         {
             return OWZX.Core.BSPData.RDBS.GetLotteryUserInfo(uid, lotterytype);
         }

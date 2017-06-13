@@ -61,7 +61,7 @@ namespace OWZX.Model
 
         private int roomid;
         /// <summary>
-        ///房间类型id 
+        ///投注名次（如：跑第一名 1 冠亚和为0）
         /// </summary>
         public int Roomid
         {

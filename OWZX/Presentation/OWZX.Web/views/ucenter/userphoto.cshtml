@@ -1,0 +1,135 @@
+﻿@model UserInfo
+@{
+    ViewBag.Title = "userphoto";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <title>上传头像</title>
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/components/webuploader/webuploader.css" />
+    <script type="text/javascript" src="~/components/webuploader/webuploader.js"></script>
+    <style>
+        /*上传*/
+        .upload {
+        }
+
+        .uploadPreview {
+            font-size: 13px;
+            float: left;
+            margin-right: 1px;
+            border: 1px solid #cfcfcf;
+            width: 88px;
+            height: 88px;
+            line-height: 88px;
+            text-align: center;
+        }
+
+            .uploadPreview img {
+                width: 88px;
+                height: 88px;
+            }
+
+        .uploadProgressBar {
+            height: 48px;
+        }
+
+        .uploadBut {
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>头像</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="main">
+        <div class="upload">
+            <div class="uploadPreview">
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    string url = "/upload/brand/thumb" + @ViewData["size"].ToString() + "/" + Model.Avatar;
+                <img src="@url" alt="" />
+                }
+                else
+                {
+                @:暂无图片
+                }
+            </div>
+            <div class="left">
+                <div class="uploadProgressBar"></div><br /><br /><br />
+                <div class="uploadBut">选择图片</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <link href="~/components/layer/skin/layer.css" rel="stylesheet" />
+    <script src="~/components/layer/layer.js"></script>
+    <script type="text/javascript">
+        $(function ()
+        {
+
+            var uploader = WebUploader.create({
+                pick: '.uploadBut',
+                auto: true,
+                swf: '/components/webuploader/Uploader.swf',
+                server: '/tool/upload?operation=uploaduserimg',
+                fileVal: 'upload',
+                accept: {
+                    title: 'Images',
+                    extensions: '@ViewData["allowImgType"]',
+                    mimeTypes: 'image/*'
+                },
+                fileSingleSizeLimit: '@ViewData["maxImgSize"]'
+            });
+
+            uploader.on('uploadProgress', function (file, percentage)
+            {
+                $(".uploadPreview").html("上传中...");
+            });
+
+            uploader.on('uploadSuccess', function (file, response)
+            {
+                var data = response._raw;
+                if (data == "-1")
+                    $(".uploadPreview").html('图片不能为空');
+                else if (data == "-2")
+                    $(".uploadPreview").html('图片类型不允许');
+                else if (data == "-3")
+                    $(".uploadPreview").html('图片太大');
+                else
+                {
+                    $(".uploadPreview").html("<img src=\"/upload/user/thumb@{@ViewData["size"].ToString()}/" + data + "\"  />");
+                    //更新数据库
+                    $.post("/ucenter/updateImg", { "img": data }, function (data)
+                    {
+                        var dt = JSON.parse(data);
+                        if (dt.state == "success")
+                        {
+                            window.location.href = "/ucenter/index";
+                        } else
+                        {
+                            tishi("更新图像失败");
+                        }
+                    })
+                }
+            });
+
+            uploader.on('uploadError', function (file)
+            {
+                $(".uploadPreview").html("上传失败");
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

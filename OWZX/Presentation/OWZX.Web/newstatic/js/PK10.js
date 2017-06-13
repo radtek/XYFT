@@ -141,6 +141,10 @@ $(function() {
 	$(".a").each(function(){
 	    $(this).click(function ()
 	    {
+	        if (uid == -1)
+	        {
+	            return;
+	        }
 	        var btmoney;
 	        var bttype;
 			if (!$(this).parent().hasClass("add")) {   //投注数目于左上角
@@ -167,7 +171,12 @@ $(function() {
 	})
 
 	$(".b").eq(0).click(function ()
-	{    //撤销投注
+	{
+	    if (uid == -1)
+	    {
+	        return;
+	    }
+	    //撤销投注
 	    var bttype = $(".cur .bar-a").parent().find("i").text();
         $(".cur .bar-a").text("");
         $("#transport-options-p,.arrow").hide();
@@ -178,7 +187,13 @@ $(function() {
         delbet(bttype,lotterytype, expect);
 	})
 	
-	$(".b").eq(1).click(function(){    //加注投注
+	$(".b").eq(1).click(function ()
+	{
+	    if (uid == -1)
+	    {
+	        return;
+	    }
+	    //加注投注
         //点击加注，弹出投注数目框，并给框加类add
         btnToolbar(1,$(".cur"));
         $("#transport-options-o").addClass("add");
@@ -249,6 +264,8 @@ function bett(money, type, lotterytype,expect)
         if (dt.state == "success")
         {
             layer.msg("投注成功");
+            //重新加载footer中数据
+            ldfoot();
         } else
         {
             layer.alert(dt.biz_content, {"title":"提示",icon:2});
@@ -269,9 +286,24 @@ function delbet(type, lotterytype, expect)
         if (dt.state == "success")
         {
             layer.msg("撤销成功");
+            //重新加载footer中数据
+            ldfoot();
         } else
         {
             layer.alert(dt.biz_content, { "title": "提示", icon: 2 });
         }
     })
+}
+
+function ldfoot()
+{
+    $.get("/nwlottery/userbetmoney", function (data)
+    {
+        if (data != "")
+        {
+            var my = data.split('|');
+            $(".bala-money").text(my[0]);
+            $(".bet-money").text(my[1]);
+        }
+    });
 }

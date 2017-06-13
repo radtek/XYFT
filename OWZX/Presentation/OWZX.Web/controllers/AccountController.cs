@@ -47,7 +47,7 @@ namespace OWZX.Web.Controllers
             }
 
             //ajax请求
-            string accountName = WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName); 
+            string accountName = WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName);
             string password = WebHelper.GetFormString("password");
             string verifyCode = WebHelper.GetFormString("verifyCode");
             int isRemember = WebHelper.GetFormInt("isRemember");
@@ -152,7 +152,7 @@ namespace OWZX.Web.Controllers
                 WorkContext.UserMobile = partUserInfo.Mobile;
                 WorkContext.NickName = partUserInfo.NickName;
                 //将用户信息写入cookie中
-                ShopUtils.SetUserCookie(partUserInfo, (WorkContext.ShopConfig.IsRemember == 1 && isRemember == 1) ? 30 : -1,"web");
+                ShopUtils.SetUserCookie(partUserInfo, (WorkContext.ShopConfig.IsRemember == 1 && isRemember == 1) ? 30 : -1, "web");
 
                 return AjaxResult("success", "登录成功");
             }
@@ -192,17 +192,18 @@ namespace OWZX.Web.Controllers
 
             //ajax请求
             string phone = string.Empty;
-            string accountName =phone= WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName).Trim().ToLower(); //手机
+            string accountName = phone = WebHelper.GetFormString(WorkContext.ShopConfig.ShadowName).Trim().ToLower(); //手机
             string loginname = WebHelper.GetFormString("loginname"); //用户名
             string password = WebHelper.GetFormString("password");
             string confirmPwd = WebHelper.GetFormString("confirmPwd");
             string verifyCode = WebHelper.GetFormString("verifyCode");
             int invitecode = -1;
-            invitecode = int.Parse(WebHelper.GetFormString("pid")); //介绍用户标识号
+            if (WebHelper.GetFormString("pid", "") != "")
+                invitecode = int.Parse(WebHelper.GetFormString("pid")); //介绍用户标识号
 
 
             StringBuilder errorList = new StringBuilder("[");
-            
+
 
             if (!ValidateHelper.IsMobile(accountName))
             {
@@ -270,10 +271,10 @@ namespace OWZX.Web.Controllers
                 {
                     errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "verifyCode", "验证码不能为空", "}");
                 }
-                else if (verifyCode.ToLower() != Sessions.GetValueString(WorkContext.Sid, "verifyCode"))
-                {
-                    errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "verifyCode", "验证码不正确", "}");
-                }
+                //else if (verifyCode.ToLower() != Sessions.GetValueString(WorkContext.Sid, "verifyCode"))
+                //{
+                //    errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "verifyCode", "验证码不正确", "}");
+                //}
             }
 
             //其它验证
@@ -438,18 +439,18 @@ namespace OWZX.Web.Controllers
                 if (userInfo.Uid < 1)
                     return AjaxResult("exception", "创建用户失败,请联系管理员");
 
-                
+
                 //将用户信息写入cookie
                 ShopUtils.SetUserCookie(userInfo, 0, "web");
 
-                //发送注册欢迎信息
-                if (WorkContext.ShopConfig.IsWebcomeMsg == 1)
-                {
-                    if (userInfo.Email.Length > 0)
-                        Emails.SendWebcomeEmail(userInfo.Email);
-                    if (userInfo.Mobile.Length > 0)
-                        SMSes.SendWebcomeSMS(userInfo.Mobile);
-                }
+                ////发送注册欢迎信息
+                //if (WorkContext.ShopConfig.IsWebcomeMsg == 1)
+                //{
+                //    if (userInfo.Email.Length > 0)
+                //        Emails.SendWebcomeEmail(userInfo.Email);
+                //    if (userInfo.Mobile.Length > 0)
+                //        SMSes.SendWebcomeSMS(userInfo.Mobile);
+                //}
 
                 //同步上下文
                 WorkContext.Uid = userInfo.Uid;

@@ -281,9 +281,9 @@ namespace OWZX.Data
         /// <param name="nickname"></param>
         /// <param name="signname"></param>
         /// <returns></returns>
-        public static string UpdateUserInfo(string account, string nickname, string signname)
+        public static string UpdateUserInfo(string account, string nickname, string signname, int uid = -1)
         {
-            return OWZX.Core.BSPData.RDBS.UpdateUserInfo(account, nickname, signname);
+            return OWZX.Core.BSPData.RDBS.UpdateUserInfo(account, nickname, signname,uid);
         }
     }
 }

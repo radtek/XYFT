@@ -1,0 +1,105 @@
+﻿@model UserInfo
+@{
+    ViewBag.Title = "index";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/my.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #eee;
+        }
+
+        .i {
+            margin-left: 3em;
+            margin-top: -4em;
+            transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2><span onclick="window.history.go(-1)"><i class="icon"></i></span>我的</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="uc">
+        <div class="uctop">
+            <div class="uctop1">
+                <div class="head">
+                    @if(Model.Avatar==string.Empty)
+                    {
+                            <text><img onclick="window.location.href = '/ucenter/userphoto'" src="~/newstatic/img/head.jpg" ></text>
+                    }else
+                    {
+                        string url = "/upload/user/thumb70_70/" + Model.Avatar;
+                      <text><img onclick="window.location.href = '/ucenter/userphoto'" src="@url"></text>
+                    }
+                    <div onclick="window.location.href='/ucenter/setinfo'">
+                        <span>@Model.NickName</span><br>
+                        <i>
+                            @if(Model.SignName!="")
+                            {
+                             @Model.SignName
+                            }else
+                            {
+                            @: 这个人很懒，没有签名
+                            }
+                           </i>
+                        <i class="icon i"></i>
+                    </div>
+                </div>
+            </div>
+            <ul class="ucmelu">
+                <li onclick="window.location.href='money.html'"><i class="ico3"></i> <a>钱包 <span>3000.00 元宝</span></a></li>
+                <!-- <li onclick="window.location.href='back.html'"><i class="ico3"></i> <a >我的回水</a></li> -->
+                <li onclick="window.location.href='/ucenter/userchange'"><i class="ico3"></i> <a>账变记录</a></li>
+                <li onclick="window.location.href='game.html'"><i class="ico3"></i> <a>游戏记录</a></li>
+                <!--<li onclick="window.location.href='VIPshare.html'"><i class="ico3"></i> <a>VIP分享</a></li>
+                <li onclick="window.location.href='sharlist.html'"><i class="ico3"></i> <a>VIP收益</a></li>-->
+                <li onclick="window.location.href='set.html'"><i class="ico3"></i> <a>设置</a></li>
+                <li onclick="window.location.href='about.html'"><i class="ico3"></i> <a>关于</a></li>
+            </ul>
+
+        </div>
+        <!-- 底部导航 -->
+        @Html.Partial("_footer")
+        <!-- 底部导航 -->
+
+       
+        <script src="~/newstatic/js/img.js"></script>
+        <script src="~/newstatic/js/require.js"></script>
+        <script src="~/newstatic/js/main.js"></script>
+        
+        <script type="text/javascript">
+         $(".noopen").click(function(){
+	          $(".alert").show();
+	          setTimeout( "$('.alert').fadeOut(300)" , 1000)
+         });
+
+        function jump(href)
+        {
+	        if(href==1)
+		        href="/User/index";
+	        window.location.href="/pcdd/Home"+href;
+        }
+        </script>
+       
+       
+ 
+
+</body>
+</html>
