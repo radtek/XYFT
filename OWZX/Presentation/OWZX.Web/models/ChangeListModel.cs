@@ -18,5 +18,12 @@ namespace OWZX.Web.Models
         public List<MD_Change> changeList { get; set; }
     }
 
-   
+    /// <summary>
+    ///游戏记录
+    /// </summary>
+    public class BettListModel
+    {
+        public PageModel PageModel { get; set; }
+        public List<MD_Bett> BettList { get; set; }
+    }
 }

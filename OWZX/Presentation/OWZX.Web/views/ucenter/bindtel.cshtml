@@ -35,9 +35,25 @@
 @Html.Partial("_footer")
 <!-- 底部导航 --> 
 <script type="text/javascript">
+    var tims = 0;
     $(function() {
         $(".setyzm").click(function () {
-            if (tims == 0) {
+            if (tims == 0)
+            {
+                var a = 60;
+                var innter = setInterval(function ()
+                {
+                    a--;
+                    $("#M").html(a+"s");
+                    if (a <= 0)
+                    {
+                        tims = a;
+                        clearInterval(innter);
+                        $("#M").html("发送验证码");
+                    }
+                },
+                    1000);
+
                 var Tel = $("#tel").val();
                 $.post('/AppAccount/SendSMS',
                     {
@@ -48,16 +64,7 @@
                         var result = eval('(' + data + ')');
                         if (data.state == "success") {
                             tishi("发送成功");
-                            var a = 60;
-                            var innter = setInterval(function () {
-                                a--;
-                                $("#M").html(a);
-                                if (a <= 0) {
-                                    clearInterval(innter);
-                                    $("#M").html("发送验证码");
-                                }
-                            },
-                                1000);
+                            
                         } else {
                             tishi(result.biz_content);
                         }
@@ -69,15 +76,23 @@
         $("#submit").click(function () {
             var Yzm = $("#yzm").val();
             var Tel = $("#tel").val();
-            $.post('',
+            $.post('/appaccount/BindTel',
                 {
                     yzm: Yzm,
                     Tel: Tel
                 },
                 function (data) {
-                    if (data == 1) {
+                    if (data ==1) {
+                        tishi("绑定成功");
+                        window.location.href = "/ucenter/set";
+                    } else if (data == 2)
+                    {
                         tishi("验证码错误");
-                    } else {
+                    } else if (data == 3)
+                    {
+                        tishi("手机格式错误");
+                    } else
+                    {
                         tishi("绑定失败,请重新尝试");
                     }
                 });

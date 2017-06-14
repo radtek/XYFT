@@ -24,9 +24,9 @@
     <div class="main">
         <form method="post" action="">
             <ul class="form">
-                <if condition="$Info['CarryPwd'] neq ''">
-                    <li><label>原密码</label><input type="password" id="oldpwd"></li>
-                </if>
+                
+                <li @if (!(bool)ViewData["isext"]) { <text>style="display:none;"</text>}
+                    ><label>原密码</label><input type="password" id="oldpwd"></li> 
                 <li><label>新密码</label><input type="password" id="pwd1"></li>
                 <li><label>确认密码</label><input type="password" id="pwd2"></li>
                 <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">修改</a>
@@ -50,19 +50,23 @@
                 tishi("两次密码输入不一致");
                 return false;
             }
-            if (pwd1 == "" || oldpwd == "") {
+            var isext='@ViewData["isext"]';
+            if (pwd1 == "" || (isext.toLowerCase()=='true' && oldpwd == "")) {
                 tishi("密码不可为空");
                 return false;
             } else if (pwd1 == pwd2) {
-                $.post('/APPAccount/DrawPwd',
+                $.post('/appaccount/DrawPwd',
                     {
                         oldpwd: oldpwd,
-                        pwd: pwd1
+                        password: pwd1
                     },
                     function(data) {
                         var result = eval('('+data+')'); 
                         if (result.state == "success")
-                            tishi("修改成功");
+                        {
+                            tishi("保存成功");
+                            window.location.href = "/ucenter/set";
+                        }
                         else
                             tishi(result.biz_content);
                     });

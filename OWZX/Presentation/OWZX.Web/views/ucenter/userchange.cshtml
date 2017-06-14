@@ -99,7 +99,7 @@
     </style>
 </head>
 
-<body>
+<body >
     <header>
         <h2><span onclick="history.go(-1)"><i class="icon"></i></span>账变记录</h2>
     </header>
@@ -118,7 +118,7 @@
         <table class="cha">
             @foreach (OWZX.Model.MD_Change info in Model.changeList)
             {
-                <tr>
+                <tr style="line-height: 1.8em;">
                     <td>@info.Addtime.ToString("MM-dd HH:mm")</td>
                     <td>
                         @if (info.Changemoney > 0)
@@ -134,39 +134,70 @@
                         @info.Remark
                     </td>
                     <td>
-                       @info.Accounted
+                        @info.Accounted
                     </td>
                 </tr>
             }
 
+            <tr id="showlists"><td colspan="4"><div class='ajaxtips' style='display:none;font-size:1.5em;color:#888;'>加载中.....</div></td></tr>
         </table>
 
     </div>
-    <div id="showlists"></div>
-  <script>
-      var p = @Model.PageModel.PageIndex;
-      if (p == "") p = 1;
-      var stop = true;//触发开关，防止多次调用事件  
-      $(window).scroll(function ()
-      {
-          //当内容滚动到底部时加载新的内容 100当距离最底部100个像素时开始加载.  
-          if ($(this).scrollTop() + $(window).height() + 100 >= $(document).height() && $(this).scrollTop() > 100)
-          {
-              if (stop == true)
-              {
-                  stop = false;
-                  p = p + 1;//当前要加载的页码    
-                  //加载提示信息  
-                  $("#showlists").append("<li class='ajaxtips'><div style='font-size:2em'>加载中.....</div></li>");
-                  $.get("/ucenter/userchange?page="+p, function (data)
-                  {
-                      $(".ajaxtips").hide();
-                      $("#showlists").append(data);//把新的内容加载到内容的后面  
-                      stop = true;
-                  })
-              }
-          }
-      });
-  </script>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+    <script>
+        var p = @Model.PageModel.PageIndex;
+        if (p == "") p = 1;
+        var stop = true;//触发开关，防止多次调用事件
+        $(".table").scroll(function ()
+        {
+            //当内容滚动到底部时加载新的内容 100当距离最底部100个像素时开始加载.
+            if ($(this).scrollTop() + $(window).height() + 100 >= $(document).height() && $(this).scrollTop() > 100)
+            {
+                if (stop == true)
+                {
+                    stop = false;
+                    p = p + 1;//当前要加载的页码
+                    //加载提示信息
+                    $(".ajaxtips").show();
+                    $.get("/ucenter/getchangelist?page="+p, function (data)
+                    {
+                        var nwbet="";
+                        var dt=JSON.parse(data);
+                        $.each(dt,function(){
+                            var data = new Date(this.Time);
+                            var month = data.getMonth();    //获取月
+
+                            var day = data.getDate(); //获取日
+                            var hours = data.getHours();
+                            var minutes = data.getMinutes();
+                            month=month.toString().length==1?'0'+month:month;
+                            day=day.toString().length==1?'0'+day:day;
+                            hours=hours.toString().length==1?'0'+hours:hours;
+                            minutes=minutes.toString().length==1?'0'+minutes:minutes;
+                            var time=month+'-'+day+" "+hours+":"+minutes;
+                            var my="";
+                            if (this.Money > 0)
+                            {
+                                my='<span style="color:#FA322C">+'+this.Money+'</span>';
+                            }
+                            else
+                            {
+                                my='<span style="color:#00FF00">'+this.Money+'</span>';
+                            }
+
+                            nwbet+="<tr style='line-height: 1.8em;'>";
+                            nwbet+="<td>"+time+"</td><td>"+my+"</td><td>"+this.Remark+"</td><td>"+this.Accounted+"</td>";
+                            nwbet+="</tr>";
+                        });
+                        $(".ajaxtips").hide();
+                        $("#showlists").before(nwbet);//把新的内容加载到内容的后面
+                        stop = true;
+                    })
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ using OWZX.Web.Framework;
 using OWZX.Web.Models;
 using OWZX.Model;
 using System.Collections.Specialized;
+using Newtonsoft.Json;
 
 namespace OWZX.Web.Controllers
 {
@@ -714,7 +715,7 @@ namespace OWZX.Web.Controllers
         #region Set
 
         public ActionResult Set()
-        { 
+        {
             return View();
         }
         public ActionResult SetInfo()
@@ -724,31 +725,31 @@ namespace OWZX.Web.Controllers
         }
         public ActionResult BankList()
         {
+
             return View();
         }
-        public ActionResult UPwd()
-        {
-            return View();
-        }
+       
         public ActionResult DrawPwd()
         {
+            bool result = Recharge.ValidateDrawPwdByUid(WorkContext.Uid);
+            ViewData["isext"] = result;
             return View();
         }
         public ActionResult BindTel()
         {
             return View();
         }
-        public ActionResult AddBank(int id=-1)
-        { 
-            ViewData["ID"]= id;
+        public ActionResult AddBank(int id = -1)
+        {
+            ViewData["ID"] = id;
             return View();
         }
         #endregion
 
         public ActionResult Index()
         {
-           UserInfo info= Users.GetUserById(WorkContext.Uid);
-           return View(info);
+            UserInfo info = Users.GetUserById(WorkContext.Uid);
+            return View(info);
         }
         public ActionResult UserPhoto()
         {
@@ -767,7 +768,7 @@ namespace OWZX.Web.Controllers
             {
                 NameValueCollection parmas = WorkContext.postparms;
                 PartUserInfo user = Users.GetPartUserById(WorkContext.Uid);
-                
+
                 user.Avatar = parmas["img"];
 
                 bool udres = Users.UpdatePartUser(user);
@@ -796,8 +797,8 @@ namespace OWZX.Web.Controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                
-                string udres = NewUser.UpdateUserInfo("", parmas["nickname"], parmas["signname"],WorkContext.Uid);
+
+                string udres = NewUser.UpdateUserInfo("", parmas["nickname"], parmas["signname"], WorkContext.Uid);
                 if (udres.EndsWith("成功"))
                 {
                     return AjaxResult("success", "更新成功");
@@ -817,20 +818,83 @@ namespace OWZX.Web.Controllers
                 return AjaxResult("error", "更新失败");
             }
         }
+
         /// <summary>
         /// 账变记录
         /// </summary>
         /// <returns></returns>
         public ActionResult UserChange()
         {
-            int page = WebHelper.GetQueryInt("page",1);
-            List<MD_Change> list = NewUser.GetAChangeList(page, 25, " where a.uid=" + WorkContext.Uid.ToString());
-            ChangeListModel change = new ChangeListModel { 
-             changeList=list,
-             PageModel=new PageModel(15,1,list.Count>0?list[0].TotalCount:0)
+            int page = WebHelper.GetQueryInt("page", 1);
+            List<MD_Change> list = NewUser.GetAChangeList(page, 50, " where a.uid=" + WorkContext.Uid.ToString());
+            ChangeListModel change = new ChangeListModel
+            {
+                changeList = list,
+                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0)
             };
             return View(change);
         }
+        /// <summary>
+        /// 账变记录数据
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetChangeList()
+        {
+            int page = WebHelper.GetQueryInt("page", 1);
+            List<MD_Change> list = NewUser.GetAChangeList(page, 50, " where a.uid=" + WorkContext.Uid.ToString());
+            return Content(JsonConvert.SerializeObject(list));
+        }
+        /// <summary>
+        /// 游戏记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Game()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 游戏记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GameList()
+        {
+            bool isref = WebHelper.GetQueryInt("isref", 0) == 0 ? false : true;
+            int lotterytype = WebHelper.GetQueryInt("lotterytype",0);
+            string start = WebHelper.GetQueryString("start","");
+            string end = WebHelper.GetQueryString("end", "");
+            int page = WebHelper.GetQueryInt("page", 1);
+            StringBuilder strb = new StringBuilder();
+            strb.Append(" where 1=1 ");
+            if (lotterytype!=0)
+            {
+                strb.Append(" and a.lotteryid=" + lotterytype.ToString());
+            }
+            if (start != "")
+            {
+                strb.Append(" and convert(varchar(25),a.addtime,120)>='" + start + "'");
+            }
+            if (end != "")
+            {
+                strb.Append(" and convert(varchar(25),a.addtime,120)<='" + end+"'");
+            }
+            List<MD_Bett> list = Lottery.GetBettList(page, 50, strb.ToString());
+            BettListModel bett = new BettListModel
+            {
+                BettList = list,
+                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0)
+            };
+            if (isref)
+            {
+                return Content(JsonConvert.SerializeObject(list));
+            }
+            return View(bett);
+        }
+
+        public ActionResult About()
+        {
+            return View();
+        }
+
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);

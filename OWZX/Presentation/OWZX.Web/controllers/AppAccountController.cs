@@ -32,15 +32,12 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count != 4)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
+                
                 string account = parmas["account"].Trim().ToLower(); //手机
                 string code = Randoms.CreateRandomValue(6);//验证码
                 string type = parmas["type"];
 
-                string body = "【PC蛋蛋】您正在" + type + ",验证码" + code + ",若非本人操作，请勿泄露。";
+                string body = "【PC】您正在" + type + ",验证码" + code + ",若非本人操作，请勿泄露。";
 
                 MD_SMSCode smscode = new MD_SMSCode
                 {
@@ -315,42 +312,39 @@ namespace OWZX.Web.controllers
             {
                 NameValueCollection parmas = WorkContext.postparms;
 
-                string account = parmas["account"];
+                string oldpwd = parmas["oldpwd"];
                 string password = parmas["password"];
-                string code = parmas["code"];
-                //Logs.Write(" 找回密码：" + account + "__" + password + "__" + code);
-                List<MD_SMSCode> smscode = NewUser.GetSMSCodeList(1, -1, " where rtrim(a.account)='" + account + "' and rtrim(a.code)='" + code + "' and DATEDIFF(minute,getdate(),a.expiretime)  between 0 and 10 ");
-                if (smscode.Count == 0)
+                
+                PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
+
+                if (Users.CreateUserPassword(oldpwd, partUserInfo.Salt) != partUserInfo.Password)
                 {
-                    return APIResult("error", "验证码错误");
+                    //原始密码错误
+                    return Content("2");
                 }
-
-                PartUserInfo partUserInfo = Users.GetPartUserByMobile(account);
-
-
                 //生成用户新密码
                 string p = Users.CreateUserPassword(password, partUserInfo.Salt);
                 //设置用户新密码
-                bool upres = Users.UpdateUserPasswordByMobile(account, p);
+                bool upres = Users.UpdateUserPasswordByUid(WorkContext.Uid, p);
 
 
-                ////清空当前用户信息
-                //WebHelper.DeleteCookie("web_bsp");
-                //Sessions.RemoverSession(WorkContext.Sid);
-                //OnlineUsers.DeleteOnlineUserBySid(WorkContext.Sid);
+                //清空当前用户信息
+                WebHelper.DeleteCookie("web");
+                Sessions.RemoverSession(WorkContext.Sid);
+                OnlineUsers.DeleteOnlineUserBySid(WorkContext.Sid);
                 if (upres)
                 {
-                    return APIResult("success", "更新成功");
+                    return Content("1");
                 }
                 else
                 {
-                    return APIResult("error", "更新失败");
+                    return Content("3");
                 }
 
             }
             catch (Exception ex)
             {
-                return APIResult("error", "更新失败");
+                return Content("3");
             }
 
         }
@@ -373,7 +367,7 @@ namespace OWZX.Web.controllers
                 PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
                 draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
-                if (parmas.AllKeys.Contains("oldpwd"))
+                if (parmas.AllKeys.Contains("oldpwd") && parmas["oldpwd"]!="")
                 {
                     string oldpwd = Users.CreateUserPassword(parmas["oldpwd"], partUserInfo.Salt);
                     bool pwdres = Recharge.ValidateDrawPwd(draw.Account, oldpwd);
@@ -437,7 +431,7 @@ namespace OWZX.Web.controllers
                     Drawaccid =Convert.ToInt32(parmas["id"]),
                     Card = parmas["cardname"],
                     Cardnum = parmas["cardnum"],
-                    Cardaddress = parmas["cardaddress"],
+                    Cardaddress ="",// parmas["cardaddress"],
                     Drawpwd = parmas["pwd"]
                 };
 
@@ -499,7 +493,7 @@ namespace OWZX.Web.controllers
             {
                 NameValueCollection parmas = WorkContext.postparms;
 
-                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1,1, " where a.Draaccid=" + parmas["id"].ToString() + "");
+                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 1, " where a.drawaccid=" + parmas["id"].ToString() + "");
                 if (draw.Count > 0)
                 {
                     JsonSerializerSettings jsetting = new JsonSerializerSettings();
@@ -523,23 +517,25 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                int id = int.Parse(parmas["draaccid"].ToString());
-                List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, 1, " where a.Draaccid=" + id + "");
-                if (draw.Count > 0)
+                string code = parmas["yzm"];
+                string tel = parmas["Tel"];
+                if (!ValidateHelper.IsMobile(tel))
                 {
-                    JsonSerializerSettings jsetting = new JsonSerializerSettings();
-                    jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Account", "Username", "Card", "Cardnum", "Cardaddress" }, true);
-                    string data = JsonConvert.SerializeObject(draw[0], jsetting).ToLower();
-                    return APIResult("success", data, true);
+                    return Content("3");
                 }
-                else
+                if (NewUser.GetSMSCodeList(1, 1, " where a.account='" + tel + "' and a.code=" + code).Count == 0)
                 {
-                    return APIResult("error", "没有提现账户信息");
+                    return Content("2");
                 }
+                if (Users.UpdateUserMobileByUid(WorkContext.Uid, tel))
+                {
+                    return Content("1");
+                }
+              return  Content("4");
             }
             catch (Exception ex)
             {
-                return APIResult("error", "获取失败");
+                return Content("4");
             }
         }
 

@@ -51,5 +51,8 @@
 }
 
 .table{
-	margin-top: 29px;
+	position: absolute;
+    top: 70px;
+    bottom: 50px;
+    overflow: scroll;
 }

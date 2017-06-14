@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "gamelist";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
+
+    <style type="text/css">
+        .sue {
+            width: 80%;
+            margin: 2em auto;
+            display: block;
+            height: 2.5em;
+            font-size: 1.2em;
+            line-height: 2.5em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>游戏记录</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="main">
+        <ul class="form">
+            <li>
+                <label>游戏类型</label>
+                <select name="Type" id="type">
+                    <option value="10">北京赛车</option>
+                    <option value="11">幸运飞艇</option>
+                </select>
+            </li>
+            <li><label>开始时间</label><input type="date" name="StartTime" id="StartTime"></li>
+            <li><label>结束时间</label><input type="date" name="EndTime" id="EndTime"></li>
+            <button class="btn sue">确定</button>
+        </ul>
+
+    </div>
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+    <script type="text/javascript" src="/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
+    <script>
+        $(function ()
+        {
+            var date = getNowFormatDate("d");
+            $("#StartTime").val(date);
+            $("#EndTime").val(date);
+        });
+        $(".btn").click(function ()
+        {
+            var Type = $("#type").val();
+            var StartTime = $("#StartTime").val();
+            var EndTime = $("#EndTime").val();
+
+            window.location.href = '/ucenter/gamelist?isref=0&lotterytype=' + Type + '&start=' + StartTime + '&end=' + EndTime//提交访问的URL
+        })
+    </script>
+</body>
+</html>
+

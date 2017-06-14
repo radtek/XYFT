@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "about";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style>
+        .ico31 {
+            display: inline-block;
+        }
+
+        .share {
+            width: 80%;
+            margin: 0em 10% 0em;
+            background: #fff;
+        }
+
+            .share img {
+                width: 80%;
+                margin: 1.5em 10%;
+            }
+
+        .about .abouttop {
+            text-align: center;
+            padding: 0em 0 .5em;
+            position: relative;
+        }
+
+            .about .abouttop img {
+                width: 100%;
+                height: 10em;
+            }
+
+        .about ul {
+            background: #fff;
+        }
+
+            .about ul li {
+                line-height: 2.5em;
+                border-bottom: #ebebeb solid 1px;
+            }
+
+                .about ul li i {
+                    float: left;
+                    margin: .5em 1em 0 1em;
+                    width: 1.6em;
+                    height: 1.6em;
+                }
+
+                .about ul li:nth-child(1) i {
+                    background: url(/newstatic/img/ico3/ico3_20.png)no-repeat;
+                    background-size: cover;
+                }
+
+                .about ul li:nth-child(2) i {
+                    background: url(/newstatic/img/ico3/ico3_21.png)no-repeat;
+                    background-size: cover;
+                }
+
+                .about ul li:nth-child(3) i {
+                    background: url(/newstatic/img/ico3.jpg)no-repeat;
+                    background-size: cover;
+                    background-position: 0 -11.2em;
+                }
+
+                .about ul li a {
+                    color: #D81E06;
+                }
+
+        .wenzi {
+            position: absolute;
+            z-index: 99;
+            top: 26%;
+            left: 32%;
+            font-size: 200%;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>关于</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="about">
+        <div class="abouttop">
+            <img src="~/newstatic/img/top.png" />
+            <div class="wenzi">中国福利彩票<br />全国开奖统一</div>
+        </div>
+        <ul>
+            <li><i class="ico31"></i> 平台官网: <a href="#" id="url">http://</a></li>
+            <li><i class="ico31"></i> 客 服 QQ:<a href="#" id="qq">123456789</a></li>
+            <li><i class="ico3"></i> 客服微信: <a href="#" id="wx">baolili</a></li>
+        </ul>
+    </div>
+    <div class="share">
+        <img src="/newstatic/img/we.jpg">
+    </div>
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+    <script>
+        $(function ()
+        {
+            $.post('/lottery/About',
+                            function (data)
+                            {
+                                var t = eval('(' + data + ')');
+                                $('#url').val(t.biz_content.url);
+                                $('#qq').val(t.biz_content.qq);
+                                $('#wx').val(t.biz_content.wechat);
+                            });
+        })
+    </script>
+</body>
+</html>

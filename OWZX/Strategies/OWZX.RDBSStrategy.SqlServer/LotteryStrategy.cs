@@ -1167,7 +1167,7 @@ drop table #list
 
 SELECT ROW_NUMBER() over(order by a.bettid desc) id,
 a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
-e.type lottery,f.type bttype,c.item,cc.luckresult
+e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode
 into  #list
 FROM owzx_bett a
 join owzx_users b on a.uid=b.uid

@@ -210,7 +210,7 @@ end catch
         {
             DbParameter[] parms = {
                                       GenerateInParam("@drawaccid", SqlDbType.Int, 4, drawa.Drawaccid),
-                                      GenerateInParam("@uid", SqlDbType.Int, 4, drawa.Account),
+                                      GenerateInParam("@uid", SqlDbType.Int, 4, drawa.Uid),
                                       GenerateInParam("@username", SqlDbType.VarChar, 20, drawa.Username),
                                       GenerateInParam("@card", SqlDbType.VarChar, 20, drawa.Card),
                                       GenerateInParam("@cardnum", SqlDbType.VarChar, 20, drawa.Cardnum),
@@ -233,8 +233,14 @@ from owzx_userdrawaccount a where drawaccid=@drawaccid
 end
 else
 begin
-insert into owzx_userdrawaccount([uid],[username],[card],[cardnum],[cardaddress])
-select @uid,@username,@card,@cardnum,@cardaddress 
+if exists(select 1 from owzx_userdrawaccount where uid=@uid)
+begin
+insert into owzx_userdrawaccount([uid],[username],[card],[cardnum],[cardaddress],drawpwd)
+select top 1 @uid,@username,@card,@cardnum,@cardaddress,drawpwd
+from owzx_userdrawaccount where uid=@uid
+
+end
+
 end
 
 select '更新成功'

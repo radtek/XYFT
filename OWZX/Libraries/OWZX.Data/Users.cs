@@ -507,9 +507,9 @@ namespace OWZX.Data
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="mobile">手机</param>
-        public static void UpdateUserMobileByUid(int uid, string mobile)
+        public static bool UpdateUserMobileByUid(int uid, string mobile)
         {
-            OWZX.Core.BSPData.RDBS.UpdateUserMobileByUid(uid, mobile);
+           return OWZX.Core.BSPData.RDBS.UpdateUserMobileByUid(uid, mobile);
 
         }
 
@@ -518,9 +518,9 @@ namespace OWZX.Data
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="password">密码</param>
-        public static void UpdateUserPasswordByUid(int uid, string password)
+        public static bool UpdateUserPasswordByUid(int uid, string password)
         {
-            OWZX.Core.BSPData.RDBS.UpdateUserPasswordByUid(uid, password);
+           return  OWZX.Core.BSPData.RDBS.UpdateUserPasswordByUid(uid, password);
 
         }
 

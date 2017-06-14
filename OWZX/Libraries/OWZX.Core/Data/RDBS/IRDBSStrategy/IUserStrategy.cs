@@ -339,14 +339,14 @@ namespace OWZX.Core
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="mobile">手机</param>
-        void UpdateUserMobileByUid(int uid, string mobile);
+        bool UpdateUserMobileByUid(int uid, string mobile);
 
         /// <summary>
         /// 更新用户密码
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="password">密码</param>
-        void UpdateUserPasswordByUid(int uid, string password);
+        bool UpdateUserPasswordByUid(int uid, string password);
         /// <summary>
         /// 更新用户密码
         /// </summary>

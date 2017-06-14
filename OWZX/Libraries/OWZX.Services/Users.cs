@@ -404,9 +404,9 @@ namespace OWZX.Services
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="mobile">手机</param>
-        public static void UpdateUserMobileByUid(int uid, string mobile)
+        public static bool UpdateUserMobileByUid(int uid, string mobile)
         {
-            OWZX.Data.Users.UpdateUserMobileByUid(uid, mobile);
+          return  OWZX.Data.Users.UpdateUserMobileByUid(uid, mobile);
         }
 
         /// <summary>
@@ -414,9 +414,9 @@ namespace OWZX.Services
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="password">密码</param>
-        public static void UpdateUserPasswordByUid(int uid, string password)
+        public static bool UpdateUserPasswordByUid(int uid, string password)
         {
-            OWZX.Data.Users.UpdateUserPasswordByUid(uid, password);
+            return OWZX.Data.Users.UpdateUserPasswordByUid(uid, password);
         }
         /// <summary>
         /// 更新用户密码

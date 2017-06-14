@@ -1119,15 +1119,10 @@ end", condition);
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="mobile">手机</param>
-        public void UpdateUserMobileByUid(int uid, string mobile)
+        public bool UpdateUserMobileByUid(int uid, string mobile)
         {
-            DbParameter[] parms = {
-									   GenerateInParam("@uid",SqlDbType.Int,4, uid),
-									   GenerateInParam("@mobile",SqlDbType.Char,15, mobile)
-								   };
-            RDBSHelper.ExecuteNonQuery(CommandType.StoredProcedure,
-                                       string.Format("{0}updateusermobilebyuid", RDBSHelper.RDBSTablePre),
-                                       parms);
+            string sql = string.Format(@"update owzx_users set mobile='{1}' where uid={0}", uid, mobile);
+            return RDBSHelper.ExecuteNonQuery(sql) == 1 ? true : false;
         }
 
         /// <summary>
@@ -1135,15 +1130,10 @@ end", condition);
         /// </summary>
         /// <param name="uid">用户id.</param>
         /// <param name="password">密码</param>
-        public void UpdateUserPasswordByUid(int uid, string password)
+        public bool UpdateUserPasswordByUid(int uid, string password)
         {
-            DbParameter[] parms = {
-									   GenerateInParam("@uid",SqlDbType.Int,4, uid),
-									   GenerateInParam("@password",SqlDbType.Char,32, password)
-								   };
-            RDBSHelper.ExecuteNonQuery(CommandType.StoredProcedure,
-                                       string.Format("{0}updateuserpasswordbyuid", RDBSHelper.RDBSTablePre),
-                                       parms);
+            string sql = string.Format(@"update owzx_users set password='{1}' where uid={0}",uid, password);
+            return RDBSHelper.ExecuteNonQuery(sql) == 1 ? true : false;
         }
 
         /// <summary>

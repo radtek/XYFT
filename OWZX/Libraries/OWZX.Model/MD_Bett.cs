@@ -106,7 +106,7 @@ namespace OWZX.Model
         }
         private string bttype;
         /// <summary>
-        ///投注类型 （彩票配置表中对应的类型 如：大小单双 等）
+        ///投注类型 （彩票配置表中对应的类型 如：猜数字 等）
         /// </summary>
         public string Bttype
         {
@@ -154,6 +154,11 @@ namespace OWZX.Model
             get { return item; }
             set { item = value; }
         }
+        /// <summary>
+        /// 开奖号码
+        /// </summary>
+        public string OpenCode { get; set; }
+
         private DateTime addtime;
         public DateTime Addtime
         {

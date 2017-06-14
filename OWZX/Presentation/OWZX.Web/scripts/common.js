@@ -22,6 +22,41 @@ $(function ()
         });
     }
 })
+//获取当前日期
+function getNowFormatDate(limittype)
+{
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth();
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9)
+    {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9)
+    {
+        strDate = "0" + strDate;
+    }
+    var currentdate;
+    if (limittype == "s")
+    {
+        currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+    }
+    else if (limittype == "m")
+    {
+        currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            ;
+    } else if (limittype == "d")
+    {
+        currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            ;
+    }
+    return currentdate;
+}
 //判断是否是数字
 function isNumber(val)
 {

@@ -31,7 +31,7 @@
             </table>
         </div>
         <div class="main table">
-            <table class="cha"> 
+            <table class="cha content"> 
             </table>
             <a class="btn" style="width:80%;margin:2em auto;display:block;" href='/UCenter/AddBank'>添加收款账户</a>
 
@@ -41,15 +41,16 @@
         <!-- 底部导航 --> 
     <script type="text/javascript">
         $(function() {
-            $.post('/AppAccount/GetDrawAccount', {}, function(data) {
+            $.post('/AppAccount/GetDrawAccount', function(data) {
                 var result = eval('(' + data + ')');
                 if (result.state == "success") {
                     var html = "";
-                    for (var i = 0; i < result.bz_content; i++) {
-                        html += '<tr><td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].card + '</a></td>' +
-                            '<td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].username + '</a></td>' +
-                            '<td><a href="/UCenter/AddBank?id=' + result.bz_content[i].drawaccid + '">' + result.bz_content[i].cardnum + ' </a></td></tr>';
+                    for (var i = 0; i < result.biz_content.length; i++) {
+                        html += '<tr><td><a href="/UCenter/AddBank?id=' + result.biz_content[i].drawaccid + '">' + result.biz_content[i].card + '</a></td>' +
+                            '<td><a href="/UCenter/AddBank?id=' + result.biz_content[i].drawaccid + '">' + result.biz_content[i].username + '</a></td>' +
+                            '<td><a href="/UCenter/AddBank?id=' + result.biz_content[i].drawaccid + '">' + result.biz_content[i].cardnum + ' </a></td></tr>';
                     }
+                    $(".main .content").prepend(html);
                 }
             });
         });

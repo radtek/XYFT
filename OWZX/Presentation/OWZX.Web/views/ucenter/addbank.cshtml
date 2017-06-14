@@ -30,7 +30,7 @@
                 </li>
                 <li><label>开户姓名</label><input type="text" id="TrueName" placeholder=""></li>
                 <li><label>银行卡号</label><input type="text" id="BankNum"></li>
-                <li><label>提现密码</label><input type="text" id="Pwd"></li>
+                <li><label>提现密码</label><input type="password" id="Pwd"></li>
                 <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;"> @(ViewData["ID"].ToString()=="-1"?"新增": "修改")</a>
             </ul>
         </div>
@@ -53,12 +53,12 @@
                 }
                
                 if (id != "-1") {
-                    $.post('/API/GetDrawAccountByid', { id: id },
+                    $.post('/AppAccount/GetDrawAccountByid', { id: id },
                         function (data) {
                             var t = eval('(' + data + ')');
-                            $('#BankNum').val(t.bz_content[0].cardnum);
-                            $('#TrueName').val(t.bz_content[0].username);
-                            $('#Bank').val(t.bz_content[0].type);
+                            $('#BankNum').val(t.biz_content.cardnum);
+                            $('#TrueName').val(t.biz_content.username);
+                            $('#Bank').val(t.biz_content.card);
                         });
                 }
             });
@@ -81,7 +81,7 @@
                     tishi("提现密码不可为空");
                     return false;
                 }
-                $.post('/API/Bank', {
+                $.post('/AppAccount/SetDrawAccount', {
                     id:id,
                     cardname: Bank,
                     username: TrueName,
@@ -90,7 +90,10 @@
                 }, function(data) {
                     var t = eval('(' + data + ')'); 
                     if (t.state == "success")
-                        tishi("修改成功");
+                    {
+                        tishi("保存成功");
+                        window.location.href = "/ucenter/banklist"
+                    }
                     else
                         tishi(t.biz_content);
                 });
