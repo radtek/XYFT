@@ -150,9 +150,20 @@ namespace OWZX.Data
             return OWZX.Core.BSPData.RDBS.LotteryTrend(pageNumber, pageSize, type);
         }
 
-        public  static DataTable GetLotteryResult(int pageNumber, int pageSize, string type)
+
+        public static DataTable GetLotteryResult(int pageNumber, int pageSize, string type)
         {
             return OWZX.Core.BSPData.RDBS.GetLotteryResult(pageNumber, pageSize, type);
+        }
+        /// <summary>
+        ///是否存在彩票记录
+        /// </summary>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public static bool ExistsLottery(string condition = "")
+        {
+            return OWZX.Core.BSPData.RDBS.ExistsLottery(condition);
+
         }
         /// <summary>
         ///是否存在北京28彩票记录
@@ -231,9 +242,9 @@ namespace OWZX.Data
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string DeleteBett(string uid, int lotterytype, string expect, string bttype)
+        public static string DeleteBett(string uid, int lotterytype, string expect, string bttype, string roomid)
         {
-            return OWZX.Core.BSPData.RDBS.DeleteBett(uid,lotterytype,expect,bttype);
+            return OWZX.Core.BSPData.RDBS.DeleteBett(uid,lotterytype,expect,bttype,roomid);
         }
 
         /// <summary>
@@ -523,9 +534,9 @@ namespace OWZX.Data
 
         #region 获取竞猜页用户信息
 
-        public static DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
+        public static DataTable GetLotteryUserInfo(int uid, string expect = "", int lotterytype = -1)
         {
-            return OWZX.Core.BSPData.RDBS.GetLotteryUserInfo(uid, lotterytype);
+            return OWZX.Core.BSPData.RDBS.GetLotteryUserInfo(uid,expect, lotterytype);
         }
 
         #endregion

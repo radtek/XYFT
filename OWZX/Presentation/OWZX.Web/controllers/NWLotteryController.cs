@@ -24,13 +24,7 @@ namespace OWZX.Web.Controllers
         public ActionResult Index()
         {
             int lotterytype = WebHelper.GetQueryInt("type");
-            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid);
-            StringBuilder strb = new StringBuilder();
-            foreach (DataRow rw in dt.Rows)
-            {
-                strb.Append(rw["ac_money"].ToString() + "|" + rw["total_bett"].ToString());
-            }
-            ViewData["dt_user"] = strb.ToString();
+            
             ViewData["lottery"] = lotterytype.ToString();
             DataTable list = Lottery.LastLottery(lotterytype.ToString()).Tables[1];
             if (list.Rows.Count > 0)
@@ -114,7 +108,7 @@ namespace OWZX.Web.Controllers
 
                 NameValueCollection parmas = WorkContext.postparms;
 
-                bool msg = Lottery.DeleteBett(WorkContext.Uid.ToString(), int.Parse(parmas["lotterytype"]), parmas["expect"], parmas["bttype"]);
+                bool msg = Lottery.DeleteBett(WorkContext.Uid.ToString(), int.Parse(parmas["lotterytype"]), parmas["expect"], parmas["bttype"], parmas["btroom"]);
                 if (!msg)
                 {
                     return APIResult("error", "撤销失败");
@@ -421,7 +415,9 @@ namespace OWZX.Web.Controllers
         /// <returns></returns>
         public ActionResult UserBetMoney()
         {
-            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid);
+            int lotterytype = WebHelper.GetQueryInt("lotterytype");
+            string expect = WebHelper.GetQueryString("expect");
+            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid,expect,lotterytype);
             StringBuilder strb = new StringBuilder();
             foreach (DataRow rw in dt.Rows)
             {
@@ -429,7 +425,28 @@ namespace OWZX.Web.Controllers
             }
             return Content(strb.ToString());
         }
+        /// <summary>
+        /// 是否已经开奖
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ExistsLot()
+        {
+            try
+            {
+                int lotterytype = WebHelper.GetQueryInt("lotterytype");
+                string expect = WebHelper.GetQueryString("expect");
+                bool result = Lottery.ExistsLottery(" where a.type=" + lotterytype.ToString() + " and a.expect='" + expect + "'");
+                if (result)
+                    return Content("1");
+                else
+                    return Content("2");
+            }
+            catch (Exception)
+            {
+                return Content("3");
+            }
 
+        }
 
     }
 }

@@ -132,19 +132,19 @@
         var Pwd1 = $("#R-PassWord").val();
         var Pwd2 = $("#R-PassWord1").val();
         if (Pwd1 != Pwd2) {
-            alert("两次密码输入不一致");
+            tishi("两次密码输入不一致");
         } else {
         
             if (UserName == '') {
-                alert("请输入注册账号"); return false;
+                tishi("请输入注册账号"); return false;
             } 
             if (Yzm == '') {
-                alert("请输入密码账号"); return false;
+                tishi("请输入密码账号"); return false;
             } 
             var inputRandom = document.getElementById("inputRandom");
             var autoRandom = document.getElementById("autoRandom");
             if (inputRandom.value != autoRandom.value /*&&  */) {
-                alert("验证码输入有误"); return false;
+                tishi("验证码输入有误"); return false;
             }
             $.post('/Account/register',{
                     pid: SonId,
@@ -186,10 +186,10 @@
         var LoginName = $('#' + shadowName).val();
         var PassWord = $("#PassWord").val();
         if (LoginName== '') {
-            alert("用户名不能为空"); return false;
+            tishi("用户名不能为空"); return false;
         }
         if (PassWord == '') {
-            alert("请输入密码"); return false;
+            tishi("请输入密码"); return false;
         } 
         $.post('/Account/Login',
             { @Model.ShadowName: LoginName, password: PassWord },

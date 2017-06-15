@@ -13,6 +13,7 @@
     <link rel='stylesheet' href="~/newstatic/css/reset.css" type="text/css" />
     <link href="~/newstatic/css/reset.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/newstatic/css/pk10.css" type="text/css" />
+    <link rel="stylesheet" href="~/newstatic/css/common.css" />
     <link rel="stylesheet" href="~/newstatic/css/footer.css" type="text/css" />
     <link rel='stylesheet' href='~/newstatic/font-awesome-4.3.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="~/newstatic/css/css/documentation.css">
@@ -25,6 +26,9 @@
             top: 0px;
             left: 0px;
             transform: scale(0.4,0.4);
+            -moz-transform: scale(0.4,0.4);
+            -webkit-transform: scale(0.4,0.4);
+            -o-transform: scale(0.4,0.4);
             width: 250%;
             height: 550px;
             margin-left: -75%;
@@ -33,22 +37,34 @@
         }
 
         #transport-options-o a {
-            margin: 0 7px;
+            margin: 0 1px 0 0;
+            font-size: 13px;
+            line-height: 23px;
+            vertical-align: top;
+            display: inline-block;
+            width: 39px;
+            text-align: center;
+            margin-top: 11px;
+            float: left;
         }
 
         #transport-options-p a {
-            margin: 0 7px;
+            margin: -3px 4px;
+            font-size: 13px;
+            line-height: 20px;
+            vertical-align: middle;
+            display: inline-block;
         }
 
         .posi {
             position: absolute;
             border: 1px solid #aaa;
             background: #222;
-            opacity: 0.9;
+            opacity: 1;
             z-index: 1000;
-            height: 30px;
-            padding: 1px 10px;
-            line-height: 30px;
+            height: 33px;
+            padding: 1px 2px;
+            line-height: 33px;
         }
 
             .posi a {
@@ -61,21 +77,22 @@
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
             border-top: 10px solid #222;
-            opacity: 0.9;
+            opacity: 1;
             position: absolute;
             z-index: 1001;
         }
 
         .auto {
             width: 60px;
-            height: 30px;
+            height: 27px;
             line-height: 30px;
             border: none;
             background: transparent;
             color: white;
             text-align: center;
             display: inline-block;
-            margin-top: -3px;
+            margin-top: 2px;
+            font-size: 11px;
         }
 
             .auto::-webkit-input-placeholder { /* WebKit browsers */
@@ -93,12 +110,51 @@
             .auto:-ms-input-placeholder { /* Internet Explorer 10+ */
                 color: #fff;
             }
+
+        .cha-first .btn-toolbar {
+            width: 11%;
+            margin: 0.1em 0.2em;
+        }
+
+        .keyboards {
+            width: 180px;
+            height: 150px;
+            position: absolute;
+            background: #222;
+            opacity: 0.9;
+            z-index: 1002;
+            display: none;
+        }
+
+            .keyboards table {
+                width: 100%;
+                height: 100%;
+                border-collapse: collapse;
+                border: 1px solid #aaa;
+            }
+
+                .keyboards table tr {
+                    height: 45px;
+                }
+
+                .keyboards table td {
+                    width: 45px;
+                    height: 45px;
+                    text-align: center;
+                    color: white;
+                }
+
+        .btn-toolbar span {
+            text-shadow: 1px 1px 1px #fff;
+            color: #000;
+        }
     </style>
     <!--[if IE]>
         <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
     <![endif]-->
     <script>
-    lotterytype=@ViewData["lottery"];
+        lotterytype=@ViewData["lottery"];
+        expect=@ViewData["expect"];
     uid=@WorkContext.Uid;
         $(function(){
             var type=@ViewData["lottery"].ToString();
@@ -106,13 +162,13 @@
             {
                 setTimeout(function(){
                     $(".ifsfz").attr("src","https://www.1399p.com/mobile/pk10/");
-                },30000);
+                },300000);
                 
             }
             else if(type==11)
             {
                 setTimeout(function(){$(".ifsfz").attr("src","http://www.1399p.com/xyft/h5shipin/");
-                },30000);
+                },300000);
             }
         })
     </script>
@@ -135,10 +191,10 @@
                   int time=int.Parse(ViewData["lot_msg"].ToString());
                   if(time>30)
                   {
-                     <text>距离下期封盘倒计时：<span class="ct-time">@time</span> 秒</text>
+                     <text>距离下期封盘剩余：<span class="ct-time">@time</span> 秒</text>
                   }else
                   {
-                    <text>距离下期开奖倒计时：<span class="ct-time">@time</span> 秒</text>
+                    <text>距离下期开奖剩余：<span class="ct-time">@time</span> 秒</text>
                   }
                 }
                 <script>
@@ -161,20 +217,23 @@
         <div class="arrow" style="display: none;"></div>
         <div class="mid-pk">
             <!-- 筹码设置 -->
-            <div class="chip-set" style="display: none;">
+            <div class="chip-set" style="display: none;margin-top: 35px;">
                 <i class="close"></i>
                 <ul class="chip-money">
                     <li>
-                        <span>1</span><span>5</span><span>10</span><span>20</span><span>50</span><span>100</span>
+                        <span>1</span><span>5</span><span>10</span><span>20</span><span>30</span>
                     </li>
                     <li>
-                        <span>200</span><span>300</span><span>500</span><span>800</span><span>1千</span><span>2千</span>
+                        <span>50</span><span>100</span><span>300</span><span>500</span><span>1000</span>
                     </li>
                     <li>
-                        <span>3千</span><span>5千</span><span>8千</span><span>1万</span><span>2万</span><span>3万</span>
+                        <span>2000</span><span>3000</span><span>5000</span><span>8000</span><span>10000</span>
+                    </li>
+                    <li>
+                        <span style="margin-left: -178px;">20000</span>
                     </li>
                 </ul>
-                <div class="chip-choice"></div><input type="button" value="确定" class="define" /><input type="button" value="取消" class="close" />
+                <!-- <div class="chip-choice"></div> --><input type="button" value="确定" class="define" /><!-- <input type="button" value="取消" class="close"/> -->
             </div>
             <!-- 筹码设置 -->
             <!-- 玩法规则 -->
@@ -197,285 +256,283 @@
             <div class="bet" style="display: none;">
                 <ul class="bet-detail">
                     <li>
-                        <h3>北京赛车   -- 862期   <span>-3000</span></h3>
-                        <table>
-                            <colgroup>
-                                <col style="width: 25%;" />
-                                <col style="width: 75%;" />
-                            </colgroup>
-                            <tbody>
-                                <tr><td>开奖号码：</td><td><span>9</span>,<span>4</span>,<span>2</span>,<span>5</span>,<span>6</span>,<span>3</span>,<span>7</span>,<span>8</span>,<span>1</span>,<span>10</span></td></tr>
-                                <tr><td>开奖类型：</td><td>小，双，虎</td></tr>
-                                <tr><td>投注号码：</td><td>1-3000</td></tr>
-                                <tr><td>投注金额：</td><td>3000</td></tr>
-                                <tr><td>中奖金额：</td><td>0</td></tr>
-                            </tbody>
-                        </table>
+                        第一名1号车下注50021212元。
                     </li>
-                    
+                    <li>
+                        第一名1号车下注500元。
+                    </li>
+                    <li>
+                        第一名1号车下注500元。
+                    </li>
+                    <li>
+                        第一名1号车下注500元。
+                    </li>
+
                 </ul>
             </div>
             <!-- 下注明细 -->
             <!-- 下注 -->
-            <div class="champion">
-                <div class="cha-first">
-                    <div class="one">跑第一名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">龙</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">虎</i><br />1.9倍</div>
-                    <div class="clear"></div>
+            <div style="padding-bottom: 55px;">
+                <div class="champion">
+                    <div class="cha-first">
+                        <div class="one">跑第一名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="1">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小" data-num="1">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单" data-num="1">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双" data-num="1">双</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="龙" data-num="1">龙</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="虎" data-num="1">虎</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1" data-num="1"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2" data-num="1"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3" data-num="1"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4" data-num="1"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5" data-num="1"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6" data-num="1"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7" data-num="1"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8" data-num="1"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9" data-num="1"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="1"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first">
+                        <div class="one">跑第二名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="2">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小" data-num="2">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单" data-num="2">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双" data-num="2">双</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="龙" data-num="2">龙</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="虎" data-num="2">虎</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1" data-num="2"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2" data-num="2"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3" data-num="2"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4" data-num="2"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5" data-num="2"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6" data-num="2"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7" data-num="2"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8" data-num="2"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9" data-num="2"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="2"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first">
-                    <div class="one">跑第二名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">龙</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">虎</i><br />1.9倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first">
+                        <div class="one">跑第三名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="3">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小"data-num="3">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单"data-num="3">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双"data-num="3">双</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="龙"data-num="3">龙</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="虎" data-num="3">虎</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="3"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="3"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="3"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="3"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="3"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="3"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="3"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="3"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="3"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="3"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first">
+                        <div class="one">跑第四名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="4">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小"data-num="4">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单"data-num="4">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双"data-num="4">双</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="龙"data-num="4">龙</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="虎" data-num="4">虎</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="4"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="4"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="4"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="4"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="4"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="4"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="4"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="4"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="4"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="4"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first">
-                    <div class="one">跑第三名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">龙</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">虎</i><br />1.9倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first">
+                        <div class="one">跑第五名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="5">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小"data-num="5">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单"data-num="5">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双"data-num="5">双</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="龙"data-num="5">龙</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="虎" data-num="5">虎</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="5"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="5"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="5"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="5"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="5"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="5"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="5"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="5"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="5"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="5"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">跑第六名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="6">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="小"data-num="6">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="单"data-num="6">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="双" data-num="6">双</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="6"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="6"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="6"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="6"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="6"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="6"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="6"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="6"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="6"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="6"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first">
-                    <div class="one">跑第四名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">龙</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">虎</i><br />1.9倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">跑第七名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="7">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="小"data-num="7">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="单"data-num="7">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="双" data-num="7">双</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="7"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="7"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="7"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="7"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="7"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="7"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="7"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="7"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="7"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="7"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">跑第八名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="8">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="小"data-num="8">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="单"data-num="8">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="双" data-num="8">双</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="8"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="8"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="8"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="8"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="8"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="8"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="8"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="8"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="8"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="8"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first">
-                    <div class="one">跑第五名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">龙</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">虎</i><br />1.9倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">跑第九名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="9">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="小"data-num="9">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="单"data-num="9">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="双" data-num="9">双</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1"data-num="9"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2"data-num="9"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3"data-num="9"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4"data-num="9"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5"data-num="9"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6"data-num="9"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7"data-num="9"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8"data-num="9"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9"data-num="9"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="9"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">跑第十名：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="10">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="小"data-num="10">小</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="单"data-num="10">单</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a> <i class="fa" data-type="双" data-num="10">双</i><br /><span>1.9倍</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="cha-car">
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="1" data-num="10"><img src="/newstatic/img/first/1.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="2" data-num="10"><img src="/newstatic/img/first/2.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="3" data-num="10"><img src="/newstatic/img/first/3.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="4" data-num="10"><img src="/newstatic/img/first/4.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="5" data-num="10"><img src="/newstatic/img/first/5.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="6" data-num="10"><img src="/newstatic/img/first/6.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="7" data-num="10"><img src="/newstatic/img/first/7.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="8" data-num="10"><img src="/newstatic/img/first/8.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="9" data-num="10"><img src="/newstatic/img/first/9.png" /></i> <br /><span>9.2倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="10" data-num="10"><img src="/newstatic/img/first/10.png" /></i> <br /><span>9.2倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">跑第六名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div class="clear"></div>
-                </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">跑第七名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div class="clear"></div>
-                </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">跑第八名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div class="clear"></div>
-                </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">跑第九名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div class="clear"></div>
-                </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">跑第十名：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.9倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />1.9倍</div>
-                    <div class="clear"></div>
-                </div>
-                <div class="cha-car">
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/1.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/2.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/3.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/4.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/5.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/6.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/7.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/8.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/9.png" /></i> <br />9.2倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"><img src="~/newstatic/img/first/10.png" /></i> <br />9.2倍</div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="champion">
-                <div class="cha-first big">
-                    <div class="one">冠亚和：</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">大</i><br />2.1倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">小</i><br />1.7倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">单</i><br />1.7倍</div>
-                    <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa">双</i><br />2.1倍</div>
-                    <div class="clear"></div>
+                <div class="champion">
+                    <div class="cha-first big">
+                        <div class="one">冠亚和：</div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="0">大</i><br /><span>2.1倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小" data-num="0">小</i><br /><span>1.7倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单" data-num="0">单</i><br /><span>1.7倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双" data-num="0">双</i><br /><span>2.1倍</span></div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
             </div>
             <!-- 下注 -->
             <!-- tips提示框  下注-->
             <div id="transport-options-o" class="toolbar-icons hidden posi">
                 <a class="a"><i class="fa">1</i></a>
-                <a class="a"><i class="fa">20</i></a>
+                <a class="a"><i class="fa">5</i></a>
+                <a class="a"><i class="fa">30</i></a>
                 <a class="a"><i class="fa">50</i></a>
-                <a class="a"><i class="fa">100</i></a>
                 <!-- <a class="btn"><i class="fa">自定义</i></a> -->
-                <input placeholder="自定义" type="text" class="auto"></input>
+                <span class="auto">自定义金额</span>
             </div>
             <!-- tips提示框  下注-->
             <!-- tips提示框  下注-->
@@ -484,23 +541,17 @@
                 <a class="b"><i class="fa">加注</i></a>
             </div>
             <!-- tips提示框  下注-->
-            <!--自定义-->
-            <div class="self" style="display: none;">
-                <i class="self-close"></i>
-                <ul class="chip-money">
-                    <li>
-                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
-                    </li>
-                    <li>
-                        <span>7</span><span>8</span><span>9</span><span>10</span><span>100</span><span>200</span>
-                    </li>
-                    <li>
-                        <span>300</span><span>500</span><span>800</span><span>1千</span><span>2千</span><span>3千</span>
-                    </li>
-                </ul>
-                <div class="chip-choice"></div><input type="button" value="确定" class="define" /><input type="button" value="取消" class="self-close" />
+            <div id="transport-options-s" class="posi hidden">
+                <!-- <input type="text" name="auto-bet" readonly="readonly" style="ime-mode: disabled;"> --><span></span><input type="button" name="confirms" value="确定">
             </div>
-            <!--自定义-->
+
+            <div class="keyboards">
+                <table colspan="0" rowspan="0" border="1">
+                    <tr><td>1</td><td>2</td><td>3</td><td>删除</td></tr>
+                    <tr><td>4</td><td>5</td><td>6</td><td>0</td></tr>
+                    <tr><td>7</td><td>8</td><td>9</td><td>确定</td></tr>
+                </table>
+            </div>
         </div>
     </div>
     <!-- 玩法 -->
@@ -525,14 +576,16 @@
         })
     </script> -->
     <script>
-        var ft_info='@ViewData["dt_user"]';
         $(function(){
-            if(ft_info!="")
+            $.get("/nwlottery/userbetmoney", { "lotterytype": lotterytype, "expect": expect }, function (data)
             {
-                var my=ft_info.split('|');
-                $(".bala-money").text(my[0]);
-                $(".bet-money").text(my[1]);
-            }
+                if (data != "")
+                {
+                    var my = data.split('|');
+                    $(".bala-money").text(my[0]);
+                    $(".bet-money").text(my[1]);
+                }
+            });
         });
     </script>
 </body>

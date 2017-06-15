@@ -641,6 +641,15 @@ namespace OWZX.Services
             return OWZX.Data.Lottery.GetLotteryResult(pageNumber, pageSize, type);
         }
         /// <summary>
+        ///是否存在彩票记录
+        /// </summary>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public static bool ExistsLottery(string condition = "")
+        {
+            return OWZX.Data.Lottery.ExistsLottery(condition);
+        }
+        /// <summary>
         ///是否存在北京28彩票记录
         /// </summary>
         /// <param name="condition">有where 条件需要and</param>
@@ -722,9 +731,9 @@ namespace OWZX.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool DeleteBett(string uid, int lotterytype, string expect, string bttype)
+        public static bool DeleteBett(string uid, int lotterytype, string expect, string bttype, string roomid)
         {
-            string result = OWZX.Data.Lottery.DeleteBett(uid,lotterytype,expect,bttype);
+            string result = OWZX.Data.Lottery.DeleteBett(uid,lotterytype,expect,bttype,roomid);
             if (result.EndsWith("成功"))
             {
                 return true;
@@ -1090,9 +1099,9 @@ namespace OWZX.Services
 
         #region 获取竞猜页用户信息
 
-        public static DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
+        public static DataTable GetLotteryUserInfo(int uid, string expect = "", int lotterytype = -1)
         {
-            return OWZX.Data.Lottery.GetLotteryUserInfo(uid, lotterytype);
+            return OWZX.Data.Lottery.GetLotteryUserInfo(uid,expect, lotterytype);
         }
 
         #endregion

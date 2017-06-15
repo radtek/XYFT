@@ -857,6 +857,20 @@ select *  from #list where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pagei
         /// <summary>
         ///是否存在北京28彩票记录
         /// </summary>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public bool ExistsLottery(string condition = "")
+        {
+            string commandText = string.Format(@"
+SELECT count(1)   
+  FROM owzx_lotteryrecord a 
+  {0}
+", condition);
+            return RDBSHelper.Exists(commandText);
+        }
+        /// <summary>
+        ///是否存在北京28彩票记录
+        /// </summary>
         /// <param name="condition">有where 条件需要and</param>
         /// <returns></returns>
         public bool ExistsBJ28(string condition = "")
@@ -930,8 +944,8 @@ select count(1) from #list where DATEDIFF(SECOND,opentime,getdate())>=210
         /// <returns></returns>
         public string ValidateBett(string uid, string expect, string money, string bttype)
         {
-            string sql = string.Format(@"declare @account varchar(15)='{0}',@expect varchar(100)='{1}',@money decimal(18,2)={2},
- @bttypeid int={5}
+            string sql = string.Format(@"declare @uid int={0},@expect varchar(100)='{1}',@money decimal(18,2)={2},
+ @bttype varchar(10)='{3}'
   
   if  not exists(select 1 from owzx_lotteryset where rtrim(item)=@bttype )
   or not exists(select 1 from owzx_users where uid=@uid )
@@ -1113,7 +1127,7 @@ end catch
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string DeleteBett(string uid, int lotterytype,string expect, string bttype)
+        public string DeleteBett(string uid, int lotterytype,string expect, string bttype,string roomid)
         {
             string commandText = string.Format(@"
             begin try
@@ -1121,11 +1135,11 @@ end catch
             begin
             if exists(  select 1 from owzx_bett a 
   join owzx_lotteryset b on a.bttypeid=b.bttypeid
-  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}')
+  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}' and a.roomid={4})
             begin
             delete a from owzx_bett a 
   join owzx_lotteryset b on a.bttypeid=b.bttypeid
-  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}'
+  where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}' and a.roomid={4}
             select '删除成功' state
             end
             else
@@ -1141,7 +1155,7 @@ end catch
             begin catch
             select ERROR_MESSAGE() state
             end catch
-            ", uid, expect, bttype, lotterytype);
+            ", uid, expect, bttype, lotterytype,roomid);
             return RDBSHelper.ExecuteScalar(commandText).ToString();
         }
         /// <summary>
@@ -2493,14 +2507,22 @@ end catch
 
         #region 获取竞猜页用户信息
 
-        public DataTable GetLotteryUserInfo(int uid, int lotterytype=-1)
+        public DataTable GetLotteryUserInfo(int uid,string expect="", int lotterytype=-1)
         {
             string sql = string.Empty;
             if (lotterytype > 0)
             {
-                sql = string.Format(@"select lotteryid,uid,SUM(money) total_bett,
-(select ISNULL(totalmoney,0) from owzx_users where uid={1}) ac_money from owzx_bett 
-where lotteryid={0} and uid={1} group by lotteryid,uid", lotterytype, uid);
+                sql = string.Format(@"declare @ac_money decimal(18,1)=0.0,@total_bett decimal(18,1)=0.0
+select @ac_money=ISNULL(totalmoney,0) from owzx_users where uid={1}
+
+select @total_bett=SUM(money)
+from owzx_bett a
+join owzx_lotteryrecord b on a.lotteryid=b.type and a.lotterynum=b.expect
+and a.lotteryid={0} and a.uid={1} and b.status=0 and b.expect='{2}' and datediff(second,getdate(),b.opentime)>0 
+group by a.lotteryid,a.uid,b.expect
+
+select @ac_money ac_money,@total_bett total_bett
+", lotterytype, uid,expect);
             }
             else
             {

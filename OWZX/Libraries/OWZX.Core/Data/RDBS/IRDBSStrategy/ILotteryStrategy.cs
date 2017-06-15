@@ -114,7 +114,16 @@ namespace OWZX.Core
         /// <returns></returns>
         DataTable LotteryTrend(int pageNumber, int pageSize, string type);
 
+
         DataTable GetLotteryResult(int pageNumber, int pageSize, string type);
+
+        /// <summary>
+        ///是否存在彩票记录
+        /// </summary>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        bool ExistsLottery(string condition = "");
+
         /// <summary>
         ///是否存在北京28彩票记录
         /// </summary>
@@ -166,7 +175,7 @@ namespace OWZX.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        string DeleteBett(string uid, int lotterytype, string expect, string bttype);
+        string DeleteBett(string uid, int lotterytype, string expect, string bttype, string roomid);
 
         /// <summary>
         ///  获取投注记录(分页)
@@ -380,7 +389,7 @@ namespace OWZX.Core
 
         #region 获取竞猜页用户信息
 
-        DataTable GetLotteryUserInfo(int uid, int lotterytype=-1);
+        DataTable GetLotteryUserInfo(int uid, string expect = "", int lotterytype = -1);
         
         #endregion
 
