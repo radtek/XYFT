@@ -29,6 +29,13 @@ namespace OWZX.Web.Controllers
             DataSet list = Lottery.LastLottery("10");
             return View(list);
         }
+
+        public ActionResult History(string id="")
+        {
+            ViewData["ID"] = id;
+            return View();
+        }
+
         /// <summary>
         /// 推广
         /// </summary>
@@ -221,6 +228,6 @@ namespace OWZX.Web.Controllers
 
             List<BaseInfoModel> listbase = AdminBaseInfo.GetBaseInfoList(-1, "  and title='帮助信息'");
             return View(listbase);
-        }
+        } 
     }
 }

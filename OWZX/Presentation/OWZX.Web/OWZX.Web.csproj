@@ -789,6 +789,7 @@
     <Content Include="views\ucenter\game.cshtml" />
     <Content Include="views\ucenter\gamelist.cshtml" />
     <Content Include="views\ucenter\about.cshtml" />
+    <Content Include="views\home\history.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

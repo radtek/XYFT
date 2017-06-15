@@ -150,6 +150,10 @@ namespace OWZX.Data
             return OWZX.Core.BSPData.RDBS.LotteryTrend(pageNumber, pageSize, type);
         }
 
+        public  static DataTable GetLotteryResult(int pageNumber, int pageSize, string type)
+        {
+            return OWZX.Core.BSPData.RDBS.GetLotteryResult(pageNumber, pageSize, type);
+        }
         /// <summary>
         ///是否存在北京28彩票记录
         /// </summary>

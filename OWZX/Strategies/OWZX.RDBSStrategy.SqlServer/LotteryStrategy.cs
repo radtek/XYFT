@@ -829,6 +829,31 @@ select id, expect,resultnum,[大] big,[小] small,[单] single,[双] dble,[大�
             return RDBSHelper.ExecuteTable(sql, parms)[0];
         }
 
+        public DataTable GetLotteryResult(int pageNumber, int pageSize, string type)
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
+                                      GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
+                                  };
+            string sql = string.Format(@"
+if OBJECT_ID('tempdb..#list') is not null
+drop table #list
+
+if OBJECT_ID('tempdb..#listpage') is not null
+drop table #listpage
+
+select ROW_NUMBER() over(order by expect desc) id, a.expect,a.orderresult,a.type
+into #list 
+from owzx_lotteryrecord a 
+where a.type={0} and a.status=2
+order by expect desc
+ 
+
+select *  from #list where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex
+", type);
+            return RDBSHelper.ExecuteTable(sql, parms)[0];
+        }
+
         /// <summary>
         ///是否存在北京28彩票记录
         /// </summary>

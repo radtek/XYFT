@@ -321,8 +321,7 @@ namespace OWZX.Web.Controllers
                     return APIResult("error", "暂无开奖记录");
                 }
 
-                JsonSerializerSettings jsetting = new JsonSerializerSettings();
-                //jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Expect", "Result" }, true);
+                JsonSerializerSettings jsetting = new JsonSerializerSettings(); 
                 string data = JsonConvert.SerializeObject(list, jsetting).ToLower();
                 return APIResult("success", data, true);
             }
@@ -331,7 +330,34 @@ namespace OWZX.Web.Controllers
                 return APIResult("error", "获取失败");
             }
         }
+        /// <summary>
+        /// 分页获取最新
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetLotteryResult()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
 
+                string type = parmas["type"];
+                int page = int.Parse(parmas["page"]);
+                int pagesize = int.Parse(parmas["pagesize"]);
+                DataTable list = Lottery.GetLotteryResult(page, pagesize, type);
+                if (list.Rows.Count == 0)
+                {
+                    return APIResult("error", "暂无开奖记录");
+                }
+
+                JsonSerializerSettings jsetting = new JsonSerializerSettings(); 
+                string data = JsonConvert.SerializeObject(list, jsetting).ToLower();
+                return APIResult("success", data, true);
+            }
+            catch (Exception ex)
+            {
+                return APIResult("error", "获取失败");
+            }
+        }
         /// <summary>
         /// 最新竞猜信息
         /// </summary>
