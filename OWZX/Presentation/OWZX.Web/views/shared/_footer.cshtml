@@ -55,5 +55,45 @@
             $(".tsnr").html(nr);
             $(".tishi").animate({top:"50%",marginTop:"-3.5em"},300);
         };
+        function GetColor(num) {
+            switch (num) {
+                case 1:
+                    return "#EFAF03";
+                case 2:
+                    return "#2792F8";
+                case 3:
+                    return "#5D5D5D";
+                case 4:
+                    return "#F16E0C";
+                case 5:
+                    return "#38C8DA";
+                case 6:
+                    return "#6022F8";
+                case 7:
+                    return "#AEAEAE";
+                case 8:
+                    return "#F02624";
+                case 9:
+                    return "#C11208";
+                case 10:
+                    return "#27B309";
+                default:
+                    return "#EFAF03";
+            };
+        }
+        function GetTextColor(num) {
+            switch (num) {
+                case "大":
+                case "双":
+                case "虎":
+                    return "red";
+                case "小":
+                case "单":
+                case "龙":
+                    return "dodgerblue";
+                default:
+                    return "dodgerblue";
+            };
+        }
     </script>
 </footer>

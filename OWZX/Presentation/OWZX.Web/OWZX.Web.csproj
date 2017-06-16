@@ -790,6 +790,7 @@
     <Content Include="views\ucenter\gamelist.cshtml" />
     <Content Include="views\ucenter\about.cshtml" />
     <Content Include="views\home\history.cshtml" />
+    <Content Include="views\nwlottery\historymessage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

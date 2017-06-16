@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "index";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>北京赛车PK10</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="keywords" content="北京赛车开奖">
+    <meta name="description" content="">
+    <link rel='stylesheet' href="~/newstatic/css/reset.css" type="text/css" /> 
+    <link rel="stylesheet" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" href="~/newstatic/css/footer.css" type="text/css" /> 
+    <link rel="stylesheet" href="~/newstatic/css/history-message.css" type="text/css" /> 
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style type="text/css"> 
+    </style>
+    <!--[if IE]>
+        <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]--> 
+</head>
+<body style="height: auto">
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>历史资讯<select id="lotteryid" style="position:absolute;top:15px;right:10px;font-size: 12px;font-weight: normal;"><option value="10">北京PK10</option><option value="11">幸运飞艇</option></select></h2>
+    </header>
+    <div class="headblank"></div> 
+
+    <div class="mid-hm">
+        <div class="hm-time">
+            <div class="lot-time">
+                距离<label id="spexcept"></label>期开奖倒计时：<span id="time_show" class="ct-time">&nbsp;</span><span style="display: none;" id="now">正在开奖</span>
+            </div> 
+            <div class="hm-num">
+                <span id="excpet">614146</span>期开奖结果
+            </div>
+            <div class="lot"></div>
+        </div>
+        <div class="hm-refer">
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                <th colspan="4"><span></span><span>@ViewData["expect"]期投注参考</span></th></thead>
+                <tbody id="yccontent">
+                    <tr><td>冠军</td><td>5,6,7,9,10</td><td>单</td><td>大</td></tr>
+                    <tr><td>亚军</td><td>3,5,6,7,8</td><td>单</td><td>大</td></tr>
+                    <tr><td>第三名</td><td>3,4,6,8,9</td><td>双</td><td>大</td></tr>
+                    <tr><td>第四名</td><td>1,4,5,6,10</td><td>双</td><td>小</td></tr>
+                    <tr><td>第五名</td><td>1,5,6,8,9</td><td>单</td><td>大</td></tr>
+                    <tr><td>第六名</td><td>1,2,5,6,9</td><td>单</td><td>小</td></tr>
+                    <tr><td>第七名</td><td>2,4,6,7,8</td><td>双</td><td>小</td></tr>
+                    <tr><td>第八名</td><td>1,5,6,9,10</td><td>单</td><td>大</td></tr>
+                    <tr><td>第九名</td><td>1,2,7,8,10</td><td>双</td><td>大</td></tr>
+                    <tr><td>第十名</td><td>2,5,6,8,10</td><td>双</td><td>大</td></tr>
+                    <tr><td>冠军和</td><td>5,6,8,10,12</td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- 底部导航 -->
+@Html.Partial("_footer");
+<!-- 底部导航 -->
+
+<script type="text/javascript" src="~/newstatic/js/time.js"></script> 
+<script>
+    $(function() {
+        bindEvent();
+        $('#lotteryid').change(function() {
+            bindEvent();
+        });
+    });
+
+    function GetHLottery() {
+        $.post('/lottery/GetLotteryResult',
+            { type: $('#lotteryid').val(), page: 1, pagesize: 1 },
+            function(data) {
+                var result = eval('(' + data + ')');
+                var html = "";
+                if (result.state == "success") {
+                    for (var i = 0; i < result.biz_content.length; i++) {
+                        $('#excpet').html(result.biz_content[i].expect);
+                        var nums = result.biz_content[i].orderresult.split(',');
+                        for (var j = 0; j < nums.length; j++) {
+                            html += '<span style="background:' +
+                                GetColor(parseInt(nums[j])) +
+                                ';">' +
+                                nums[j] +
+                                '</span>';
+                        }
+                    }
+                }
+                $('.lot').html(html);
+            });
+    }
+
+    var tiemsmange;
+    function bindEvent() {
+        GetlastTime();
+        GetHLottery();
+        GetYC();
+    }
+    function GetlastTime() {
+        $.post('/NWLottery/GetNewLotteryTime',
+            { type: $('#lotteryid').val() },
+            function(data) {
+                var result = eval('(' + data + ')');
+                var issuenum = '--';
+                var timesa = '';
+                if (result.biz_content.length > 0) {
+                    timesa = result.biz_content[0]["time"] + '' == "维护中" ? 0 : parseInt(result.biz_content[0]["time"]);
+                    issuenum = result.biz_content[0]["expect"];
+                }
+                $('#spexcept').html(issuenum);
+                if (typeof (tiemsmange) != 'undefined' && tiemsmange != null) {
+                    clearInterval(tiemsmange);
+                }
+                timerInterval(timesa, bindEvent);
+            });
+    }
+
+    function GetYC() {
+        $.post('/NWLottery/GetYC',
+            {},
+            function(data) {
+                var result = eval('(' + data + ')'); 
+                if (result.state == "success") {
+                    var html = "";
+                    var itmes = result.biz_content; 
+                    for (var i = 0; i < itmes.length; i++) { 
+                        html += "<tr><td>" + getIndexName(i) + "</td><td>" + itmes[i].num + "</td><td>" + itmes[i]["ds"] + "</td><td>" + itmes[i]["dax"] + "</td></tr>";
+                    }
+                    $('#yccontent').html(html);
+                }
+            });
+    }
+
+    function getIndexName(num) {
+        switch (num) {
+            case 0:
+                return "冠军";
+            case 1:
+                return "亚军";
+            case 2:
+                return "第三名";
+            case 3:
+                return "第四名";
+            case 4:
+                return "第五名";
+            case 5:
+                return "第六名";
+            case 6:
+                return "第七名";
+            case 7:
+                return "第八名";
+            case 8:
+                return "第九名";
+            case 9:
+                return "第十名";
+            case 10:
+                return "冠亚和";
+            default:
+                return "冠军";
+        }
+    }
+</script> 
+
+</body>
+</html>
+

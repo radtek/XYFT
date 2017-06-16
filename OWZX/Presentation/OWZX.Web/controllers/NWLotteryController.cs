@@ -35,7 +35,19 @@ namespace OWZX.Web.Controllers
             List<MD_Bett> list_bet = Lottery.GetBettList(1, 1, " where a.uid="+WorkContext.Uid.ToString()+"  and a.lotterynum='" + ViewData["expect"]+"'");//获取当期投注信息
             return View();
         }
+        public ActionResult HistoryMessage()
+        {
+            int lotterytype = WebHelper.GetQueryInt("type");
 
+            ViewData["lottery"] = lotterytype.ToString();
+            DataTable list = Lottery.LastLottery(lotterytype.ToString()).Tables[1];
+            if (list.Rows.Count > 0)
+            {
+                ViewData["lot_msg"] = list.Rows[0]["time"].ToString() == "维护中" ? "" : list.Rows[0]["time"].ToString();
+                ViewData["expect"] = list.Rows[0]["expect"].ToString();
+            } 
+            return View();
+        }
         private object lkbtlow = new object();
         private object lkbtmin = new object();
         private object lkbthigh = new object();
@@ -268,6 +280,67 @@ namespace OWZX.Web.Controllers
             {
                 return APIResult("error", "获取失败");
             }
+        }
+
+        public ActionResult GetNewLotteryTime()
+        {
+            try
+            {
+                NameValueCollection parmas = WorkContext.postparms;
+                int lotterytype = int.Parse(parmas["type"]);
+                DataTable list = Lottery.LastLottery(lotterytype.ToString()).Tables[1];
+                JsonSerializerSettings jsetting = new JsonSerializerSettings();
+                string data = JsonConvert.SerializeObject(list, jsetting).ToLower();
+                return APIResult("success", data, true);
+            }
+            catch (Exception ex)
+            {
+                return APIResult("error", "获取失败");
+            }
+        }
+
+        public ActionResult GetYC()
+        {
+            try
+            {
+                List<string> dax = new List<string>() {"大", "小", "大", "大", "大", "小", "小", "小", "小", "大"};
+                List<string> ds = new List<string>() {"双", "单", "单", "双", "单", "双", "单", "双", "双", "单"};
+                List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+                for (int i = 0; i < 11; i++)
+                {
+                    List<string> hz = new List<string>() {  "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" };
+                    List<string> shuzi = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+                    Dictionary<string, object> dir = new Dictionary<string, object>();
+                    dir.Add("Num", i<10?GetrandByList(shuzi, 5, ref shuzi): GetrandByList(hz, 5, ref hz) );
+                    dir.Add("DS", i < 10 ? GetrandByList(ds, 1, ref ds, true):"");
+                    dir.Add("DAX", i < 10 ? GetrandByList(dax, 1, ref dax, true):"");
+                    list.Add(dir);
+                }
+                JsonSerializerSettings jsetting = new JsonSerializerSettings();
+                string data = JsonConvert.SerializeObject(list, jsetting).ToLower();
+                return APIResult("success", data, true);
+            }
+            catch (Exception ex)
+            {
+                return APIResult("error", "获取失败");
+            }
+        }
+        Random ran = new Random();
+        private string GetrandByList(List<string> ranList,int len,ref List<string> aList,bool reflist=false)
+        {
+            string s = "";
+           
+            for (int i = 0; i < len; i++)
+            { 
+                int temp = ran.Next(ranList.Count());
+                s= s+ranList[temp]+",";
+                ranList.RemoveAt(temp);
+            }
+            if (reflist)
+            {
+                aList = ranList;
+            }
+            return s.TrimEnd(',');
         }
 
         /// <summary>

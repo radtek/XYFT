@@ -23,7 +23,7 @@
 	background:#fff;
 	color: #DF0024;
 	font-weight: bold;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	margin-top: 0.1em;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -36,6 +36,7 @@
 }
 .hm-time .lot{
 	background: #fff;
+    margin-top: 1px;
 }
 .lot span{
 	display: inline-block;
