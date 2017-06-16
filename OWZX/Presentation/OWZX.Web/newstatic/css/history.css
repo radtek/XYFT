@@ -3,42 +3,54 @@
  *历史走势
  *============================================================*/
 /*历史记录表格标题*/
-*{-webkit-text-size-adjust:none;
-font-size: 7px;}
+
 
 .table-head{
-	width: 125%;
+	width: 100%;
 	position: absolute;
-	top: 40px;
-	height: 2.85em;
+	top: 44px;
+	height: 63px;
+	-webkit-text-size-adjust:none;
+    font-size: 9px;
 }
 .table-head table{width: 100%;border-spacing: 0;border-collapse:collapse;}
 .table-head table thead {
-	background: #de6b5c;
+	background: #EF827F;
 	width: 100%;
 	border: none;
+
 }
 .table-head table thead tr:first-child{
-	font-weight: bold;
+	font-weight: bolder;
 	text-align: center;
-	line-height: 1.6em;
-	font-size: 14px;
+	line-height: 1.5em;
+	font-size: 10px;
 	border: none;
+	height: 1.2px;
 }
 .table-head table thead tr:last-child td{
-	color: #333;
+	color: #0f3ce6;
 	text-align: center;
-	empty-cells:show;
+	/*empty-cells:show;*/
 	border: none;
+	font-size: 7px;
+
+	 /*border: 1px solid blue; */
+	width: 12px;
+	height: 12px;
+	line-height: 12px;
 }
 /* 历史记录 */
 .mid-table{
 	position: absolute;
-	top: 74px;
+	top: 71px;
 	bottom: 50px;
-	width: 125%;
+	width: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
+	-webkit-text-size-adjust:none;
+    font-size: 9px;
+    padding-top: 0;
 }
 .mid-table table{
 	width: 100%;
@@ -49,23 +61,25 @@ font-size: 7px;}
 	overflow-x: hidden;
 }
 .mid-table table tbody tr{
-	height: 2.4em;
-	line-height: 2.4em;
+	height: 1.2em;
+	line-height: 1.2em;
 }
 .mid-table table tbody tr td{
 	text-align: center;
-}
-.mid-table table tbody tr:nth-child(odd){
-	background-color: #F0F0F0;
+	font-size: 9px;
 }
 .mid-table table tbody tr td:nth-child(2) span,.mid-table table tbody tr td:nth-child(11) span,.mid-table table tbody tr td:nth-child(3) span,.mid-table table tbody tr td:nth-child(4) span,.mid-table table tbody tr td:nth-child(5) span,.mid-table table tbody tr td:nth-child(6) span,.mid-table table tbody tr td:nth-child(7) span,.mid-table table tbody tr td:nth-child(8) span,.mid-table table tbody tr td:nth-child(9) span,.mid-table table tbody tr td:nth-child(10) span{
-	color: #eee;
+	color: #fff;
 	/* border: 1px solid blue; */
 	display: inline-block;
-	width: 18px;
-	height: 18px;
+	width: 17px;
+	height: 17px;
 	line-height: 18px;
 	border-radius: 3px;
+	font-size: 9px;
+	text-shadow:#000 0.5px 0 0,#000 0 0.5px 0,#000 -0.5px 0 0,#000 0 -0.5px 0;
+    -webkit-text-shadow:#000 0.5px 0 0,#000 0 0.5px 0,#000 -0.5px 0 0,#000 0 -0.5px 0;
+-moz-text-shadow:#000 0.5px 0 0,#000 0 0.5px 0,#000 -0.5px 0 0,#000 0 -0.5px 0;
 }
 .mid-table tbody tr td:nth-child(12),.mid-table tbody tr td:nth-child(13),.mid-table tbody tr td:nth-child(14){
 	background: #DBDDDC;
@@ -75,4 +89,4 @@ font-size: 7px;}
 }
 
 
-table{font-size:12px;-webkit-transform:scale(.8);margin-left: -10%;}
+/*table{font-size:12px;-webkit-transform:scale(.8);margin-left: -10%;}*/

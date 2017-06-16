@@ -728,7 +728,10 @@ namespace OWZX.Web.Controllers
 
             return View();
         }
-       
+        public ActionResult UPwd()
+        { 
+            return View();
+        }
         public ActionResult DrawPwd()
         {
             bool result = Recharge.ValidateDrawPwdByUid(WorkContext.Uid);
