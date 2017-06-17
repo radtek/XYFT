@@ -121,7 +121,10 @@ namespace OWZX.Model
             get { return remark; }
             set { remark = value.TrimEnd(); }
         }
-
+        /// <summary>
+        /// 充值审核备注
+        /// </summary>
+        public string ChargeRemark { get; set; }
         private DateTime addtime;
         public DateTime Addtime
         {

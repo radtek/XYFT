@@ -141,14 +141,11 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count < 6 || (parmas.Keys.Count == 7 && !parmas.AllKeys.Contains("bankname")))
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
 
                 MD_Remit rmt = new MD_Remit
                 {
-                    Mobile = parmas["account"],
+                    Uid=WorkContext.Uid,
+                    //Mobile = parmas["account"],
                     Type = parmas["type"],
                     Name = parmas["name"],
                     Account = parmas["number"],
@@ -163,17 +160,20 @@ namespace OWZX.Web.controllers
                 bool addres = NewUser.AddUserRemit(rmt);
                 if (addres)
                 {
-                    return APIResult("success", "提交成功");
+                    return Content("1");
+                    //return APIResult("success", "提交成功");
                 }
                 else
                 {
-                    return APIResult("error", "提交失败");
+                    return Content("2");
+                    //return APIResult("error", "提交失败");
                 }
 
             }
             catch (Exception ex)
             {
-                return APIResult("error", "提交失败");
+                return Content("2");
+                //return APIResult("error", "提交失败");
             }
         }
         /// <summary>
@@ -185,12 +185,13 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count != 3)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
-                string where = " where rtrim(b.mobile)='" + parmas["account"] + "'";
-                List<MD_Remit> list = NewUser.GetUserRemitList(int.Parse(parmas["page"]), 15, where);
+                //if (parmas.Keys.Count != 3)
+                //{
+                //    return APIResult("error", "缺少请求参数");
+                //}
+                //string where = " where rtrim(b.mobile)='" + parmas["account"] + "'";
+                string where = " where b.uid=" + WorkContext.Uid.ToString() + "";
+                List<MD_Remit> list = NewUser.GetUserRemitList(int.Parse(parmas["page"]), 50, where);
 
                 if (list.Count > 0)
                 {
@@ -293,7 +294,11 @@ namespace OWZX.Web.controllers
         public ActionResult UserDraw()
         {
             NameValueCollection parmas = WorkContext.postparms;
-            
+
+            if (!Recharge.ValidateDrawPwdByUid(WorkContext.Uid))
+            {
+                return Content("5");//没有设置提现密码
+            }
             //string account = parmas["account"];
             decimal money = decimal.Parse(parmas["money"]);
 

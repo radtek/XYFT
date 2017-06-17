@@ -116,7 +116,9 @@
     </div>
     <div class="main table">
         <table class="cha">
-            @foreach (OWZX.Model.MD_Change info in Model.changeList)
+            @if(Model.changeList.Count>0)
+            {
+            foreach (OWZX.Model.MD_Change info in Model.changeList)
             {
                 <tr style="line-height: 1.8em;">
                     <td>@info.Addtime.ToString("MM-dd HH:mm")</td>
@@ -138,8 +140,13 @@
                     </td>
                 </tr>
             }
+            
 
             <tr id="showlists"><td colspan="4"><div class='ajaxtips' style='display:none;font-size:1.1em;color:#888;'>加载中.....</div></td></tr>
+            }else
+            {
+              <tr><td colspan="4"><div style="color:#888;height:150px;padding-top:5px;text-align:center;">  暂无记录</div></td></tr>
+            }
         </table>
 
     </div>

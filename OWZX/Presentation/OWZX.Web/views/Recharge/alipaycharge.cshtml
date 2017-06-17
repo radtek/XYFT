@@ -1,0 +1,399 @@
+﻿@{
+    ViewBag.Title = "alipaycharge";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style>
+        .offaccount {
+            background: #ffefef;
+            padding: 2em 1em 0.6em;
+            border-radius: 5px;
+            margin: 0.5em 0;
+            border: #faa solid 1px;
+            height: 5em;
+        }
+
+            .offaccount p {
+                color: #333;
+                line-height: 2.3em;
+            }
+
+                .offaccount p i {
+                    color: #FD947E;
+                    border-radius: 3px;
+                    border: #FD947E solid 1px;
+                    padding: 1px 8px;
+                    float: right;
+                    line-height: 1.5em;
+                    font-size: .9em;
+                    height: 1.5em;
+                }
+
+                .offaccount p input {
+                    border: none;
+                    background: none;
+                }
+
+        .offpay h3 {
+            font-size: 1.2em;
+            line-height: 1em;
+            height: 1em;
+            margin: 1.5em 0 .3em;
+            border-left: #FD645E solid 4px;
+            padding-left: .5em;
+            font-weight: normal;
+        }
+
+        .offform {
+            line-height: 1.8em;
+        }
+
+            .offform li span {
+                color: #FD645E;
+                margin-top: .4em;
+                display: inline-block;
+                font-size: 1.1em;
+            }
+
+            .offform input {
+                display: block;
+                height: 2.7em;
+                line-height: 2.7em;
+                width: 98%;
+                border: #ddd solid 1px;
+                border-radius: 3px;
+                padding-left: 2%;
+                font-size: 1.1em;
+            }
+
+        .wxts p {
+            margin: .5em 0;
+            color: #aaa;
+            line-height: 1.2em;
+            font-size: .9em;
+        }
+
+        .title1 {
+            width: 7em;
+            height: 2em;
+            color: white;
+            text-align: center;
+            line-height: 2em;
+            background: #FD645E;
+            margin: 0em auto 0;
+            display: block;
+            margin-top: -6.5em;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>支付宝转账</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="main1 offpay">
+        <div class="offaccount">
+            <p>收款账号：<input type="text" id="account"><i>复制</i></p>
+            <p>收款户名：<input type="text" id="username"><i>复制</i></p>
+            <input type="text" name="title" value="收款人信息" class="title1" readonly="readonly" />
+        </div>
+        <p style="line-height:2em;font-size: 1.2em;">转账步骤：</p>
+        <div class="slider" style="border:#ccc solid 1px;border-radius:none;">
+            <ul>
+                <li><a href="#" target="_blank"><img src="/newstatic/img/ali1.jpg" height="350" style="width: 100%;"></a></li>
+                <li><a href="#" target="_blank"><img src="/newstatic/img/ali2.jpg" height="350" style="width: 100%;"></a></li>
+                <li><a href="#" target="_blank"><img src="/newstatic/img/ali3.jpg" height="350" style="width: 100%;"></a></li>
+            </ul>
+        </div>
+
+        <h3>请填写您的转账信息</h3>
+        <ul class="offform">
+            <li><span>用户账号</span><input type="text" value="@WorkContext.PartUserInfo.UserName" disabled></li>
+            <li><span>支付宝户名</span><input type="text" id="UserName" placeholder="请填写您此次转账使用的支付宝户名"></li>
+            <li><span>支付宝账号</span><input type="text" id="UserPay" placeholder="请填写您此次转账使用的支付宝账号"></li>
+            <li><span>存款金额</span><input type="text" id="Money" value="" placeholder="请填写此次转账的金额（100-5000000）"></li>
+        </ul>
+        <div class="wxts">
+            <p>*请勿存入整数金额（样例1000.32元、500.88元），以免延误财务查收。</p>
+            <p>*转账完成后请保留单据作为核对证明。</p>
+            <p>*请确认填写转账金额与时间。</p>
+            <p>*每笔转账请提交一次。</p>
+        </div>
+        <button class="btn" id="submit" style="width:80%;margin:1em 10%">提交</button>
+    </div>
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+   
+    <script type="text/javascript">
+
+    $(".offaccount>p>i").click(function(){
+        var e=$(this).prev();
+        e.select();
+        document.execCommand("Copy");
+       tishi("复制成功！");
+    });
+
+
+    $(function ()
+    {
+        $.post("/api/chargeaccount", { "type": "支付宝" }, function (data)
+        {
+            var dt = JSON.parse(data);
+            if (dt.state == "success")
+            {
+                $("#username").val(dt.biz_content.name); $("#account").val(dt.biz_content.account);
+            }
+        })
+    })
+    $("#submit").click(function ()
+    {
+        var Account = $("#Account").val();
+        var UserName = $("#UserName").val();
+        var UserPay = $("#UserPay").val();
+        var Money = $("#Money").val();
+
+        $.post('/api/addremit', {
+            "type": "支付宝",
+            "name": UserName,
+            "number": UserPay,
+            "money": Money
+        }, function (data)
+        {
+            if (data == 1)
+            {
+                tishi("提交成功");
+                $(".offform input:not(.offform input:first)").val("");
+            }
+            else if (data == 3)
+                tishi('请两分钟后再提交');
+            else
+                tishi("提交失败,请重新尝试");
+        }
+        );
+    })
+
+    </script>
+    <script>
+
+	  (function($){
+			$.fn.yxMobileSlider = function(settings){
+				var defaultSettings = {
+					width: 340, //容器宽度
+					height: 350, //容器高度
+					during: 5000, //间隔时间
+					speed:30 //滑动速度
+				}
+				settings = $.extend(true, {}, defaultSettings, settings);
+				return this.each(function(){
+					var _this = $(this), s = settings;
+					var startX = 0, startY = 0; //触摸开始时手势横纵坐标
+					var temPos; //滚动元素当前位置
+					var iCurr = 0; //当前滚动屏幕数
+					var timer = null; //计时器
+					var oMover = $("ul", _this); //滚动元素
+					var oLi = $("li", oMover); //滚动单元
+					var num = oLi.length; //滚动屏幕数
+					var oPosition = {}; //触点位置
+					var moveWidth = s.width; //滚动宽度
+					//初始化主体样式
+					_this.width(s.width).height(s.height).css({
+						position: 'relative',
+						overflow: 'hidden',
+						margin:'0 auto'
+					}); //设定容器宽高及样式
+					oMover.css({
+						position: 'absolute',
+						left: 0
+					});
+					oLi.css({
+						float: 'left',
+						display: 'inline'
+					});
+					$("img", oLi).css({
+						width: '100%',
+						height: '100%'
+					});
+					//初始化焦点容器及按钮
+					_this.append('<div class="focus"><div></div></div>');
+					var oFocusContainer = $(".focus");
+					for (var i = 0; i < num; i++) {
+						$("div", oFocusContainer).append("<span></span>");
+					}
+					var oFocus = $("span", oFocusContainer);
+					oFocusContainer.css({
+						minHeight: $(this).find('span').height() * 2,
+						position: 'absolute',
+						bottom: 0,
+
+					})
+					$("span", oFocusContainer).css({
+						display: 'block',
+						float: 'left',
+						cursor: 'pointer'
+					})
+					$("div", oFocusContainer).width(oFocus.outerWidth(true) * num).css({
+						position: 'absolute',
+						left: '50%',
+						top: '50%',
+						marginTop: -$(this).find('span').width() / 2,
+						marginLeft: '-20px'
+					});
+					oFocus.first().addClass("current");
+					//页面加载或发生改变
+					$(window).bind('resize load', function(){
+						if (isMobile()) {
+							mobileSettings();
+							bindTochuEvent();
+						}
+						oLi.width(_this.width()).height(_this.height());//设定滚动单元宽高
+						oMover.width(num * oLi.width());
+						oFocusContainer.width(_this.width()).height(_this.height() * 0.15).css({
+							zIndex: 2
+						});//设定焦点容器宽高样式
+						_this.fadeIn(300);
+					});
+					//页面加载完毕BANNER自动滚动
+					autoMove();
+					//PC机下焦点切换
+					if (!isMobile()) {
+						oFocus.hover(function(){
+							iCurr = $(this).index() - 1;
+							stopMove();
+							doMove();
+						}, function(){
+							autoMove();
+						})
+					}
+					//自动运动
+					function autoMove(){
+						timer = setInterval(doMove, s.during);
+					}
+					//停止自动运动
+					function stopMove(){
+						clearInterval(timer);
+					}
+					//运动效果
+					function doMove(){
+						iCurr = iCurr >= num - 1 ? 0 : iCurr + 1;
+						doAnimate(-moveWidth * iCurr);
+						oFocus.eq(iCurr).addClass("current").siblings().removeClass("current");
+					}
+					//绑定触摸事件
+					function bindTochuEvent(){
+						oMover.get(0).addEventListener('touchstart', touchStartFunc, false);
+						oMover.get(0).addEventListener('touchmove', touchMoveFunc, false);
+						oMover.get(0).addEventListener('touchend', touchEndFunc, false);
+					}
+					//获取触点位置
+					function touchPos(e){
+						var touches = e.changedTouches, l = touches.length, touch, tagX, tagY;
+						for (var i = 0; i < l; i++) {
+							touch = touches[i];
+							tagX = touch.clientX;
+							tagY = touch.clientY;
+						}
+						oPosition.x = tagX;
+						oPosition.y = tagY;
+						return oPosition;
+					}
+					//触摸开始
+					function touchStartFunc(e){
+						clearInterval(timer);
+						touchPos(e);
+						startX = oPosition.x;
+						startY = oPosition.y;
+						temPos = oMover.position().left;
+					}
+					//触摸移动
+					function touchMoveFunc(e){
+						touchPos(e);
+						var moveX = oPosition.x - startX;
+						var moveY = oPosition.y - startY;
+						if (Math.abs(moveY) < Math.abs(moveX)) {
+							e.preventDefault();
+							oMover.css({
+								left: temPos + moveX
+							});
+						}
+					}
+					//触摸结束
+					function touchEndFunc(e){
+						touchPos(e);
+						var moveX = oPosition.x - startX;
+						var moveY = oPosition.y - startY;
+						if (Math.abs(moveY) < Math.abs(moveX)) {
+							if (moveX > 0) {
+								iCurr--;
+								if (iCurr >= 0) {
+									var moveX = iCurr * moveWidth;
+									doAnimate(-moveX, autoMove);
+								}
+								else {
+									doAnimate(0, autoMove);
+									iCurr = 0;
+								}
+							}
+							else {
+								iCurr++;
+								if (iCurr < num && iCurr >= 0) {
+									var moveX = iCurr * moveWidth;
+									doAnimate(-moveX, autoMove);
+								}
+								else {
+									iCurr = num - 1;
+									doAnimate(-(num - 1) * moveWidth, autoMove);
+								}
+							}
+							oFocus.eq(iCurr).addClass("current").siblings().removeClass("current");
+						}
+					}
+					//移动设备基于屏幕宽度设置容器宽高
+					function mobileSettings(){
+						moveWidth = $(window).width();
+						var iScale = $(window).width() / s.width;
+						_this.height(s.height * iScale).width('100%');
+						oMover.css({
+							left: -iCurr * moveWidth
+						});
+					}
+					//动画效果
+					function doAnimate(iTarget, fn){
+						oMover.stop().animate({
+							left: iTarget
+						}, _this.speed , function(){
+							if (fn)
+								fn();
+						});
+					}
+					//判断是否是移动设备
+					function isMobile(){
+						if (navigator.userAgent.match(/Android/i) || navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('iPod') != -1 || navigator.userAgent.indexOf('iPad') != -1) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+				});
+			}
+		})(jQuery);
+		$(".slider").yxMobileSlider({during:3000})
+    </script>
+</body>
+</html>
+

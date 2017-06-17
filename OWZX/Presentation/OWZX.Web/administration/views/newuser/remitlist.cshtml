@@ -7,6 +7,7 @@
 <script type="text/javascript" src="/administration/scripts/showlist.js"></script>
 <link href="/components/layer/skin/layer.css" rel="stylesheet" />
 <script src="/components/layer/layer.js"></script>
+<link href="~/newstatic/css/common.css" rel="stylesheet" />
 }
 
 @section body{
@@ -68,6 +69,7 @@
     <th width="60" align="left">汇款类型</th>
     <th width="80" align="left">时间</th>
     <th width="60" align="left">实际汇款金额</th>
+      <th width="60" align="left">审核备注</th>
     <th width="100" align="left">异常备注</th>
     <th width="60" align="left">状态</th>
     <th width ="60" align="left">管理操作</th>
@@ -86,10 +88,13 @@
     <td>@info.Type</td>
     <td>@info.Addtime</td>
     <td>
-        <input type="text" class="moneyinput unselectedremarkinput" maxlength="200" height="30" value="@info.RealMoney" id="@info.Remitid" />
+        @info.RealMoney
     </td>
       <td>
-          <input type="text" class="remarkinput unselectedremarkinput" maxlength="200" height="30" value="@info.Remark" id="@info.Remitid" />
+          @info.ChargeRemark
+      </td>
+      <td>
+         @info.Remark
       </td>
     <td>@switch (@info.Status)
         { 
@@ -107,21 +112,21 @@
                 break;
         }</td>
     <td>
-        @if(info.Status==0)
+        @if (info.Status == 0)
         {
-         @Html.ActionLink("[审核中]", "editremit", new { remitid = @info.Remitid, status = 1 }, new { @class = "editOperate" })
+           @Html.ActionLink("[审核中]", "editremitstate", new { remitid = @info.Remitid, status = 1 }, new { @class = "editOperate" })
         }
-        @if(info.Status<2)
+        @if (info.Status < 2)
         {
-          @Html.ActionLink("[充值成功]", "editremit", new { remitid = @info.Remitid, status = 2 }, new { @class = "editOperate" })
+            @Html.ActionLink("[审核完成]", "editremit", new { remitid = @info.Remitid, status = 2 }, new { @class = "editOperate" })
         }
         @*@if (info.Status < 2)
         {
             @Html.ActionLink("[转账失败]", "editremit", new { remitid = @info.Remitid, status = 3 }, new { @class = "editOperate" })
         }*@
-        @if(info.Status<2)
+        @if (info.Status < 2)
         {
-          @Html.ActionLink("[删除]", "delremit", new { remitid = @info.Remitid }, new { @class = "deleteOperate" })
+           @Html.ActionLink("[删除]", "delremit", new { id = @info.Remitid }, new { @class = "deleteOperate" })
         }
         @if (info.Status >=2)
         {
@@ -138,6 +143,111 @@
     @Html.AdminPager(Model.PageModel)
 </div>
 </div>
+
+    <script>
+        $(function ()
+        {
+            $(".tishi .btn").click(function ()
+            {
+                if ($("#RealMoney").val() == "")
+                {
+                    layer.alert("实际充值金额不能为空", { icon: 2 });
+                    return;
+                }
+
+                if ($("#ChargeRemark").val() == "")
+                {
+                    layer.alert("审核备注不能为空", { icon: 2 });
+                    return;
+                }
+                $(".betbg").fadeOut(100);
+                $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
+
+                layer.load(2);
+                $.get("/admin/newuser/editremit", {
+                    "remitid": id, "status": status,
+                    "realmoney": $("#RealMoney").val(),
+                    "chargeremark": $("#ChargeRemark").val(),
+                    "remark": $("#Remark").val(),
+                }, function (data)
+                {
+                    setTimeout(function ()
+                    {
+                        layer.closeAll('loading');
+                    }, 2000);
+                    if (data != "0")
+                    {
+                        $(".tsnr input").val("");
+                        layer.alert("更新成功", { icon: 1 });
+                    } else
+                    {
+                        layer.alert(data, { icon: 2 });
+                    }
+                });
+            });
+            
+        });
+        
+        function opert(id, status)
+        {
+            var shcon='<div class="tishi">';
+            shcon+='<div class="ts">提示</div>'
+            shcon+= '<div class="tsnr">'
+            shcon+='<input id="RealMoney" type="text" placeholder="实际充值金额" /><br />'
+            shcon+='<input id="ChargeRemark" type="text" placeholder="充值审核备注" /><br />'
+            shcon+='<input id="Remark" type="text" placeholder="异常备注" /><br />'
+        shcon+='</div></div>';
+            //边缘弹出
+            layer.open({
+                type: 1
+              , offset: 't' //具体配置参考：offset参数项
+              , content: shcon
+              , btn: '确定'
+              , btnAlign: 'c' //按钮居中
+              , shade: 0 //不显示遮罩
+              , yes: function ()
+              {
+                  if ($("#RealMoney").val() == "")
+                  {
+                      layer.alert("实际充值金额不能为空", { icon: 2 });
+                      return;
+                  }
+
+                  if ($("#ChargeRemark").val() == "")
+                  {
+                      layer.alert("审核备注不能为空", { icon: 2 });
+                      return;
+                  }
+
+                  layer.load(2);
+                  $.get("/admin/newuser/editremit", {
+                      "remitid": id, "status": status,
+                      "realmoney": $("#RealMoney").val(),
+                      "chargeremark": $("#ChargeRemark").val(),
+                      "remark": $("#Remark").val(),
+                  }, function (data)
+                  {
+                      setTimeout(function ()
+                      {
+                          layer.closeAll('loading');
+                      }, 2000);
+                      if (data != "0")
+                      {
+                          $(".tsnr input").val("");
+                          layer.alert("更新成功", { icon: 1 });
+                      } else
+                      {
+                          layer.alert(data, { icon: 2 });
+                      }
+                  });
+                  layer.closeAll();
+              }
+            });
+            
+            
+        }
+
+    </script>
     <script>
     $(function ()
     {

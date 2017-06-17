@@ -195,6 +195,7 @@
     <None Include="views\news\editnewstype.cshtml" />
     <None Include="views\news\newslist.cshtml" />
     <None Include="views\news\newstypelist.cshtml" />
+    <None Include="views\newuser\editremit.cshtml" />
     <None Include="views\newuser\addremit.cshtml" />
     <None Include="views\newuser\changelist.cshtml" />
     <None Include="views\newuser\editbank.cshtml" />

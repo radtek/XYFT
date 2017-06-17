@@ -916,32 +916,19 @@ namespace OWZX.Web.Controllers
             else
                 count=3-list.Count;
             ViewData["drawcount"] = count;
+            ViewData["setdraw"] = Recharge.ValidateDrawPwdByUid(WorkContext.Uid).ToString().ToLower();
             return View();
         }
         public ActionResult DrawList()
         {
             List<DrawInfoModel> list = Recharge.GetDrawList(1, 50, " where a.uid=" + WorkContext.Uid.ToString());
             DrawListModel draw = new DrawListModel {
-                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0),
+                PageModel = new PageModel(50, 1, list.Count > 0 ? list[0].TotalCount : 0),
                 DrawList=list
             };
             return View(draw);
         }
 
-        public ActionResult UserRecharge()
-        {
-            return View();
-        }
-        public ActionResult UserRechargeList()
-        {
-            List<MD_Remit> list = NewUser.GetUserRemitList(1, 50, " where a.uid=" + WorkContext.Uid.ToString());
-            RechargeListModel recharge = new RechargeListModel
-            {
-                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0),
-                RechargeList = list
-            };
-            return View(recharge);
-        }
         #endregion
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {

@@ -49,7 +49,7 @@
                 $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
             });
 
-            $.get("/nwlottery/userbetmoney", { "lotterytype": lotterytype, "expect": expect }, function (data)
+            $.get("/nwlottery/userbetmoney", function (data)
             {
                 if (data != "")
                 {

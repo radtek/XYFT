@@ -1,0 +1,340 @@
+﻿@{
+    ViewBag.Title = "charge";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/accessmoney.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+
+    <style type="text/css">
+        .tixian form > input {
+            display: block;
+            width: 70%;
+            padding-left: 10px;
+            height: 28px;
+            margin: 0 auto;
+            color: #333;
+            line-height: 28px;
+            outline: 1px solid #ddd;
+            margin-top: 15px;
+        }
+
+        .tixian input[type="submit"] {
+            background: #0099FF;
+            color: white;
+            border: none;
+            outline: none;
+            margin-top: 30px;
+        }
+
+        .tixian p {
+            width: 70%;
+            margin: 0 auto;
+            height: 70px;
+            margin-top: 15px;
+            color: #666;
+            padding: 5px;
+            line-height: 32px;
+        }
+
+
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .clearfix:before, .clearfix:after {
+            content: " ";
+            display: table;
+        }
+
+        .alieditContainer {
+            position: relative;
+            margin-top: -40px;
+        }
+
+        .sixDigitPassword {
+            position: absolute;
+            left: 0px;
+            top: 0;
+            width: 1000px;
+            height: 33px !important;
+            color: #fff;
+            font-size: 12px;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+            -webkit-user-select: initial;
+            outline: none;
+            z-index: 999;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            margin-top: 0 !important;
+        }
+
+        .sixDigitPassword-box {
+            cursor: text;
+            background: #fff;
+            outline: none;
+            position: relative;
+            padding: 8px 0;
+            height: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 2px;
+        }
+
+            .sixDigitPassword-box i {
+                float: left;
+                display: block;
+                padding: 4px 0;
+                height: 7px;
+                border-left: 1px solid #cccccc;
+            }
+
+            .sixDigitPassword-box .active {
+                background: url('/newstatic/img/password-blink.gif') no-repeat center center;
+            }
+
+            .sixDigitPassword-box b {
+                display: block;
+                margin: 0 auto;
+                width: 7px;
+                height: 7px;
+                overflow: hidden;
+                visibility: hidden;
+                background: url('/newstatic/img/passeord-dot.png') no-repeat;
+            }
+
+            .sixDigitPassword-box span {
+                position: absolute;
+                display: block;
+                left: 0px;
+                top: 0px;
+                height: 30px;
+                border: 1px solid rgba(82, 168, 236, .8);
+                border: 1px solid #00ffff\9;
+                border-radius: 2px;
+                visibility: hidden;
+                -webkit-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.75), 0 0 8px rgba(82, 168, 236, 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            }
+
+        .ui-securitycore .ui-form-item .ui-form-explain {
+            margin-top: 8px;
+        }
+
+        .i-block {
+            display: inline-block;
+        }
+
+        .six-password {
+            position: relative;
+            height: 33px;
+            width: 182px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+
+        #payPassword_rsainput-error {
+            display: block;
+        }
+    </style>
+</head>
+
+<body style="background:#ffffff">
+    <header>
+        <h2><span onclick="window.history.go(-1)"><i class="icon"></i></span>存取款</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="tabpayways">
+        <ul>
+            <li class="paywayscur">充值</li>
+        </ul>
+    </div>
+    <div class="main main1">
+        <h3>线上充值</h3>
+        <div class="jine" style="padding-bottom:1em;border:none">
+            <p style="margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;" class="p1">
+                <span><img src="/newstatic/img/zhifub.png" width="55"></span>
+                <span style="margin-left:.8rem;">支付宝</span>
+                <span class="span3" style="float:right;"><img src="/newstatic/img/s1.png" width="18"></span>
+            </p>
+            <p style="margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;" class="p2">
+                <span>
+                    <img src="/newstatic/img/weix.jpg" width="30" style="margin-left: 1em;">
+                </span>
+                <span style="margin-left:1.9rem;">微信</span>
+                <span class="span4" style="float:right;"><img src="/newstatic/img/s1.png" width="18"></span>
+            </p>
+            <button type="submit" class="btn" onclick="Msubmit()">
+                立即充值
+            </button>
+        </div>
+
+        <h3>线下充值</h3>
+        <div class="jine">
+            <p onclick="window.location.href='/recharge/bankcharge'">
+                <span><img src="/newstatic/img/yinl.png" width="45" height="22"></span>
+                <span style="margin-left:1.2rem;">银行转账</span>
+            </p>
+            <p onclick="window.location.href = '/recharge/alipaycharge'">
+                <span><img src="/newstatic/img/zhifub.png" width="50"></span>
+                <span style="margin-left:.8rem;">支付宝转账</span>
+            </p>
+            <p onclick="window.location.href = '/recharge/wechatcharge'">
+                <span style="margin-left: 1rem;"><img src="/newstatic/img/weix.jpg" width="30" height="22"></span>
+                <span style="margin-left:1.4rem;">微信转账</span>
+            </p>
+        </div>
+
+
+        <a href='transfer.html' class="borbtn fl" style="margin-left:14%;">转账记录</a>
+        <a href="kefu.html" class="borbtn fr" style="margin-right:14%;">联系客服</a>
+        <div class="clearfix"></div>
+        <div class="footblank"></div>
+
+    </div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+    <script>
+ $(function(){
+    $("#sixDigitPassword").css("margin-right",($(document).width()-184)/2+"px")
+
+   	$(".tabpayways li").click(function(){
+   		$(this).addClass("paywayscur").siblings().removeClass("paywayscur");
+          if ($(this).index()==0) {
+          	$(".main1").show();
+          	$(".main2").hide();
+          }else{
+          	$(".main2").show();
+          	$(".main1").hide();
+          }
+   	})
+
+ })
+ 	function tishi(nr){
+	    $(".betbg").fadeIn(100);
+	    $(".tsnr").html(nr);
+	    $(".tishi").animate({top:"50%",marginTop:"-3.5em"},100);
+ 	}
+
+ 	$(".tishi .btn").click(function(){
+	    $(".betbg").fadeOut(100);
+	    $(".tishi").animate({top:"100%",marginTop:"0"},100);
+	});
+
+
+ 	$(".main1 .jine a").click(function(){
+ 		$(".main1 .jine a").css("outline","1px solid #EEEEEE");
+ 		$(".main1 .jine input").css("border","1px solid #EEEEEE");
+ 		// $("#money").html($(this).attr("m"));
+ 		// $("#money").attr("dm",$(this).attr("m"));
+ 		$(this).css("outline","1px solid #FD645E")
+ 	})
+
+ 	$(".main1 .jine input").click(function(){
+ 		$(".main1 .jine a").css("outline","1px solid #EEEEEE");
+ 		$(".main1 .jine input").css("border","1px solid #EEEEEE");
+ 		$(this).css("border","1px solid #FD645E");
+ 	})
+
+
+ 	$(".p1").click(function(){
+ 	    $(".span4").html("<img src='/newstatic/img/s1.png' width='18'>");
+ 		$(".span4").removeAttr("alipay");
+
+ 		$(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+ 		$(".span5").removeAttr("alipay");
+
+ 		$(".span3").html("<img src='/newstatic/img/s2.png' width='18'>");
+ 		$(".span3").attr("alipay","1");
+ 	})
+
+
+ 	$(".p2").click(function(){
+ 	    $(".span3").html("<img src='/newstatic/img/s1.png' width='18'>");
+ 		$(".span3").removeAttr("alipay");
+
+ 		$(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+ 		$(".span5").removeAttr("alipay");
+
+ 		$(".span4").html("<img src='/newstatic/img/s2.png' width='18'>");
+ 		$(".span4").attr("alipay","2");
+ 	})
+
+ 	function Msubmit()
+ 	{
+ 		var URL='__URL__';
+ 		var alipay = 0;
+
+
+ 		//后台判断是否已经登录
+ 		$.ajax({
+          url: URL+'/IsLogin',
+          type:"POST",
+          dataType: 'text',
+          timeout: 5000,
+          dataType:"json",
+          success: function(data){
+              if(data == 2)
+                  tishi("暂未登录请登录后再尝试此操作");
+              else
+              {
+              		var Money =  $("#money").attr("dm");
+
+	 				if($(".span3").attr("alipay") == 1)
+			 		{
+			 			alipay = "支付宝";
+			 		}
+			 		else if($(".span4").attr("alipay") == 2)
+			 		{
+			 			alipay = "微信";
+			 		}
+			 		// else if($(".span5").attr("alipay") == 3)
+			 		// {
+			 		// 	alipay = "财付通";
+			 		// }
+
+			 		// if(!Money)
+			 		// {
+			 		// 	tishi("请选择充值金额");
+			 		// 	return false;
+			 		// }
+
+			 		if(!alipay)
+			 		{
+			 			tishi("请选择支付方式");
+			 			return false;
+			 		}
+
+			 		if ($(".span4").attr("alipay") == 2) {
+			 			window.location.href="/pcdd/home/change/weixinpay/type/2";
+			 		}else if ($(".span3").attr("alipay") == 1) {
+			 			window.location.href="/pcdd/home/change/weixinpay/type/1";
+			 		}
+              }
+          }
+      });
+ 	}
+
+function jump(href)
+{
+	if(href==1)
+		href="/User/index";
+	window.location.href="/pcdd/Home"+href;
+}
+
+    </script>
+    
+  
+</body>
+</html>

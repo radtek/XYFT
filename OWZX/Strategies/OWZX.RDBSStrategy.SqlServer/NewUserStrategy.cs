@@ -548,7 +548,8 @@ end catch
         {
             DbParameter[] parms = {
                                        
-                                        GenerateInParam("@mobile", SqlDbType.VarChar,15, rmt.Mobile),
+                                        //GenerateInParam("@mobile", SqlDbType.VarChar,15, rmt.Mobile),
+                                         GenerateInParam("@uid", SqlDbType.Int , 4, rmt.Uid),
                                         GenerateInParam("@type", SqlDbType.VarChar,20, rmt.Type),
                                         GenerateInParam("@name", SqlDbType.VarChar, 50, rmt.Name),
                                         GenerateInParam("@account", SqlDbType.VarChar,50, rmt.Account),
@@ -559,13 +560,15 @@ end catch
                                     };
             string commandText = string.Format(@"
 begin try
-
+begin tran t1
 INSERT INTO owzx_userremit([uid],[type],[name],[account],[money],[bankname],[status])
-VALUES ((select uid from owzx_users where rtrim(mobile)=@mobile),@type,@name,@account,@money,@bankname,@status)
+VALUES (@uid,@type,@name,@account,@money,@bankname,@status)
 
 select '添加成功' state
+commit tran t1
 end try
 begin catch
+rollback tran t1
 select ERROR_MESSAGE() state
 end catch
 ");
@@ -582,6 +585,7 @@ end catch
             DbParameter[] parms = {
                                         GenerateInParam("@remitid", SqlDbType.VarChar,15, rmt.Remitid),
                                         GenerateInParam("@remark", SqlDbType.VarChar, 200, rmt.Remark),
+                                        GenerateInParam("@chargeremark", SqlDbType.VarChar, 200, rmt.ChargeRemark),
                                         GenerateInParam("@realmoney", SqlDbType.Int , 4, rmt.RealMoney),
                                         GenerateInParam("@status", SqlDbType.Int,4, rmt.Status),
                                         GenerateInParam("@updateuid", SqlDbType.Int,4, rmt.Updateuid),
@@ -594,7 +598,7 @@ begin
 update a set   
 a.status = @status
 ,a.remark = @remark
-,a.realmoney=@realmoney
+,a.realmoney=@realmoney,a.chargeremark=@chargeremark
 ,a.updateuid = @updateuid
 ,a.updatetime = convert(varchar(25),getdate(),120)
 
@@ -685,7 +689,7 @@ SELECT ROW_NUMBER() over(order by a.remitid desc) id
       ,a.[remark]
       ,a.[addtime]
       ,a.[updateuid]
-      ,a.[updatetime],b.mobile mobile
+      ,a.[updatetime],b.mobile mobile,a.chargeremark
   into  #list
   FROM owzx_userremit a
   join owzx_users b on a.uid=b.uid

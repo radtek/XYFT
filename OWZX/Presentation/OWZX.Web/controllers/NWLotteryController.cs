@@ -490,7 +490,7 @@ namespace OWZX.Web.Controllers
         public ActionResult UserBetMoney()
         {
             int lotterytype = WebHelper.GetQueryInt("lotterytype",-1);
-            string expect = WebHelper.GetQueryString("expect");
+            string expect = WebHelper.GetQueryString("expect","");
             DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid, expect, lotterytype);
             StringBuilder strb = new StringBuilder();
             foreach (DataRow rw in dt.Rows)

@@ -27,6 +27,9 @@ namespace OWZX.Web.Admin.Models
 
     public class UserRemit : IValidatableObject
     {
+
+        public int remitid { get; set; }
+
         private string mobile;
         /// <summary>
         /// 手机号
@@ -89,6 +92,8 @@ namespace OWZX.Web.Admin.Models
         /// <summary>
         ///实际汇款金额 
         /// </summary>
+        [Required(ErrorMessage = "汇款金额为空")]
+        [Range(10, int.MaxValue, ErrorMessage = "汇款金额无效")]
         public int RealMoney
         {
             get { return realmoney; }
@@ -104,6 +109,8 @@ namespace OWZX.Web.Admin.Models
             get { return bankname; }
             set { bankname = value.TrimEnd(); }
         }
+         [Required(ErrorMessage = "审核备注为空")]
+        public string ChargeRemark { get; set; }
 
         private short status;
         /// <summary>
@@ -132,7 +139,7 @@ namespace OWZX.Web.Admin.Models
             get { return remark; }
             set { remark = value.TrimEnd(); }
         }
-
+        
         private DateTime addtime;
         public DateTime Addtime
         {

@@ -111,6 +111,7 @@
     <Compile Include="controllers\NWLotteryController.cs" />
     <Compile Include="controllers\LotteryController.cs" />
     <Compile Include="controllers\NewsController.cs" />
+    <Compile Include="controllers\RechargeController.cs" />
     <Compile Include="controllers\ToolController.cs" />
     <Compile Include="controllers\UCenterController.cs" />
     <Compile Include="controllers\APIController.cs" />
@@ -796,9 +797,11 @@
     <Content Include="views\ucenter\mybag.cshtml" />
     <Content Include="views\ucenter\draw.cshtml" />
     <Content Include="views\ucenter\drawlist.cshtml" />
-    <Content Include="views\ucenter\userrecharge.cshtml" />
-    <Content Include="views\ucenter\userrechargelist.cshtml" />
-
+    <Content Include="views\Recharge\charge.cshtml" />
+    <Content Include="views\Recharge\chargelist.cshtml" />
+    <Content Include="views\Recharge\bankcharge.cshtml" />
+    <Content Include="views\Recharge\alipaycharge.cshtml" />
+    <Content Include="views\Recharge\wechatcharge.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

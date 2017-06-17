@@ -91,7 +91,7 @@ namespace OWZX.Web.Admin.Controllers
             StringBuilder strb = new StringBuilder();
             strb.Append(" where 1=1");
             if (Account != string.Empty)
-                strb.Append(" and rtrim(b.mobile)='" + Account + "'");
+                strb.Append(" and (rtrim(b.mobile)='" + Account + "' or username like '%"+Account+"%')");
             if (type != string.Empty)
                 strb.Append(" and a.type='" + type + "'");
             List<MD_Remit> remitlist = NewUser.GetUserRemitList(pageNumber, pageSize, strb.ToString());
@@ -196,7 +196,7 @@ namespace OWZX.Web.Admin.Controllers
         /// <param name="remitid"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public ActionResult EditRemit(int remitid, short status, string remark = "")
+        public ActionResult EditRemitState(int remitid, short status)
         {
             List<MD_Remit> list = NewUser.GetUserRemitList(1, -1, " where a.remitid=" + remitid);
             if (list.Count == 0)
@@ -209,21 +209,57 @@ namespace OWZX.Web.Admin.Controllers
             {
                 bk.Status = 1;
             }
-            else if (status == 2)
+
+            bk.Updateuid = WorkContext.Uid;
+            bool result = NewUser.UpdateUserRemit(bk);
+            if (result)
+                return PromptView("更新成功");
+            else
+                return PromptView("更新失败");
+        }
+        [HttpGet]
+        public ActionResult EditRemit(int remitid, short status)
+        {
+            ViewData["referer"] = ShopUtils.GetAdminRefererCookie();
+            ViewData["remitid"] = remitid;
+            ViewData["status"] = status;
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult EditRemit(int remitid, short status, int realmoney, string chargeremark, string remark)
+        {
+            ViewData["referer"] = ShopUtils.GetAdminRefererCookie();
+            List<MD_Remit> list = NewUser.GetUserRemitList(1, -1, " where a.remitid=" + remitid);
+            if (list.Count == 0)
             {
-                if (bk.RealMoney == 0)
+                return PromptView("用户充值记录不存在");
+            }
+            MD_Remit bk = list[0];
+
+            if (status == 1)
+            {
+                bk.Status = 1;
+            }
+            else 
+            {
+                if (chargeremark == "")
+                    return PromptView("请输入充值审核备注");
+                if (realmoney == 0)
                     return PromptView("请输入实际转账金额");
-                if (bk.Remark != "" && bk.Remark != null)
-                    return PromptView("已输入失败原因,不能完成转账");
-                bk.Status = 2;
-            }
-            else if (status == 3)
-            {
-                if (bk.Remark == "")
-                    return PromptView("请输入失败原因");
+                bk.RealMoney = realmoney;
                 bk.Remark = remark;
-                bk.Status = 3;
+                bk.ChargeRemark = chargeremark;
+                if (remark != "" && remark != null)
+                {
+                    bk.Status = 3;
+                }
+                else
+                {
+                    bk.Status = 2;
+                }
             }
+           
 
             bk.Updateuid = WorkContext.Uid;
             bool result = NewUser.UpdateUserRemit(bk);

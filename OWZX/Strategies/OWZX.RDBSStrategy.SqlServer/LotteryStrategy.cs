@@ -2535,9 +2535,16 @@ select @ac_money ac_money,@total_bett total_bett
             }
             else
             {
-                sql = string.Format(@"select uid,SUM(money) total_bett,
-(select ISNULL(totalmoney,0) from owzx_users where uid={0}) ac_money from owzx_bett 
-where uid={0} group by lotteryid,uid", uid);
+                sql = string.Format(@"
+declare @ac_money decimal(18,1)=0.0,@total_bett decimal(18,1)=0.0
+select @ac_money=ISNULL(totalmoney,0) from owzx_users where uid={0}
+
+select @total_bett=SUM(money)
+from owzx_bett 
+where uid={0} and isread=0 group by uid
+
+select @ac_money ac_money,@total_bett total_bett
+", uid);
             }
             return RDBSHelper.ExecuteTable(sql,null)[0];
 

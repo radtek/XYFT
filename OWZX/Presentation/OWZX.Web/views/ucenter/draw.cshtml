@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
     <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
     <style>
         .tixian select, .tixian input {
             width: 100%;
@@ -69,7 +70,7 @@
             超过则每次收取<i>1%</i>手续费
         </div>
         <input type="text" id="Money" placeholder="请输入整数提现金额">
-        <input type="password" id="Pwd" placeholder="请输入取款密码">
+        <input type="password" id="Pwd" placeholder="请输入提现密码" maxlength="16">
         <button type="submit" class="btn" id="Q-btn" style="width:80%;margin:2em auto;display:block;">确认提现</button>
 
     </div>
@@ -81,19 +82,30 @@
 
     
     <script>
+        $(function(){
+            if('@ViewData["setdraw"]'=="false")
+            {
+                tishi("请设置提现密码");
+                window.location.href="/ucenter/drawpwd";
+                return false;
+            }
+        })
         $("#Q-btn").click(function ()
         {
-            
             var UnionPayId = $("#UnionPayId").val();
             var Money = $("#Money").val();
             var Pwd = $("#Pwd").val();
-
+            
             if (Money == "")
             {
                 tishi("提现金额不可以为空");
                 return false;
             }
-
+            if(!isNumber(Money) || !isInt(Money))
+            {
+                tishi("提现金额只能为数字");
+                return false;
+            }
             if (Money < 100)
             {
                 tishi("提现金额不可以小余100元");
@@ -103,7 +115,11 @@
             if (Pwd == "")
             {
                 tishi("提现密码不可以为空");
-                window.location.href = "/ucenter/drawpwd"
+                return false;
+            }
+            if (!isPwd(Pwd))
+            {
+                tishi("密码格式为数字 字母 _ 长度6~16");
                 return false;
             }
             var my=@ViewData["money"];
@@ -126,8 +142,13 @@
                         tishi("账户余额不足,或者提款金额小于100元");
                     else if (data == 4)
                         tishi("已经提交请等待客服处理");
-                    else
+                    else if(data==3)
                         tishi("提交失败");
+                    else if(data==5)
+                    {
+                        tishi("请设置提现密码");
+                        window.location.href="/ucenter/drawpwd";
+                    }
                 });
         });
 
