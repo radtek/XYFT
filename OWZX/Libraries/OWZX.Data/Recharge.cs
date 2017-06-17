@@ -103,6 +103,12 @@ namespace OWZX.Data
         {
             return BSPData.RDBS.ValidateDrawPwd(account, pwd);
         }
+        /// <summary>
+        /// 验证提现密码是否正确
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
         public static string ValidateDrawPwdByUid(int uid, string pwd)
         {
             return BSPData.RDBS.ValidateDrawPwdByUid(uid, pwd);

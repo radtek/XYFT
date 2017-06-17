@@ -26,4 +26,20 @@ namespace OWZX.Web.Models
         public PageModel PageModel { get; set; }
         public List<MD_Bett> BettList { get; set; }
     }
+    /// <summary>
+    ///提现记录
+    /// </summary>
+    public class DrawListModel
+    {
+        public PageModel PageModel { get; set; }
+        public List<DrawInfoModel> DrawList { get; set; }
+    }
+    /// <summary>
+    ///充值记录
+    /// </summary>
+    public class RechargeListModel
+    {
+        public PageModel PageModel { get; set; }
+        public List<MD_Remit> RechargeList { get; set; }
+    }
 }

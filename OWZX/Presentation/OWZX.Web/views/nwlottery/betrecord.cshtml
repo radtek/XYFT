@@ -5,10 +5,46 @@
 <ul class="bet-detail">
     @foreach (OWZX.Model.MD_Bett info in Model)
     {
+        string room=string.Empty ;
+        string item = string.Empty;
+        switch (info.Roomid)
+        { 
+            case 0:
+                room = "冠亚和";
+                item = info.Item;
+                break;
+            case 1: room = "第一名"; item = ValidateHelper.IsNumeric(info.Item)==true?info.Item+"号车":info.Item;
+                break;
+            case 2: room = "第二名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 3: room = "第三名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 4: room = "第四名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 5: room = "第五名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 6: room = "第六名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 7: room = "第七名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 8: room = "第八名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 9: room = "第九名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+            case 10: room = "第十名"; item = ValidateHelper.IsNumeric(info.Item) == true ? info.Item + "号车" : info.Item;
+                break;
+                 
+        }
         <li>
-            第一名1号车下注50021212元。
+
+            <text>@room @item 下注 <span style="color: #DA2020;">@info.Money</span>元</text>
         </li>
        
     }
-
+    @if (Model.Count == 0)
+    {
+        <li>
+             暂无下注记录
+        </li>
+    }
 </ul>

@@ -38,7 +38,10 @@ namespace OWZX.Model
             get { return uid; }
             set { uid = value; }
         }
-
+        /// <summary>
+        /// 账户id（对应用户银行卡列表）
+        /// </summary>
+        public int Drawaccid { get; set; }
         private string mobile;
         /// <summary>
         /// 提现手机号

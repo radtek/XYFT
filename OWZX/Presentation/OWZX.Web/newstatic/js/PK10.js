@@ -5,7 +5,8 @@ $(function() {
 		$("#transport-options-p,.arrow").hide();
 		$("#transport-options-o,.arrow").hide();
         $(".keyboards").hide();
-        $(".auto").css("border","none").text("自定义金额");
+        $(".auto").css("border", "none").text("自定义金额");
+        $('html, body').animate({ scrollTop: 0 });
 	})
 	
 	$(".cut-choice li:nth-child(2)").click(function() {
@@ -14,18 +15,33 @@ $(function() {
 		$("#transport-options-p,.arrow").hide();
 		$("#transport-options-o,.arrow").hide();
         $(".keyboards").hide();
-        $(".auto").css("border","none").text("自定义金额");
+        $(".auto").css("border", "none").text("自定义金额");
+        $('html, body').animate({ scrollTop: 0 });
 	})
 	$(".rule-close").click(function() {
 		$(".rule").css("display", "none");
 	})
-	$(".cut-choice li:last-child").click(function() {
+	$(".cut-choice li:last-child").click(function ()
+	{
+	    if (uid == -1)
+	    {
+	        window.location.href = "/account/login";
+	        return;
+	    }
 		$(".bet").toggle();
 		$(".chip-set,.rule").css("display", "none");
 		$("#transport-options-p,.arrow").hide();
 		$("#transport-options-o,.arrow").hide();
         $(".keyboards").hide();
-        $(".auto").css("border","none").text("自定义金额");
+        $(".auto").css("border", "none").text("自定义金额");
+        if (uid > 0)
+        {
+            $.get("/nwlottery/bettlist", { "expect": expect }, function (data)
+            {
+                $(".bet").html(data);
+                $('html, body').animate({ scrollTop: 0 });
+            })
+        }
 	})
 	$(".bet-close").click(function() {
 		$(".bet").css("display", "none");

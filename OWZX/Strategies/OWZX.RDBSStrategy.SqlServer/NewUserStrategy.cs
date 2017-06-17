@@ -320,8 +320,9 @@ end catch
 
             if(@status=2)
             begin
-            INSERT INTO owzx_accountchange([uid],[changemoney],[remark])
-            select (select uid from owzx_userback where backid=@backid),@money,'回水'
+            INSERT INTO owzx_accountchange([uid],[changemoney],[remark],accounted)
+            select (select uid from owzx_userback where backid=@backid),@money,'回水',
+(select isnull(totalmoney,0) from owzx_users a where a.uid=(select uid from owzx_userback where backid=@backid))
             end
             
             select '修改成功' state

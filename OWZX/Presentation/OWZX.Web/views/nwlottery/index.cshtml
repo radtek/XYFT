@@ -20,6 +20,7 @@
     <link href="~/newstatic/css/css/prettify.css" rel="stylesheet">
     <link href="~/newstatic/css/css/jquery.toolbar.css" rel="stylesheet" />
     <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    
     <style type="text/css">
         .ifsfz {
             position: fixed;
@@ -175,14 +176,14 @@
 </head>
 <body style="height:auto">
     <!-- 赛车动画 -->
-    <div class="car">
-        @if(@ViewData["lottery"].ToString()=="10")
+    <div class="car" >
+        @if (@ViewData["lottery"].ToString() == "10")
         {
-        <iframe class="ifsfz" src="https://www.1399p.com/mobile/pk10/" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="background:white;"></iframe>
+            <iframe class="ifsfz" src="https://www.1399p.com/mobile/pk10/" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="background:#888;"></iframe>
         }
         else if (@ViewData["lottery"].ToString() == "11")
         {
-        <iframe class="ifsfz" src="http://www.1399p.com/xyft/h5shipin/" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+            <iframe class="ifsfz" src="http://www.1399p.com/xyft/h5shipin/" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="background:#888;"></iframe>
         }
         <div class="count">
             <div class="ct-down">
@@ -217,7 +218,7 @@
         <div class="arrow" style="display: none;"></div>
         <div class="mid-pk">
             <!-- 筹码设置 -->
-            <div class="chip-set" style="display: none;margin-top: 35px;">
+            <div class="chip-set" style="display: none;">
                 <i class="close"></i>
                 <ul class="chip-money">
                     <li>
@@ -254,21 +255,7 @@
             <!-- 玩法规则 -->
             <!-- 下注明细 -->
             <div class="bet" style="display: none;">
-                <ul class="bet-detail">
-                    <li>
-                        第一名1号车下注50021212元。
-                    </li>
-                    <li>
-                        第一名1号车下注500元。
-                    </li>
-                    <li>
-                        第一名1号车下注500元。
-                    </li>
-                    <li>
-                        第一名1号车下注500元。
-                    </li>
-
-                </ul>
+                
             </div>
             <!-- 下注明细 -->
             <!-- 下注 -->
@@ -276,7 +263,7 @@
                 <div class="champion">
                     <div class="cha-first">
                         <div class="one">跑第一名：</div>
-                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="大" data-num="1">大</i><br /><span>1.9倍</span></div>
+                        <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left " data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa"data-type="大" data-num="1">大</i><br /><span>1.9倍</span></div>
                         <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="小" data-num="1">小</i><br /><span>1.9倍</span></div>
                         <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="单" data-num="1">单</i><br /><span>1.9倍</span></div>
                         <div data-toolbar="transport-options-o" class="btn-toolbar btn-toolbar-info-o pull-left" data-toolbar-style="info-o"><a class="bar-a"></a><i class="fa" data-type="双" data-num="1">双</i><br /><span>1.9倍</span></div>
@@ -563,6 +550,7 @@
     <script src="~/scripts/lottery.js"></script>
     <link href="~/components/layer/skin/layer.css" rel="stylesheet" />
     <script src="~/components/layer/layer.js"></script>
+
     <!-- <script src="js/jquery.toolbar.js"></script> -->
     <!-- <script type="text/javascript">
                 var zttz=0;
@@ -586,7 +574,75 @@
                     $(".bet-money").text(my[1]);
                 }
             });
+
+            var list='@ViewData["betlist"]';
+
+            if(list!="")
+            {
+                var dt=JSON.parse(list);
+                $.each(dt,function(){
+                    $(".champion i[data-num='"+this.Roomid+"'][data-type='"+this.Item+"']").parent().find("a").text(this.Money);
+                    $(".champion i[data-num='"+this.Roomid+"'][data-type='"+this.Item+"']").parent().unbind().on("click",function(){
+                        btnToolbarIndex(2,$(this));
+                    })
+                });
+            }
         });
+
+        function btnToolbarIndex(flag,_this){
+            $(".keyboards").hide();
+            $(".auto").css("border","none").text("自定义金额");
+            if (flag==1) {//初次点击车号
+                //显示待选数字
+                $(".btn-toolbar").removeClass("cur");
+                $(_this).addClass("cur");
+                $("#transport-options-p,.arrow").hide();
+                $("#transport-options-o,.arrow").show();
+                $("#transport-options-o").removeClass("add");
+
+                if (_this.siblings(".one").text()=="跑第一名：") {
+                    $(".arrow").css({"position":"absolute","top":_this.offset().top-223,"left":_this.offset().left+_this.width()/4,"border-bottom":"10px solid #222","border-top":"none"}).show();
+                    if (_this.offset().left/$(document).width()<0.2) {
+                        $("#transport-options-o").css({"left":_this.offset().left,"top":_this.offset().top-215,"right":"auto"});
+                    }else if(_this.offset().left/$(document).width()>0.6){
+                        $("#transport-options-o").css({"right":$(document).width()-_this.offset().left-_this.width(),"top":_this.offset().top-215,"left":"auto"});
+                    }else{
+                        $("#transport-options-o").css({"left":_this.offset().left-90,"top":_this.offset().top-215,"right":"auto"});
+                    }
+                }else{      
+                    $(".arrow").css({"position":"absolute","top":_this.offset().top-272,"left":_this.offset().left+_this.width()/4,"border-top":"10px solid #222","border-bottom":"none"}).show();
+                    if (_this.offset().left/$(document).width()<0.2) {
+                        $("#transport-options-o").css({"left":_this.offset().left,"top":_this.offset().top-304,"right":"auto"});
+                    }else if(_this.offset().left/$(document).width()>0.6){
+                        $("#transport-options-o").css({"right":$(document).width()-_this.offset().left-_this.width(),"top":_this.offset().top-304,"left":"auto"});
+                    }else{
+                        $("#transport-options-o").css({"left":_this.offset().left-90,"top":_this.offset().top-304,"right":"auto"});
+                    }
+                }
+
+            }else if (flag==2) {//已投注后点击车号
+                //显示撤销和加注
+                $("#transport-options-o,.arrow").hide();
+                $("#transport-options-p").show();
+                $(".btn-toolbar").removeClass("cur");
+                $(_this).addClass("cur");
+                if (_this.siblings(".one").text()=="跑第一名：") {
+                    $(".arrow").css({"position":"absolute","top":_this.offset().top-223,"left":_this.offset().left+_this.width()/4,"border-bottom":"10px solid #222","border-top":"none"}).show();
+                    if (_this.offset().left/$(document).width()<0.5) {
+                        $("#transport-options-p").css({"left":_this.offset().left,"top":_this.offset().top-215,"right":"auto"});
+                    }else if(_this.offset().left/$(document).width()>0.5){
+                        $("#transport-options-p").css({"right":$(document).width()-_this.offset().left-_this.width(),"top":_this.offset().top-215,"left":"auto"});
+                    }	    
+                }else{      
+                    $(".arrow").css({"position":"absolute","top":_this.offset().top-272,"left":_this.offset().left+_this.width()/4,"border-top":"10px solid #222","border-bottom":"none"}).show();
+                    if (_this.offset().left/$(document).width()<0.5) {
+                        $("#transport-options-p").css({"left":_this.offset().left,"top":_this.offset().top-304,"right":"auto"});
+                    }else if(_this.offset().left/$(document).width()>0.5){
+                        $("#transport-options-p").css({"right":$(document).width()-_this.offset().left-_this.width(),"top":_this.offset().top-304,"left":"auto"});
+                    }	
+                }
+            }
+        }
     </script>
 </body>
 </html>

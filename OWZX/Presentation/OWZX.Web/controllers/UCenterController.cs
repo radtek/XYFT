@@ -898,6 +898,51 @@ namespace OWZX.Web.Controllers
             return View();
         }
 
+        #region 钱包
+        public ActionResult MyBag()
+        {
+            ViewData["money"] = Users.GetPartUserById(WorkContext.Uid).TotalMoney;
+            return View();
+        }
+        public ActionResult Draw()
+        {
+            ViewData["money"] = Users.GetPartUserById(WorkContext.Uid).TotalMoney;
+           List<DrawInfoModel> list= Recharge.GetDrawList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + " and CONVERT(varchar(10),a.addtime,120)=CONVERT(varchar(10),getdate(),120)");
+           int count=3;
+            if(list==null || list.Count==0)
+                count=3;
+            else if(list.Count>=3)
+                count=0;
+            else
+                count=3-list.Count;
+            ViewData["drawcount"] = count;
+            return View();
+        }
+        public ActionResult DrawList()
+        {
+            List<DrawInfoModel> list = Recharge.GetDrawList(1, 50, " where a.uid=" + WorkContext.Uid.ToString());
+            DrawListModel draw = new DrawListModel {
+                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0),
+                DrawList=list
+            };
+            return View(draw);
+        }
+
+        public ActionResult UserRecharge()
+        {
+            return View();
+        }
+        public ActionResult UserRechargeList()
+        {
+            List<MD_Remit> list = NewUser.GetUserRemitList(1, 50, " where a.uid=" + WorkContext.Uid.ToString());
+            RechargeListModel recharge = new RechargeListModel
+            {
+                PageModel = new PageModel(15, 1, list.Count > 0 ? list[0].TotalCount : 0),
+                RechargeList = list
+            };
+            return View(recharge);
+        }
+        #endregion
         protected sealed override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);

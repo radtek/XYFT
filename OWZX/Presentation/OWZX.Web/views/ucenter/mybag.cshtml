@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "mybag";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
+    <script type="text/javascript" src="/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style>
+        .ico3 {
+            display: inline-block;
+            height: 2em;
+            width: 2em;
+            background: url(/newstatic/img/ico3.jpg) no-repeat;
+            background-size: cover;
+        }
+
+        body {
+            background: #F0F0F0;
+        }
+
+        .wallet .uctop {
+            background: url(/newstatic/img/img_qb_yue_di.png)no-repeat 0 -3em;
+            background-size: 100% auto;
+            padding: 2em 1em;
+            margin: 1em .6em;
+            border-radius: .5em;
+        }
+
+        .wallet .head {
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+            .wallet .head div {
+                display: inline-block;
+                color: #fff;
+                line-height: 1.5em;
+                margin-top: 0em;
+                font-size: 1.2em; /*font-weight: bold;*/
+                font-family: "微软雅黑";
+            }
+
+            .wallet .head img {
+                width: 1.5em;
+                height: 1.5em;
+                margin: 0.5em 1em 0;
+                font-size: 1.5em;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+        .wallet .wamenu {
+            padding: 0 1em;
+        }
+
+            .wallet .wamenu li {
+                font-size: 1.1em;
+                height: 3em;
+                line-height: 3em;
+                background: #fff;
+                margin-bottom: .5em;
+                padding: 0 1.3em;
+                font-weight: 500;
+                border-radius: .2em;
+            }
+
+                .wallet .wamenu li i {
+                    float: left;
+                    margin: .4em 1em 0 .5em;
+                }
+
+                .wallet .wamenu li:nth-child(1) i {
+                    background-position: 0 -16em;
+                    background-size: cover;
+                }
+
+                .wallet .wamenu li:nth-child(2) i {
+                    background-position: 0 -18em;
+                    background-size: cover;
+                }
+
+                .wallet .wamenu li:nth-child(3) i {
+                    background-position: 0 -20em;
+                    background-size: cover;
+                }
+
+                .wallet .wamenu li:nth-child(4) i {
+                    background-position: 0 -22em;
+                    background-size: cover;
+                }
+
+                .wallet .wamenu li:nth-child(5) i {
+                    background-position: 0 -24em;
+                    background-size: cover;
+                }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>钱包</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="wallet">
+        <div class="uctop">
+            <div class="head">
+                <img src="/newstatic/img/wallet.png">
+                <div>
+                    <span style="font-size:0.8em;">钱包余额</span><br>
+                   @ViewData["money"]
+                </div>
+            </div>
+        </div>
+        <ul class="wamenu">
+            <li onclick="window.location.href='/ucenter/banklist'"><i class="ico3"></i> <a>我的银行卡</a></li>
+            <li onclick="window.location.href='../Change/index.html'"><i class="ico3"></i> <a>充值</a></li>
+            <li onclick="window.location.href='/ucenter/draw'"><i class="ico3"></i> <a>提现</a></li>
+            <li onclick="window.location.href='changelist.html'"><i class="ico3"></i> <a>充值记录</a></li>
+            <li onclick="window.location.href = '/ucenter/drawlist'"><i class="ico3"></i> <a>提现记录</a></li>
+        </ul>
+    </div>
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+</body>
+</html>
+

@@ -1,23 +1,21 @@
-﻿@model BettListModel
+﻿@model RechargeListModel
 @{
-    ViewBag.Title = "gamelist";
+    ViewBag.Title = "userrechargelist";
 }
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
     <link rel="stylesheet" type="text/css" href="/newstatic/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
-    <script type="text/javascript" src="/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
     <style>
-        body {
-            background-color: #F0F0F0;
-        }
-
         .main p {
             line-height: 1.6em;
             background: #fff;
@@ -29,7 +27,7 @@
             .main p span.gm {
                 font-size: 1.2em;
                 line-height: 1.8em;
-                color: #FF635E;
+                color: #FD645E;
             }
 
             .main p span.yk {
@@ -73,53 +71,56 @@
 
 <body>
     <header>
-        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>游戏记录</h2>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>充值记录</h2>
     </header>
     <div class="headblank"></div>
     <div class="main table">
-        @if(Model.BettList.Count>0)
-        {
-            foreach(OWZX.Model.MD_Bett info in Model.BettList)
+        <table class="cha">
+            <tr>
+                <th>金额</th>
+                <th>变动时间</th>
+                <th>状态</th>
+            </tr>
+            @foreach (OWZX.Model.MD_Remit info in Model.RechargeList)
             {
-                <p>
-                    <span class="gm">@info.Lottery -- @info.Lotterynum 期
-                    </span>
-                    @if (info.luckresult > 0)
-                    {
-                        <span style="float: right;color: #00B930;">
-                            +@info.luckresult
-                        </span>
-                    }
-                    else
-                    {
-                        <span style="float: right;color: #D81E06;">
-                            -@info.luckresult
-                        </span>
-                    }<br>
-                    开奖号码：@info.OpenCode<br>
-                    投注号码：@info.Item<br>
-                    投注金额：@info.Money<br>
-                    中奖金额：@info.luckresult<span style="float:right;margin-right:1em;">@info.Addtime.ToString("yyyy-MM-dd HH:mm:ss")<br>
-                </p>
+                <tr>
+                    <td>@info.Money</td>
+                    <td>@info.Addtime.ToString("MM-dd HH:mm")</td>
+                    <td>
+                        @switch (info.Status)
+                        {
+                        case 0:
+                            @:"待审核";
+                        break;
+                        case 1: @:"审核中";
+                        break;
+                        case 2: @:"充值成功";
+                        break;
+                        case 3: @:"充值失败";
+                        break;
+                        }
+                    </td>
+                </tr>
             }
-            <p id="showlists"><div class='ajaxtips'style='display:none;font-size:1.1em;color:#888;'>加载中.....</div></p>
-        }else
-        {
-          <div style="color:#888;height:1000px;padding-top:5px;">  暂无数据</div>
-        }
+            <tr id="showlists"><td colspan="3"><div class='ajaxtips' style='display:none;font-size:1.1em;color:#888;'>加载中.....</div></td></tr>
+        </table>
+
+
     </div>
+   
     <div class="footblank"></div>
     <!-- 底部导航 -->
     @Html.Partial("_footer")
     <!-- 底部导航 -->
-   
     <script>
     var p = @Model.PageModel.PageIndex;
-        var total=@Model.PageModel.TotalPages;
+    var total=@Model.PageModel.TotalPages;
+
     if (p == "") p = 1;
     var stop = true;//触发开关，防止多次调用事件
     $(".table").scroll(function ()
-    {if(p==total) return;
+    { 
+        if(p==total) return;
         //当内容滚动到底部时加载新的内容 100当距离最底部100个像素时开始加载.
         if ($(this).scrollTop() + $(window).height() + 100 >= $(document).height() && $(this).scrollTop() > 100)
         {
@@ -129,33 +130,15 @@
                 p = p + 1;//当前要加载的页码
                 //加载提示信息
                 $(".ajaxtips").show();
-                $.get("/ucenter/gamelist?isref=1&page="+p, function (data)
+                $.get("/api/userremit?page="+p, function (data)
                 {
                     var nwbet="";
                     var dt=JSON.parse(data);
                     $.each(dt,function(){
-
-                        var my="";
-                        if (this.Money > 0)
-                        {
-                            my='<span style="color:#FA322C">+'+this.Money+'</span>';
-                        }
-                        else
-                        {
-                            my='<span style="color:#00FF00">'+this.Money+'</span>';
-                        }
-                        nwbet+="<p>";
-                        nwbet+='<span class="gm">'+this.Lottery+' -- '+this.Lotterynum+' 期</span>';
-                        if(this.luckresult > 0)
-                        {
-                            nwbet+='<span style="float: right;color: #00B930;">+'+this.Money+'</span><br>';
-                        }else
-                        {
-                            nwbet+='<span style="float: right;color: #D81E06;">-'+this.Money+'</span><br>';
-                        }
-                        nwbet+="开奖号码："+this.OpenCode+"<br>投注号码："+this.Item+"<br>投注金额："+this.Money+"<br>中奖金额："+this.luckresult;
-                        nwbet+='<span style="float:right;margin-right:1em;">'+this.Addtime+'<br>';
-                        nwbet+="</p>";
+                        nwbet+="<tr>";
+                        nwbet+='<td >'+this.realmoney+'</td><td >'+this.addtime+'</td>';
+                        nwbet+='<td >'+this.state+'</td>';
+                        nwbet+="</tr>";
                     });
                     $(".ajaxtips").hide();
                     $("#showlists").before(nwbet);//把新的内容加载到内容的后面

@@ -24,7 +24,7 @@ namespace OWZX.RDBSStrategy.SqlServer
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public DataSet LastLottery(string type)
+        public DataSet LastLotteryForAPI(string type)
         {
             lock (lkstate)
             {
@@ -79,74 +79,83 @@ namespace OWZX.RDBSStrategy.SqlServer
                 return RDBSHelper.ExecuteDataset(sql);
             }
         }
-//        /// <summary>
-//        /// 获取最新彩票记录
-//        /// </summary>
-//        /// <param name="type"></param>
-//        /// <returns></returns>
-//        public DataTable LastLottery(string type)
-//        {
-//            lock (lkstate)
-//            {
-//                string sql = string.Format(@" 
-//                --逻辑：北京 投注4:30s 封盘30s ,到开奖时间加载新的一期；
-//                --加拿大 投注3分，封盘30s,到开奖时间加载新的一期；
-//                declare @type int ={0}
-//                declare @min varchar(5), @sec varchar(5),@expect varchar(50),@totalsec varchar(5)
-//                if exists(select top 1 1 from owzx_lotteryrecord where type=@type and status in (0,1) and 
-//                DATEDIFF(second,opentime,getdate()) between -30 and 0  order by lotteryid )
-//                begin
-//                select expect,DATEDIFF(second,opentime,getdate()) time   from owzx_lotteryrecord where type=@type and status  in (0,1) and 
-//                DATEDIFF(second,opentime,getdate()) between -30 and 0  order by lotteryid 
-//                return
-//                end
-//
-//                if(@type=10) 
-//                begin
-//
-//                if exists(select top 1 1 from owzx_lotteryrecord where type=10 and status=0 and 
-//                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<-30) order by lotteryid )
-//                begin
-//                select top 1 @expect=expect, @min=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))/60),
-//                @sec=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))%60),
-//                @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
-//                from owzx_lotteryrecord where type=@type and status=0 and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<-30)
-//                order by lotteryid
-//
-//                select @expect expect,@totalsec time
-//                --select @expect expect,(replicate('0',2-len(@min))+rtrim(@min)) +'分'+(replicate('0',2-len(@sec))+rtrim(@sec)) +'秒' time
-//                end
-//                else
-//                begin
-//                select 0 expect,'维护中' time
-//                end
-//
-//                end
-//                else if(@type=11) 
-//                begin
-//
-//                if exists(select top 1 1 from owzx_lotteryrecord where type=11 and status=0 and 
-//                (DATEDIFF(second,opentime,getdate()) >= -210 and DATEDIFF(second,opentime,getdate())<-30) order by lotteryid )
-//                begin
-//                select top 1 @expect=expect, @min=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))/60),
-//                @sec=CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime))%60),
-//                @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),dateadd(SECOND,-30,opentime)))
-//                from owzx_lotteryrecord where type=11 and status=0 and (DATEDIFF(second,opentime,getdate()) >= -210 and DATEDIFF(second,opentime,getdate())<-30)
-//                order by lotteryid
-//
-//                select @expect expect,@totalsec time
-//                --select @expect expect,(replicate('0',2-len(@min))+rtrim(@min)) +'分'+(replicate('0',2-len(@sec))+rtrim(@sec)) +'秒' time
-//                end
-//                else
-//                begin
-//                select 0 expect,'维护中' time
-//                end
-//
-//                end
-//                ", type);
-//                return RDBSHelper.ExecuteTable(sql, null)[0];
-//            }
-//        }
+
+        /// <summary>
+        /// 获取最新彩票记录
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public DataSet LastLottery(string type)
+        {
+            lock (lkstate)
+            {
+                string sql = string.Format(@" 
+                --逻辑：北京 投注4:30s 封盘30s ,到开奖时间加载新的一期；
+                --加拿大 投注3分，封盘30s,到开奖时间加载新的一期；
+                declare @type int ={0}
+                declare @min varchar(5), @sec varchar(5),@expect varchar(50),@totalsec varchar(5)
+
+                select top 1 opencode from owzx_lotteryrecord where type=10 and status=2 order by lotteryid desc
+
+                if(@type=10) 
+                begin
+
+                if exists(select top 1 1 from owzx_lotteryrecord where type=10 and 
+                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0) order by lotteryid )
+                begin
+                select top 1 @expect=expect, 
+                @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
+                from owzx_lotteryrecord where type=10  and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0)
+                order by lotteryid
+
+                select @expect expect,@totalsec time
+
+                end
+                else if exists(select 1 from  owzx_lotteryrecord where type=10 and  status=0 
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120))
+                begin
+                select top 1 @expect=expect,@totalsec =CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
+                from  owzx_lotteryrecord where type=10 and  status=0 
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120)
+                select @expect expect,@totalsec time
+                end
+                else
+                begin
+                select '?' expect,'维护中' time
+                end
+
+                end
+                else if(@type=11) 
+                begin
+
+                if exists(select top 1 1 from owzx_lotteryrecord where type=11 and 
+                (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0) order by lotteryid )
+                begin
+                select top 1 @expect=expect, 
+                @totalsec= CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
+                from owzx_lotteryrecord where type=11 and (DATEDIFF(second,opentime,getdate()) >= -300 and DATEDIFF(second,opentime,getdate())<=0)
+                order by lotteryid
+
+                select @expect expect,@totalsec time
+                end
+                else if exists(select 1 from  owzx_lotteryrecord where type=11 and  status=0 
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120))
+                begin
+                select top 1 @expect=expect,@totalsec =CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
+                from  owzx_lotteryrecord where type=11 and  status=0 
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120)
+                select @expect expect,@totalsec time
+                end
+                else
+                begin
+                select '?' expect,'维护中' time
+                end
+
+                end
+                ", type);
+                return RDBSHelper.ExecuteDataset(sql);
+            }
+        }
 
         /// <summary>
         /// 添加新的竞猜记录
@@ -1053,16 +1062,16 @@ begin tran t1
 INSERT INTO owzx_bett([uid],[lotteryid],roomid,[bttypeid],[lotterynum],[money],isread)
     select rtrim(@account),@lotteryid,@roomid,
    (select bttypeid from owzx_lotteryset where roomtype=20 and rtrim(item)=@bttype),@lotterynum,@money,0
-   
+  
+
+--账变记录
+INSERT INTO [owzx_accountchange]([uid],[changemoney],[remark],accounted)
+select rtrim(@account),-@money,'投注',(select isnull(totalmoney,0) from owzx_users where uid=rtrim(@account))
 
 --扣除用户金额
 update a 
 set a.totalmoney=a.totalmoney-@money
 from owzx_users a where uid=rtrim(@account)
-
---账变记录
-INSERT INTO [owzx_accountchange]([uid],[changemoney],[remark])
-select rtrim(@account),-@money,'投注'
 
 select '添加成功' state
 commit tran t1
@@ -1206,13 +1215,13 @@ drop table #list
 
 SELECT ROW_NUMBER() over(order by a.bettid desc) id,
 a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
-e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode
+e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,a.roomid
 into  #list
 FROM owzx_bett a
 join owzx_users b on a.uid=b.uid
 join owzx_lotteryset c on a.bttypeid=c.bttypeid
 join owzx_lotteryrecord aa on a.lotterynum=aa.expect
-left join owzx_bettprofitloss cc on a.uid=cc.uid and aa.lotteryid=cc.lotteryid
+left join owzx_bettprofitloss cc on a.bettid=cc.bettid
 join owzx_sys_basetype e on a.lotteryid=e.systypeid
 join owzx_sys_basetype f on c.type=f.systypeid
 {0}

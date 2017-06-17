@@ -479,21 +479,20 @@ end catch
         public string AddDraw(DrawInfoModel draw)
         {
             DbParameter[] parms = {
-                                       GenerateInParam("@account", SqlDbType.VarChar, 15, draw.Account),
-                                       GenerateInParam("@money", SqlDbType.Int, 4, draw.Money)
+                                       //GenerateInParam("@account", SqlDbType.VarChar, 15, draw.Account),
+                                       GenerateInParam("@uid", SqlDbType.Int, 4, draw.Uid),
+                                       GenerateInParam("@money", SqlDbType.Int, 4, draw.Money),
+                                       GenerateInParam("@Drawaccid", SqlDbType.Int, 4, draw.Drawaccid),
                                       
                                     };
             string commandText = string.Format(@"
 begin try
 begin tran t1
-if exists(select 1 from {0}users where mobile=@account and totalmoney>=@money)
+if exists(select 1 from {0}users where uid=@uid and totalmoney>=@money)
 begin
 
-declare @uid int
-set @uid=(select uid from {0}users where mobile=@account)
-
-INSERT INTO [{0}userdraw]([uid],[money],[state])
-VALUES (@uid,@money,0)
+INSERT INTO [{0}userdraw]([uid],[money],[state],Drawaccid)
+VALUES (@uid,@money,0,@Drawaccid)
 
 
 declare @count int
@@ -505,23 +504,23 @@ and CONVERT(varchar(10),a.addtime,120)=CONVERT(varchar(10),getdate(),120)
 if(@count>3)
 begin
 --每天免费3次,超过收取1%手续费
-update a set  a.totalmoney=a.totalmoney-b.money-b.money*1*0.01
-from {0}users a 
-join {0}userdraw b on a.uid=b.uid and a.uid=@uid
 
-INSERT INTO owzx_accountchange([uid],[changemoney],[remark])
-select @uid ,-(@money+@money*1*0.01),'提现'
+INSERT INTO owzx_accountchange([uid],[changemoney],[remark],accounted)
+select @uid ,-(@money+@money*1*0.01),'提现',(select isnull(totalmoney,0) from owzx_users where uid=@uid)
 
+update a set  a.totalmoney=a.totalmoney-@money-@money*1*0.01
+from {0}users a where a.uid=@uid
 
 end
 else
 begin
-update a set  a.totalmoney=a.totalmoney-b.money
-from {0}users a 
-join {0}userdraw b on a.uid=b.uid and a.uid=@uid
+INSERT INTO owzx_accountchange([uid],[changemoney],[remark],accounted)
+select @uid ,-@money,'提现',(select isnull(totalmoney,0) from owzx_users where uid=@uid)
 
-INSERT INTO owzx_accountchange([uid],[changemoney],[remark])
-select @uid ,-@money,'提现'
+update a set  a.totalmoney=a.totalmoney-@money
+from {0}users a where a.uid=@uid
+
+
 
 end
 
@@ -590,24 +589,29 @@ and CONVERT(varchar(10),a.addtime,120)=CONVERT(varchar(10),getdate(),120)
 if(@count>3)
 begin
 --每天免费3次,超过收取1%手续费
+INSERT INTO owzx_accountchange([uid],[changemoney],[remark],accounted)
+select uid ,money+money*1*0.01,'提现失败',(select isnull(totalmoney,0) from owzx_users a where a.uid=uid)
+from owzx_userdraw where drawid=@drawid
+
 update a set  a.totalmoney=a.totalmoney+b.money+b.money*1*0.01
 from {0}users a 
 join {0}userdraw b on a.uid=b.uid and b.drawid=@drawid
 
-INSERT INTO owzx_accountchange([uid],[changemoney],[remark])
-select uid ,money+money*1*0.01,'提现失败'
-from owzx_userdraw where drawid=@drawid
+
 
 end
 else
 begin
+
+INSERT INTO owzx_accountchange([uid],[changemoney],[remark],accounted)
+select uid ,money,'提现失败',(select isnull(totalmoney,0) from owzx_users a where a.uid=uid)
+from owzx_userdraw where drawid=@drawid
+
 update a set  a.totalmoney=a.totalmoney+b.money
 from {0}users a 
 join {0}userdraw b on a.uid=b.uid and b.drawid=@drawid
 
-INSERT INTO owzx_accountchange([uid],[changemoney],[remark])
-select uid ,money,'提现失败'
-from owzx_userdraw where drawid=@drawid
+
 
 end
 
@@ -692,7 +696,7 @@ join owzx_userdrawaccount c on a.uid=c.uid
 --(case  when [state]='0' or [state]='1' then totalmoney+100 else totalmoney end ) 
 if(@pagesize=-1)
 begin
-select cast(id as int) id,drawid,[uid],[money],case state when '0' then '待审核' when '1' then '审核中' when '2' then '审核完成' when '3' then '审核失败' end state,
+select cast(id as int) id,drawid,[uid],[money],case state when '0' then '待审核' when '1' then '审核中' when '2' then '提现成功' when '3' then '提现失败' end state,
 isnull([exception],'') exception,[addtime] ,[updatetime],username,card,cardnum,cardaddress,mobile,
 totalmoney,
 (select count(1)  from #list) TotalCount from #list
@@ -700,7 +704,7 @@ end
 else
 begin
 select  cast(id as int) id,drawid,[uid],[money],
-case state when '0' then '待审核' when '1' then '审核中' when '2' then '审核完成' when '3' then '审核失败' end state,
+case state when '0' then '待审核' when '1' then '审核中' when '2' then '提现成功' when '3' then '提现失败' end state,
 isnull([exception],'') exception,[addtime] ,[updatetime],username,card,cardnum,cardaddress,mobile,
 totalmoney,
 (select count(1)  from #list) TotalCount from #list where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex

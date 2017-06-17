@@ -71,9 +71,10 @@
     top: 0px;
 }
 .rule,.bet{
-	bottom: 0;
+	/*bottom: 0;*/
     overflow-y: auto;
     overflow-x: hidden;
+    /*padding-bottom: 30px;*/
 }
 .bet{background: #F0F0F0;}
 .chip-set:before{
@@ -104,27 +105,29 @@
 	height: 2.5em;
 	background-size: cover;
 }
-.chip-set .chip-money ,.self .chip-money{
+.chip-set .chip-money,.self .chip-money{
 	width: 80%;
-	margin: .5em auto 0;
+	margin: .5em auto .8em;
 	text-align: center;
 }
 .chip-money li{
 	width: 100%;
 	height: 3em;
+	margin-bottom: .4em;
 }
+.number-cur li{width:40px;float: left;height: 40px;}
 .chip-money li span{
 	display: inline-block;
-	width: 30px;
+	width: 39px;
 	height: 30px;
 	line-height: 30px;
-	margin: 0.2em .2em;
+	margin: 2px 2px;
 	border: 1px solid #000;
-	border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	-ms-border-radius: 20px;
-	-o-border-radius: 20px;
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-ms-border-radius: 6px;
+	-o-border-radius: 6px;
 	color: #000;
 	text-align: center;
 }
@@ -159,9 +162,12 @@
 	margin: 0 .5em .5em;
 }
 .chip-set .define,.self .define{
-	margin-left: 34%;
 	background:#f00;
 	color: #fff;
+	border-radius: 3px;
+	float: right;
+	margin-right: 40px;
+	margin-top: -40px;
 }
 .self{z-index: 9999999;}
 /*===========================================================
@@ -190,7 +196,7 @@
  * 下注明细
  *=================================================================*/
 .bet-detail{
-	max-height: 26rem;
+	max-height: 20rem;
 	overflow-y:auto;
 	overflow-x: hidden;
 	width: 98%;
@@ -200,7 +206,7 @@
 .bet-detail li{
 	width: 100%;
 	margin: .2em 0 0;
-	padding: 0 .5em;
+	padding: .5em .5em;
 	background: #fff;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -250,35 +256,37 @@
 	margin-bottom: 0.9em;
 }
 .cha-car div:nth-child(1){
-	background: #d6d637;
+	background: #FEFD02;
 }
 .cha-car div:nth-child(2){
-	background: #0099FF;
+	background: #008CFA;
 }
 .cha-car div:nth-child(3){
-	background: #666666;
+	background: #494949;
 }
 .cha-car div:nth-child(4){
-	background: #FF9900;
+	background: #FC7000;
 }
 .cha-car div:nth-child(5){
-	background: #66CCCC;
+	background: #7DFFFA;
 }
 .cha-car div:nth-child(6){
-	background: #9075ff;
+	background: #4F31F5;
 }
 .cha-car div:nth-child(7){
-	background: #CCCCCC;
+	background: #E0E0E0;
 }
 .cha-car div:nth-child(8){
-	background: #ef69e3;
+	background: #ED1E00;
 }
 .cha-car div:nth-child(9){
-	background: #ff7171;
+	background: #550800;
 }
 .cha-car div:nth-child(10){
-	background: #44e244;
+	background: #3FC23E;
 }
+
+
 
 .btn{
 	width: 4em;

@@ -204,7 +204,7 @@ namespace OWZX.Web.controllers
                                 break;
                             case 1: x.State = "审核中";
                                 break;
-                            case 2: x.State = "成功";
+                            case 2: x.State = "充值成功";
                                 break;
                             case 3: x.State = "充值失败";
                                 break;
@@ -213,7 +213,7 @@ namespace OWZX.Web.controllers
 
                     JsonSerializerSettings jsetting = new JsonSerializerSettings();
                     jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Name", "Account", "RealMoney", "Bankname", "Remark", "State", "Addtime" }, true);
-                    jsetting.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                    jsetting.DateFormatString = "MM-dd HH:mm";
                     string data = JsonConvert.SerializeObject(list, jsetting).ToLower();
                     return APIResult("success", data, true);
                 }
@@ -293,44 +293,48 @@ namespace OWZX.Web.controllers
         public ActionResult UserDraw()
         {
             NameValueCollection parmas = WorkContext.postparms;
-            if (parmas.Keys.Count != 4)
-            {
-                return APIResult("error", "缺少请求参数");
-            }
-            string account = parmas["account"];
+            
+            //string account = parmas["account"];
             decimal money = decimal.Parse(parmas["money"]);
 
             if (money < 100)
-                return APIResult("error", "最低请提现100元宝");
+                //return APIResult("error", "最低请提现100元");
+                return Content("2");
 
-            PartUserInfo partUserInfo = Users.GetPartUserByMobile(account);
+            PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
             if (partUserInfo.TotalMoney < money)
-                return APIResult("error", "余额不足");
+                //return APIResult("error", "账户余额不足");
+                return Content("2");
 
             string mdpwd = Users.CreateUserPassword(parmas["password"], partUserInfo.Salt);
 
-            bool pwdres = Recharge.ValidateDrawPwd(account, mdpwd);
+            bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, mdpwd);
             if (!pwdres)
-                return APIResult("error", "提现密码错误");
+                //return APIResult("error", "提现密码错误");
+                return Content("1");
 
             DrawInfoModel draw = new DrawInfoModel
             {
-                Account = account,
+                Uid = WorkContext.Uid,
                 Money = int.Parse(parmas["money"]),
+                Drawaccid = int.Parse(parmas["drawaccid"])
             };
             string addres = Recharge.AddDraw(draw);
             if (addres.EndsWith("成功"))
             {
-                return APIResult("success", "申请成功");
+                return Content("4");
+                //return APIResult("success", "已经提交请等待客服处理");
             }
             else if (addres == "-1")
             {
-                return APIResult("error", "余额不足");
+                //return APIResult("error", "账户余额不足");
+                return Content("2");
             }
             else
             {
-                return APIResult("error", "申请失败");
+                return Content("3");
+                //return APIResult("error", "提交失败");
             }
         }
         /// <summary>
@@ -342,27 +346,28 @@ namespace OWZX.Web.controllers
             try
             {
                 NameValueCollection parmas = WorkContext.postparms;
-                if (parmas.Keys.Count != 3)
-                {
-                    return APIResult("error", "缺少请求参数");
-                }
+                //if (parmas.Keys.Count != 3)
+                //{
+                //    return APIResult("error", "缺少请求参数");
+                //}
                 int pageindex = int.Parse(parmas["page"]);
 
-                List<DrawInfoModel> userdraw = Recharge.GetDrawList(pageindex, 15, " where rtrim(b.mobile)='" + parmas["account"] + "'");
+                //List<DrawInfoModel> userdraw = Recharge.GetDrawList(pageindex, 15, " where rtrim(b.mobile)='" + parmas["account"] + "'");
+                List<DrawInfoModel> userdraw = Recharge.GetDrawList(pageindex, 50, " where a.uid=" + WorkContext.Uid.ToString() );
                 if (userdraw.Count == 0)
                 {
                     return APIResult("error", "暂无提现记录");
                 }
                 else
                 {
-                    userdraw.ForEach((x) =>
-                    {
-                        x.State = x.State.Replace("审核完成", "成功").Replace("审核失败", "提现失败");
-                    });
+                    //userdraw.ForEach((x) =>
+                    //{
+                    //    x.State = x.State.Replace("审核完成", "成功").Replace("审核失败", "提现失败");
+                    //});
 
                     JsonSerializerSettings jsetting = new JsonSerializerSettings();
                     jsetting.ContractResolver = new JsonLimitOutPut(new string[] { "Addtime", "Money", "State" }, true);
-                    jsetting.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                    jsetting.DateFormatString = "MM-dd HH:mm";
                     string data = JsonConvert.SerializeObject(userdraw, jsetting).ToLower();
                     return APIResult("success", data, true);
                 }

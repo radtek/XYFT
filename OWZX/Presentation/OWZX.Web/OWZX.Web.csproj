@@ -582,6 +582,8 @@
     <Content Include="newstatic\img\loginbg2.jpg" />
     <Content Include="newstatic\img\my.png" />
     <Content Include="newstatic\img\my1.png" />
+    <Content Include="newstatic\img\passeord-dot.png" />
+    <Content Include="newstatic\img\password-blink.gif" />
     <Content Include="newstatic\img\s1.png" />
     <Content Include="newstatic\img\s2.png" />
     <Content Include="newstatic\img\shezhi.png" />
@@ -762,11 +764,11 @@
     <Content Include="newstatic\font-awesome-4.3.0\fonts\fontawesome-webfont.eot" />
     <Content Include="newstatic\font-awesome-4.3.0\fonts\fontawesome-webfont.ttf" />
     <Content Include="newstatic\font-awesome-4.3.0\fonts\fontawesome-webfont.woff" />
-    <Content Include="newstatic\font-awesome-4.3.0\fonts\fontawesome-webfont.woff2" />
     <Content Include="newstatic\font-awesome-4.3.0\fonts\FontAwesome.otf" />
     <Content Include="newstatic\fonts\icomoon.eot" />
     <Content Include="newstatic\fonts\icomoon.ttf" />
     <Content Include="newstatic\fonts\icomoon.woff" />
+    <Content Include="newstatic\font-awesome-4.3.0\fonts\fontawesome-webfont.woff2" />
     <None Include="Properties\PublishProfiles\callinfo.pubxml" />
     <Content Include="views\news\details.cshtml" />
     <Content Include="views\home\down.cshtml" />
@@ -791,6 +793,12 @@
     <Content Include="views\ucenter\about.cshtml" />
     <Content Include="views\home\history.cshtml" />
     <Content Include="views\nwlottery\historymessage.cshtml" />
+    <Content Include="views\ucenter\mybag.cshtml" />
+    <Content Include="views\ucenter\draw.cshtml" />
+    <Content Include="views\ucenter\drawlist.cshtml" />
+    <Content Include="views\ucenter\userrecharge.cshtml" />
+    <Content Include="views\ucenter\userrechargelist.cshtml" />
+
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

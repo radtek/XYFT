@@ -24,7 +24,7 @@ namespace OWZX.Web.Controllers
         public ActionResult Index()
         {
             int lotterytype = WebHelper.GetQueryInt("type");
-            
+
             ViewData["lottery"] = lotterytype.ToString();
             DataTable list = Lottery.LastLottery(lotterytype.ToString()).Tables[1];
             if (list.Rows.Count > 0)
@@ -32,7 +32,8 @@ namespace OWZX.Web.Controllers
                 ViewData["lot_msg"] = list.Rows[0]["time"].ToString() == "维护中" ? "" : list.Rows[0]["time"].ToString();
                 ViewData["expect"] = list.Rows[0]["expect"].ToString();
             }
-            List<MD_Bett> list_bet = Lottery.GetBettList(1, 1, " where a.uid="+WorkContext.Uid.ToString()+"  and a.lotterynum='" + ViewData["expect"]+"'");//获取当期投注信息
+            List<MD_Bett> list_bet = Lottery.GetBettList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + "  and a.lotterynum='" + ViewData["expect"] + "'");//获取当期投注信息
+            ViewData["betlist"] = JsonConvert.SerializeObject(list_bet);
             return View();
         }
         public ActionResult HistoryMessage()
@@ -94,9 +95,9 @@ namespace OWZX.Web.Controllers
                 Account = WorkContext.Uid.ToString(),
                 Lotterynum = parmas["expect"],
                 Money = int.Parse(parmas["money"]),
-                Bttype = parmas["bttype"],
+                Bttype = int.Parse(parmas["btroom"])==0?"冠亚"+parmas["bttype"]:parmas["bttype"],
                 Lotteryid = int.Parse(parmas["lotterytype"]),
-                Roomid=int.Parse(parmas["btroom"])
+                Roomid = int.Parse(parmas["btroom"])
             };
 
             bool betres = Lottery.AddBett(bet);
@@ -479,8 +480,8 @@ namespace OWZX.Web.Controllers
         /// <returns></returns>
         public ActionResult BettList(string expect)
         {
-            List<MD_Bett> list_bet = Lottery.GetBettList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + "  and a.lotterynum='" + expect + "'");//获取当期投注信息
-            return PartialView("", list_bet);
+            List<MD_Bett> list_bet = Lottery.GetBettList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + "  and a.lotterynum='" + expect + "' order by a.bettid");//获取当期投注信息
+            return PartialView("betrecord", list_bet);
         }
         /// <summary>
         ///用户投注及余额 
@@ -488,9 +489,9 @@ namespace OWZX.Web.Controllers
         /// <returns></returns>
         public ActionResult UserBetMoney()
         {
-            int lotterytype = WebHelper.GetQueryInt("lotterytype");
+            int lotterytype = WebHelper.GetQueryInt("lotterytype",-1);
             string expect = WebHelper.GetQueryString("expect");
-            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid,expect,lotterytype);
+            DataTable dt = Lottery.GetLotteryUserInfo(WorkContext.Uid, expect, lotterytype);
             StringBuilder strb = new StringBuilder();
             foreach (DataRow rw in dt.Rows)
             {

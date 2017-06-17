@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "draw";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <style>
+        .tixian select, .tixian input {
+            width: 100%;
+            height: 2em;
+            line-height: 2em;
+            margin-top: 1em;
+            border: #eee solid 1px;
+            background: #fff;
+        }
+
+        .tixian h3 {
+            line-height: 3em;
+            color: #3b85ff;
+            font-size: 1em;
+        }
+
+        .tixian .txxz {
+            line-height: 1.5em;
+            background: #fff;
+            padding: .5em;
+            border-radius: 5px;
+            border: #eee solid 1px;
+        }
+
+            .tixian .txxz i {
+                color: red;
+                padding: 0 2px;
+            }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2><span onclick="history.go(-1)"><i class="icon"></i></span>提现</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="main tixian">
+        <select id="UnionPayId">
+            @foreach(OWZX.Model.MD_DrawAccount info in Recharge.GetDrawAccountList(1, 20, " where b.Uid=" +WorkContext.Uid+ ""))
+            {
+                <option value="@info.Drawaccid">@info.Card</option>
+            }
+        </select>
+        <h3>提现须知</h3>
+        <div class="txxz">
+            最低提现金额100<br>
+            提现10分钟到账，如高峰期30分钟到账<br>
+            提现处理成功请查看您的银行账户<br>
+            未到账请联系平台客服
+        </div>
+        <h3>提醒</h3>
+        <div class="txxz">
+            您的余额为<i>@ViewData["money"]元宝</i><br>
+            每日有<i>3</i>次免费提现机会，当日还剩<i>@ViewData["drawcount"]</i>次<br>
+            超过则每次收取<i>1%</i>手续费
+        </div>
+        <input type="text" id="Money" placeholder="请输入整数提现金额">
+        <input type="password" id="Pwd" placeholder="请输入取款密码">
+        <button type="submit" class="btn" id="Q-btn" style="width:80%;margin:2em auto;display:block;">确认提现</button>
+
+    </div>
+    <div class="footblank"></div>
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+
+    
+    <script>
+        $("#Q-btn").click(function ()
+        {
+            
+            var UnionPayId = $("#UnionPayId").val();
+            var Money = $("#Money").val();
+            var Pwd = $("#Pwd").val();
+
+            if (Money == "")
+            {
+                tishi("提现金额不可以为空");
+                return false;
+            }
+
+            if (Money < 100)
+            {
+                tishi("提现金额不可以小余100元");
+                return false;
+            }
+
+            if (Pwd == "")
+            {
+                tishi("提现密码不可以为空");
+                window.location.href = "/ucenter/drawpwd"
+                return false;
+            }
+            var my=@ViewData["money"];
+            if(Money>my)
+            {
+                tishi("余额不足");
+                return false;
+            }
+
+            $.post('/api/userdraw',{
+                "drawaccid": UnionPayId,
+                "money": Money,
+                "password": Pwd
+            },
+                function (data)
+                {
+                    if (data == 1)
+                        tishi("提现密码错误");
+                    else if (data == 2)
+                        tishi("账户余额不足,或者提款金额小于100元");
+                    else if (data == 4)
+                        tishi("已经提交请等待客服处理");
+                    else
+                        tishi("提交失败");
+                });
+        });
+
+        $(".tishi .btn").click(function ()
+        {
+            $(".betbg").fadeOut(100);
+            $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>
+

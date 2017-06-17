@@ -49,6 +49,16 @@
                 $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
             });
 
+            $.get("/nwlottery/userbetmoney", { "lotterytype": lotterytype, "expect": expect }, function (data)
+            {
+                if (data != "")
+                {
+                    var my = data.split('|');
+                    $(".bala-money").text(my[0]);
+                    $(".bet-money").text(my[1]);
+                }
+            });
+
         });
         function tishi(nr){
             $(".betbg").fadeIn(100);
