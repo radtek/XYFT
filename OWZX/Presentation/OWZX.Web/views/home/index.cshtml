@@ -51,7 +51,7 @@
 </head>
 <body>
     @{DataTable dt = Model.Tables[0];
-      DataTable dtexp = Model.Tables[1];
+      DataTable dtexp =Model.Tables.Count>1? Model.Tables[1]:new DataTable();
       }
     <!-- 开奖 -->
 <div class="box">
@@ -91,8 +91,13 @@
 
             </div>
             <script type="text/javascript">
-                var remain='@dtexp.Rows[0]["time"].ToString()';
-                var expect='@dtexp.Rows[0]["expect"].ToString()';
+                @{
+                    string rmin=dtexp.Rows.Count>0?dtexp.Rows[0]["time"].ToString():"0";
+                    string pect=dtexp.Rows.Count>0?dtexp.Rows[0]["expect"].ToString():"0";
+                    
+                }
+                var remain='@rmin';
+                var expect='@pect';
                 $(function() {
                     GetRTime(10, remain, expect, 300, 30);
                 }); 
