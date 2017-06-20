@@ -702,7 +702,6 @@
     <Content Include="views\news\list.cshtml" />
     <Content Include="views\shared\prompt.cshtml" />
     <Content Include="views\shared\_layout.cshtml" />
-    <Content Include="views\ucenter\favoriteproductlist.cshtml" />
     <Content Include="views\ucenter\safeinfo.cshtml" />
     <Content Include="views\ucenter\safesuccess.cshtml" />
     <Content Include="views\ucenter\safeupdate.cshtml" />

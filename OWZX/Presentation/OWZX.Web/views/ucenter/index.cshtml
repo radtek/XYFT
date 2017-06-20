@@ -85,6 +85,17 @@
         <script src="~/newstatic/js/main.js"></script>
         
         <script type="text/javascript">
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
          $(".noopen").click(function(){
 	          $(".alert").show();
 	          setTimeout( "$('.alert').fadeOut(300)" , 1000)

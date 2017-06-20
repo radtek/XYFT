@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
     <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
     <style>
         .offaccount {
             background: #ffefef;
@@ -140,7 +141,17 @@
 
    
     <script type="text/javascript">
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
 
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
     $(".offaccount>p>i").click(function(){
         var e=$(this).prev();
         e.select();
@@ -167,6 +178,11 @@
         var UserPay = $("#UserPay").val();
         var Money = $("#Money").val();
 
+        if (!isNumber(Money) || !isInt(Money))
+        {
+            tishi("金额只能为整数");
+            return false;
+        }
         $.post('/api/addremit', {
             "type": "支付宝",
             "name": UserName,

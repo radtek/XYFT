@@ -82,6 +82,17 @@
 
     
     <script>
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
         $(function(){
             if('@ViewData["setdraw"]'=="false")
             {
@@ -101,9 +112,9 @@
                 tishi("提现金额不可以为空");
                 return false;
             }
-            if(!isNumber(Money) || !isInt(Money))
+            if (!isNumber(Money) || !isInt(Money))
             {
-                tishi("提现金额只能为数字");
+                tishi("提现金额只能为整数");
                 return false;
             }
             if (Money < 100)

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace OWZX.Web.controllers
 {
@@ -98,5 +99,19 @@ namespace OWZX.Web.controllers
             return View();
         }
         #endregion
+
+        protected sealed override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            base.OnAuthorization(filterContext);
+
+            //不允许游客访问
+            if (WorkContext.Uid < 1)
+            {
+                if (WorkContext.IsHttpAjax)//如果为ajax请求
+                    filterContext.Result = Content("nologin");
+                else//如果为普通请求
+                    filterContext.Result = RedirectToAction("login", "account", new RouteValueDictionary { { "returnUrl", WorkContext.Url } });
+            }
+        }
     }
 }

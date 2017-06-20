@@ -146,6 +146,17 @@
         </div>
         <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
+            $(function ()
+            {
+                $('.footer a').removeClass("ft-on");
+                $('.footer a:eq(4)').addClass("ft-on");
+                $('.footer img').each(function ()
+                {
+                    $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+                })
+                $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+            });
               $(".tishi .btn").click(function(){
               $(".betbg").fadeOut(100);
               $(".tishi").animate({top:"100%",marginTop:"0"},300);

@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
     <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
     <style>
         .offaccount {
             background: #ffefef;
@@ -140,6 +141,18 @@
    @Html.Partial("_footer")
    <!-- 底部导航 -->
     <script type="text/javascript">
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
+
         $(".offaccount>p>i").click(function ()
         {
             var e = $(this).prev();
@@ -165,7 +178,11 @@
             var UserName = $("#UserName").val();
             var UserPay = $("#UserPay").val();
             var Money = $("#Money").val();
-
+            if (!isNumber(Money) || !isInt(Money))
+            {
+                tishi("金额只能为整数");
+                return false;
+            }
             $.post('/api/addremit',{
                 "type":"银行卡",
                 "bankname": Account,

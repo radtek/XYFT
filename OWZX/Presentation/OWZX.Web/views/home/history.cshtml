@@ -64,7 +64,16 @@
 <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
     <script src="/Scripts/resize.js"></script>
 <script type="text/javascript">
-    $(function() {
+    $(function ()
+    {
+        $('.footer a').removeClass("ft-on");
+        $('.footer a:eq(2)').addClass("ft-on");
+        $('.footer img').each(function ()
+        {
+            $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+        })
+        $('.footer img:eq(2)').attr("src", $('.footer img:eq(2)').attr("src").replace(".", "1."));
         GetHLottery();
         $('#lotteryid').change(function () { GetHLottery();});
     });

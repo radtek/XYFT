@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/newstatic/css/common.css" />
     <link rel="stylesheet" type="text/css" href="/newstatic/css/footer.css" />
     <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
     <style>
         .offaccount {
             background: #ffefef;
@@ -109,8 +110,11 @@
     <div class="headblank"></div>
     <div class="main offpay">
         <div class="offaccount">
-            <p><img id="ac_img"/></p>
-            <input type="text" name="title" value="收款人信息" class="title1" readonly="readonly" />
+            <div class="share" style="text-align: center;">
+                <img src="/newstatic/img/we.jpg" height=110 width=110>
+            </div>
+            <!--<input type="text" name="title" value="收款人信息" class="title1" readonly="readonly" style="margin-top: -10em;"/>-->
+
         </div>
         <!--<img src="__PUBLIC__/uploads/web/{$bank.Pic}" width="340" height="350"></a>-->
         <h3>请填写您的转账信息</h3>
@@ -135,7 +139,17 @@
     <!-- 底部导航 -->
    
     <script type="text/javascript">
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
 
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
     $(".offaccount>p>i").click(function(){
         var e=$(this).prev();
         e.select();
@@ -160,7 +174,11 @@
         var UserName = $("#UserName").val();
         var UserPay = $("#UserPay").val();
         var Money = $("#Money").val();
-
+        if (!isNumber(Money) || !isInt(Money))
+        {
+            tishi("金额只能为整数");
+            return false;
+        }
         $.post('/api/addremit', {
             "type": "微信",
             "name": UserName,

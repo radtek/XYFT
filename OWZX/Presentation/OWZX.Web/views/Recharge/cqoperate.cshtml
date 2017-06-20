@@ -226,7 +226,7 @@
         </div>
 
         <a href='/recharge/chargelist' class="borbtn fl" style="margin-left:14%;">转账记录</a>
-        <a href="kefu.html" class="borbtn fr" style="margin-right:14%;">联系客服</a>
+        <a href="#" class="borbtn fr" style="margin-right:14%;">联系客服</a>
         <div class="clearfix"></div>
         <div class="footblank"></div>
 
@@ -261,10 +261,18 @@
     <!-- 底部导航 -->
     @Html.Partial("_footer")
     <!-- 底部导航 -->
-
     <script>
     $(function ()
     {
+        $('.footer a').removeClass("ft-on");
+        $('.footer a:eq(3)').addClass("ft-on");
+        $('.footer img').each(function ()
+        {
+            $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+        })
+        $('.footer img:eq(3)').attr("src", $('.footer img:eq(3)').attr("src").replace(".", "1."));
+
         if('@ViewData["type"]'=="1")
         {
             $(".tabpayways li:eq(0)").addClass("paywayscur").siblings().removeClass("paywayscur");
@@ -368,9 +376,9 @@
             tishi("提现金额不可以为空");
             return false;
         }
-        if(!isNumber(Money) || !isInt(Money))
+        if (!isNumber(Money) || !isInt(Money))
         {
-            tishi("提现金额只能为数字");
+            tishi("提现金额只能为整数");
             return false;
         }
         if (Money < 100)

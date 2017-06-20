@@ -111,6 +111,77 @@ function GetRTime(type, ctime, fcnum, totalime, stoptime)
 
 }
 
+
+var lothmtime;
+function LotHMime(type, ctime, fcnum, totalime, stoptime)
+{
+    var nS = parseInt(ctime);
+
+    //ns 开奖时间
+    nS = nS - 1;
+
+    if (nS > -30)
+        lottime = setTimeout("LotHMime(" + type + "," + nS + "," + fcnum + "," + totalime + "," + stoptime + ")", 1000);
+
+    if (nS > 0)
+    {
+        if (nS > stoptime && nS <= totalime)
+        {
+            var rems = nS - stoptime;
+            //bett
+            if (type != 13)
+            {
+
+                $(".lot-time").html(
+                    '距离 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>');
+            } else
+            {
+
+            }
+            StrTimeOut = 1;
+        }
+        else if (nS >= 0 && nS <= stoptime)
+        {
+            if (type != 13)
+            {
+                var txt=
+                $(".lot-time").html(
+                '距离 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>'
+                );
+            } else
+            {
+
+            }
+
+            StrTimeOut = -1;
+        }
+
+    } else
+    {
+        clearTimeout(lothmtime);
+        //加载下一期
+        $.post("/nwlottery/lastlottery", { "type": type }, function (data)
+        {
+            var dt = JSON.parse(data);
+            if (dt.state == "success")
+            {
+                if (dt.biz_content.time == "已停售" || dt.biz_content.time == "维护中")
+                {
+                    $(".lot-time").html(
+                               dt.biz_content.time);
+                } else
+                {
+                    //新一期开始 更新期号，清除上期投注信息
+                    
+                    setTimeout("LotHMime(" + type + "," + dt.biz_content.time + "," + dt.biz_content.expect + "," + 300 + "," + 30 + ")", 1000);
+                }
+            } else
+            { }
+        })
+    }
+
+}
+
 var lottime;
 function LotRTime(type, ctime, fcnum, totalime, stoptime)
 {
@@ -130,6 +201,7 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
             //bett
             if (type != 13)
             {
+
                 $(".ct-down").html(
                     '距离下期封盘剩余：<span class="ct-time">' + rems + '</span> 秒');
             } else
@@ -207,6 +279,10 @@ function trap(lotterytype, expect)
     })
 }
 
+function PrefixInteger(num, length)
+{
+    return (Array(length).join('0') + num).slice(-length);
+}
 
 function formatSeconds(value)
 {
@@ -223,17 +299,21 @@ function formatSeconds(value)
         {
             theTime2 = parseInt(theTime1 / 60);
             theTime1 = parseInt(theTime1 % 60);
-        }
-    }
-    var result = "" + parseInt(theTime) + "秒";
-    if (theTime1 > 0)
-    {
-        result = "" + parseInt(theTime1) + "分" + result;
-    }
-    if (theTime2 > 0)
-    {
-        result = "" + parseInt(theTime2) + "时" + result;
-    }
+        } 
+    } 
+    //var result = "" + parseInt(theTime);//+ "秒";
+    //if (theTime1 > 0)
+    //{
+    //    result = "" + parseInt(theTime1) + ":" + result;
+    //}
+    //if (theTime2 > 0)
+    //{
+    //    result = "" + parseInt(theTime2) + ":" + result;
+    //}
+    var result = "" + PrefixInteger(theTime,2);//+ "秒";
+    
+    result = "" + PrefixInteger(theTime1,2) + ":" + result;
+    
     return result;
 }
 

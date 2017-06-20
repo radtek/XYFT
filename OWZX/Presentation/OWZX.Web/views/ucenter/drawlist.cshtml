@@ -138,9 +138,22 @@
     @Html.Partial("_footer")
     <!-- 底部导航 -->
     <script>
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(4)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+            })
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+        });
+
+
         var p = @Model.PageModel.PageIndex;
         var total=@Model.PageModel.TotalPages;
-        
+       
     if (p == "") p = 1;
     var stop = true;//触发开关，防止多次调用事件
     $(".table").scroll(function ()

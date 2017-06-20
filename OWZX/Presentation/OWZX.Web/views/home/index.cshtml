@@ -99,7 +99,7 @@
                 var remain='@rmin';
                 var expect='@pect';
                 $(function() {
-                    GetRTime(10, remain, expect, 300, 30);
+                    LotHMime(10, remain, expect, 300, 30);
                 }); 
                 function ScrollImgLeft(){
                     var speed=30;
@@ -190,6 +190,15 @@
 <script type="text/javascript">
     $(function ()
     {
+        $('.footer a').removeClass("ft-on");
+        $('.footer a:eq(0)').addClass("ft-on");
+        $('.footer img').each(function ()
+        {
+            $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+        })
+        $('.footer img:eq(0)').attr("src", $('.footer img:eq(0)').attr("src").replace(".", "1."));
+
         $('.explain').click(function ()
         {
             $(".mid-container").css('display', 'none');

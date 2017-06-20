@@ -36,6 +36,17 @@
 <!-- 底部导航 --> 
 <script type="text/javascript">
     var tims = 0;
+    $(function ()
+    {
+        $('.footer a').removeClass("ft-on");
+        $('.footer a:eq(4)').addClass("ft-on");
+        $('.footer img').each(function ()
+        {
+            $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+        })
+        $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+    });
     $(function() {
         $(".setyzm").click(function () {
             if (tims == 0)

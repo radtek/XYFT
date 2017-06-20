@@ -172,6 +172,17 @@
                 },300000);
             }
         })
+        $(function ()
+        {
+            $('.footer a').removeClass("ft-on");
+            $('.footer a:eq(0)').addClass("ft-on");
+            $('.footer img').each(function ()
+            {
+                $(this).attr("src", $(this).attr("src").replace("1.", "."))
+
+            })
+            $('.footer img:eq(0)').attr("src", $('.footer img:eq(0)').attr("src").replace(".", "1."));
+        });
     </script>
 </head>
 <body style="height:auto">
