@@ -29,8 +29,10 @@ namespace OWZX.Model
             get { return account; }
             set { account = value.TrimEnd(); }
         }
-
-       
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public string UserName { get; set; }
         private int uid;
         public int Uid
         {

@@ -46,6 +46,10 @@ namespace OWZX.Web.Admin.Models
             get { return uid; }
             set { uid = value; }
         }
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
 
         private string type;
         /// <summary>

@@ -81,7 +81,7 @@ namespace OWZX.Web.Admin.Controllers
             StringBuilder strb = new StringBuilder();
             strb.Append(" where 1=1");
             if (userName != "")
-                strb.Append(" and a.nickname like '%" + userName + "%'");
+                strb.Append(" and a.username like '%" + userName + "%'");
 
             if (mobile != "")
                 strb.Append(" and a.mobile='" + mobile + "'");

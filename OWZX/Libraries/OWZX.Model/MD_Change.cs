@@ -29,6 +29,10 @@ namespace OWZX.Model
             set { uid = value; }
         }
         /// <summary>
+        /// 账号
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
         /// 账户
         /// </summary>
         public string Account { get; set; }

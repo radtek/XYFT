@@ -99,7 +99,7 @@ namespace OWZX.Web.Admin.Controllers
         /// <returns></returns>
         public ActionResult BaseTypeList(int id = -1)
         {
-            string condition = "";
+            string condition = " where systypeid not in (1,5,10,11,19,23,29)";
             List<BaseTypeModel> listbase = AdminBaseInfo.GetBaseTypeList(condition);
             BaseTypeListModel basetypelist = new BaseTypeListModel() { basetypelist = listbase };
             ViewData["parentid"] = id;
@@ -407,7 +407,7 @@ namespace OWZX.Web.Admin.Controllers
             StringBuilder strb = new StringBuilder();
             strb.Append("where 1=1");
             if (type > 0)
-                strb.Append(" and a.lotterytype=" + type);
+                strb.Append(" and a.roomtype=" + (type == 10 ? "20" : "21"));
             if (bttype > 0)
                 strb.Append(" and a.type=" + bttype);
             if (roomtype > 0)

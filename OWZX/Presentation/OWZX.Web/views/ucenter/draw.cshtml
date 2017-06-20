@@ -86,7 +86,7 @@
             if('@ViewData["setdraw"]'=="false")
             {
                 tishi("请设置提现密码");
-                window.location.href="/ucenter/drawpwd";
+                setTimeout(function () { window.location.href="/ucenter/drawpwd"; }, 2000);
                 return false;
             }
         })
@@ -141,23 +141,20 @@
                     else if (data == 2)
                         tishi("账户余额不足,或者提款金额小于100元");
                     else if (data == 4)
+                    {
                         tishi("已经提交请等待客服处理");
+                        setTimeout(function () { window.location.href="/ucenter/draw"; }, 2000);
+                    }
                     else if(data==3)
                         tishi("提交失败");
                     else if(data==5)
                     {
                         tishi("请设置提现密码");
-                        window.location.href="/ucenter/drawpwd";
+                        setTimeout(function () { window.location.href="/ucenter/drawpwd"; }, 2000);
                     }
                 });
         });
 
-        $(".tishi .btn").click(function ()
-        {
-            $(".betbg").fadeOut(100);
-            $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
-            window.location.reload();
-        });
     </script>
 </body>
 </html>

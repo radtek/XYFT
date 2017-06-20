@@ -51,32 +51,47 @@
 
                         </td>
                         <td>
-                            &nbsp;&nbsp;&nbsp;房间类型：
+        &nbsp;&nbsp;&nbsp;投注类型：
                         </td>
                         <td width="130">
                             <select data-val="true" id="roomtype" name="roomtype">
                                 <option @if (-1 == Model.roomtype) { <text> selected="selected" </text>             } value="-1">选择类型</option>
-                                @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=19"))
+                                @for (int i = 0; i < 11; i++)
                                 {
-                                    <option @if (info.Systypeid == Model.roomtype) { <text> selected="selected" </text>                     } value="@info.Systypeid">@info.Type</option>
+                                    string roomtype = string.Empty;
+                                    switch (i.ToString())
+                                    {
+                                        case "0": roomtype = "冠亚和"; break;
+                                        case "1": roomtype = "第一名"; break;
+                                        case "2": roomtype = "第二名"; break;
+                                        case "3": roomtype = "第三名"; break;
+                                        case "4": roomtype = "第四名"; break;
+                                        case "5": roomtype = "第五名"; break;
+                                        case "6": roomtype = "第六名"; break;
+                                        case "7": roomtype = "第七名"; break;
+                                        case "8": roomtype = "第八名"; break;
+                                        case "9": roomtype = "第九名"; break;
+                                        case "10": roomtype = "第十名"; break;
+                                    }
+                                    <option @if (i == Model.roomtype) { <text> selected="selected" </text> } value="@i">@roomtype</option>
                                 }
                             </select>
                         </td>
-                        <td>
-                            &nbsp;&nbsp;VIP：
-                        </td>
-                        <td width="130">
-                            <select data-val="true" id="vip" name="vip">
-                                <option @if (-1 == Model.vip)
-                                        { <text> selected="selected" </text>              } value="-1">选择类型</option>
-                                @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=23"))
-                                {
-                                    <option @if (info.Systypeid == Model.vip)
-                                            { <text> selected="selected" </text>                      } value="@info.Systypeid">@info.Type</option>
-                                }
-                            </select>
+    @*<td>
+        &nbsp;&nbsp;VIP：
+    </td>
+    <td width="130">
+        <select data-val="true" id="vip" name="vip">
+            <option @if (-1 == Model.vip)
+                    { <text> selected="selected" </text>              } value="-1">选择类型</option>
+            @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=23"))
+            {
+                <option @if (info.Systypeid == Model.vip)
+                        { <text> selected="selected" </text>                      } value="@info.Systypeid">@info.Type</option>
+            }
+        </select>
 
-                        </td>
+    </td>
                         <td>
                             &nbsp;&nbsp;投注类型：
                         </td>
@@ -89,7 +104,7 @@
                                 }
                             </select>
 
-                        </td>
+                        </td>*@
                        
                         <td style="height:24px;">
                             <input id="SearchUser" name="SearchUser" type="image" class="searchBut submit" src="/administration/images/s.jpg" style="vertical-align: middle;" height="24" />
@@ -108,8 +123,6 @@
                         <th width="80" align="left">账号</th>
                         <th width="80" align="left">彩票类型</th>
                         <th width="80" align="left">期号</th>
-                        <th width="80" align="left">房间类型</th>
-                        <th width="80" align="left">VIP</th>
                         <th width="80" align="left">投注类型</th>
                         <th width="80" align="left">投注项</th>
                         <th width="80" align="left">投注金额</th>
@@ -120,12 +133,29 @@
                 <tbody>
                     @foreach (OWZX.Model.MD_Bett info in Model.bettList)
                     {
+                        string room = string.Empty;
+                        switch (@info.Room)
+                        {
+                            case "0": room = "冠亚和"; break;
+                            case "1": room = "第一名"; break;
+                            case "2": room = "第二名"; break;
+                            case "3": room = "第三名"; break;
+                            case "4": room = "第四名"; break;
+                            case "5": room = "第五名"; break;
+                            case "6": room = "第六名"; break;
+                            case "7": room = "第七名"; break;
+                            case "8": room = "第八名"; break;
+                            case "9": room = "第九名"; break;
+                            case "10": room = "第十名"; break;
+                        }
                         <tr>
                             <td></td>
                             <td>@info.id</td>
-                            <td>@info.Account</td>
-                            <td>@info.Lottery</td><td>@info.Lotterynum</td><td>@info.Room</td>
-                            <td>@info.Vip</td><td>@info.Bttype</td><td>@info.Item</td>
+                            <td>@info.UserName</td>
+                            <td>@info.Lottery</td><td>@info.Lotterynum</td><td>
+                             @room
+                            </td>
+                            <td>@info.Item.Replace("冠亚","冠亚和")</td>
                             <td>@info.Money</td><td>@{ string isread = string.Empty;
                                                        if (@info.IsRead == true) { isread = "是"; }
                                                        else

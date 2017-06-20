@@ -26,7 +26,6 @@
             outline: 1px solid #ddd;
             margin-top: 15px;
         }
-
         .tixian input[type="submit"] {
             background: #0099FF;
             color: white;
@@ -195,7 +194,7 @@
         </div>
 
 
-        <a href='transfer.html' class="borbtn fl" style="margin-left:14%;">转账记录</a>
+        <a href='/recharge/chargelist' class="borbtn fl" style="margin-left:14%;">转账记录</a>
         <a href="kefu.html" class="borbtn fr" style="margin-right:14%;">联系客服</a>
         <div class="clearfix"></div>
         <div class="footblank"></div>
@@ -206,135 +205,151 @@
     <!-- 底部导航 -->
 
     <script>
- $(function(){
-    $("#sixDigitPassword").css("margin-right",($(document).width()-184)/2+"px")
+        $(function ()
+        {
+            $.get("/recharge/ExistsMobile", function (data)
+            {
+                if (data == "1")
+                {
+                    tishi("请绑定手机号");
+                    setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
+                   
+                    return;
+                } else if (data == "3")
+                {
+                    tishi("验证失败");
+                    return;
+                }
+            })
+            $("#sixDigitPassword").css("margin-right", ($(document).width() - 184) / 2 + "px")
 
-   	$(".tabpayways li").click(function(){
-   		$(this).addClass("paywayscur").siblings().removeClass("paywayscur");
-          if ($(this).index()==0) {
-          	$(".main1").show();
-          	$(".main2").hide();
-          }else{
-          	$(".main2").show();
-          	$(".main1").hide();
-          }
-   	})
+            $(".tabpayways li").click(function ()
+            {
+                $(this).addClass("paywayscur").siblings().removeClass("paywayscur");
+                if ($(this).index() == 0)
+                {
+                    $(".main1").show();
+                    $(".main2").hide();
+                } else
+                {
+                    $(".main2").show();
+                    $(".main1").hide();
+                }
+            })
 
- })
- 	function tishi(nr){
-	    $(".betbg").fadeIn(100);
-	    $(".tsnr").html(nr);
-	    $(".tishi").animate({top:"50%",marginTop:"-3.5em"},100);
- 	}
-
- 	$(".tishi .btn").click(function(){
-	    $(".betbg").fadeOut(100);
-	    $(".tishi").animate({top:"100%",marginTop:"0"},100);
-	});
-
-
- 	$(".main1 .jine a").click(function(){
- 		$(".main1 .jine a").css("outline","1px solid #EEEEEE");
- 		$(".main1 .jine input").css("border","1px solid #EEEEEE");
- 		// $("#money").html($(this).attr("m"));
- 		// $("#money").attr("dm",$(this).attr("m"));
- 		$(this).css("outline","1px solid #FD645E")
- 	})
-
- 	$(".main1 .jine input").click(function(){
- 		$(".main1 .jine a").css("outline","1px solid #EEEEEE");
- 		$(".main1 .jine input").css("border","1px solid #EEEEEE");
- 		$(this).css("border","1px solid #FD645E");
- 	})
+        })
+        
 
 
- 	$(".p1").click(function(){
- 	    $(".span4").html("<img src='/newstatic/img/s1.png' width='18'>");
- 		$(".span4").removeAttr("alipay");
+        $(".main1 .jine a").click(function ()
+        {
+            $(".main1 .jine a").css("outline", "1px solid #EEEEEE");
+            $(".main1 .jine input").css("border", "1px solid #EEEEEE");
+            // $("#money").html($(this).attr("m"));
+            // $("#money").attr("dm",$(this).attr("m"));
+            $(this).css("outline", "1px solid #FD645E")
+        })
 
- 		$(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
- 		$(".span5").removeAttr("alipay");
-
- 		$(".span3").html("<img src='/newstatic/img/s2.png' width='18'>");
- 		$(".span3").attr("alipay","1");
- 	})
-
-
- 	$(".p2").click(function(){
- 	    $(".span3").html("<img src='/newstatic/img/s1.png' width='18'>");
- 		$(".span3").removeAttr("alipay");
-
- 		$(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
- 		$(".span5").removeAttr("alipay");
-
- 		$(".span4").html("<img src='/newstatic/img/s2.png' width='18'>");
- 		$(".span4").attr("alipay","2");
- 	})
-
- 	function Msubmit()
- 	{
- 		var URL='__URL__';
- 		var alipay = 0;
+        $(".main1 .jine input").click(function ()
+        {
+            $(".main1 .jine a").css("outline", "1px solid #EEEEEE");
+            $(".main1 .jine input").css("border", "1px solid #EEEEEE");
+            $(this).css("border", "1px solid #FD645E");
+        })
 
 
- 		//后台判断是否已经登录
- 		$.ajax({
-          url: URL+'/IsLogin',
-          type:"POST",
-          dataType: 'text',
-          timeout: 5000,
-          dataType:"json",
-          success: function(data){
-              if(data == 2)
-                  tishi("暂未登录请登录后再尝试此操作");
-              else
-              {
-              		var Money =  $("#money").attr("dm");
+        $(".p1").click(function ()
+        {
+            $(".span4").html("<img src='/newstatic/img/s1.png' width='18'>");
+            $(".span4").removeAttr("alipay");
 
-	 				if($(".span3").attr("alipay") == 1)
-			 		{
-			 			alipay = "支付宝";
-			 		}
-			 		else if($(".span4").attr("alipay") == 2)
-			 		{
-			 			alipay = "微信";
-			 		}
-			 		// else if($(".span5").attr("alipay") == 3)
-			 		// {
-			 		// 	alipay = "财付通";
-			 		// }
+            $(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+            $(".span5").removeAttr("alipay");
 
-			 		// if(!Money)
-			 		// {
-			 		// 	tishi("请选择充值金额");
-			 		// 	return false;
-			 		// }
+            $(".span3").html("<img src='/newstatic/img/s2.png' width='18'>");
+            $(".span3").attr("alipay", "1");
+        })
 
-			 		if(!alipay)
-			 		{
-			 			tishi("请选择支付方式");
-			 			return false;
-			 		}
 
-			 		if ($(".span4").attr("alipay") == 2) {
-			 			window.location.href="/pcdd/home/change/weixinpay/type/2";
-			 		}else if ($(".span3").attr("alipay") == 1) {
-			 			window.location.href="/pcdd/home/change/weixinpay/type/1";
-			 		}
-              }
-          }
-      });
- 	}
+        $(".p2").click(function ()
+        {
+            $(".span3").html("<img src='/newstatic/img/s1.png' width='18'>");
+            $(".span3").removeAttr("alipay");
 
-function jump(href)
-{
-	if(href==1)
-		href="/User/index";
-	window.location.href="/pcdd/Home"+href;
-}
+            $(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+            $(".span5").removeAttr("alipay");
+
+            $(".span4").html("<img src='/newstatic/img/s2.png' width='18'>");
+            $(".span4").attr("alipay", "2");
+        })
+
+        function Msubmit()
+        {
+            var URL = '__URL__';
+            var alipay = 0;
+
+
+            //后台判断是否已经登录
+            $.ajax({
+                url: URL + '/IsLogin',
+                type: "POST",
+                dataType: 'text',
+                timeout: 5000,
+                dataType: "json",
+                success: function (data)
+                {
+                    if (data == 2)
+                        tishi("暂未登录请登录后再尝试此操作");
+                    else
+                    {
+                        var Money = $("#money").attr("dm");
+
+                        if ($(".span3").attr("alipay") == 1)
+                        {
+                            alipay = "支付宝";
+                        }
+                        else if ($(".span4").attr("alipay") == 2)
+                        {
+                            alipay = "微信";
+                        }
+                        // else if($(".span5").attr("alipay") == 3)
+                        // {
+                        // 	alipay = "财付通";
+                        // }
+
+                        // if(!Money)
+                        // {
+                        // 	tishi("请选择充值金额");
+                        // 	return false;
+                        // }
+
+                        if (!alipay)
+                        {
+                            tishi("请选择支付方式");
+                            return false;
+                        }
+
+                        if ($(".span4").attr("alipay") == 2)
+                        {
+                            window.location.href = "/pcdd/home/change/weixinpay/type/2";
+                        } else if ($(".span3").attr("alipay") == 1)
+                        {
+                            window.location.href = "/pcdd/home/change/weixinpay/type/1";
+                        }
+                    }
+                }
+            });
+        }
+
+        function jump(href)
+        {
+            if (href == 1)
+                href = "/User/index";
+            window.location.href = "/pcdd/Home" + href;
+        }
 
     </script>
-    
-  
+
+
 </body>
 </html>

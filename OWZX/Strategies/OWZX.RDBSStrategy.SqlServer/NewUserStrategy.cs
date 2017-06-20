@@ -508,7 +508,7 @@ if OBJECT_ID('tempdb..#list') is not null
   drop table #list
 
 SELECT ROW_NUMBER() over(order by a.achangeid desc) id
-      ,a.[achangeid],a.[uid],a.[changemoney],a.[remark],a.[addtime],b.mobile account,a.accounted
+      ,a.[achangeid],a.[uid],a.[changemoney],a.[remark],a.[addtime],b.mobile account,a.accounted,b.username
   into  #list
   FROM owzx_accountchange a
   join owzx_users b on a.uid=b.uid
@@ -689,7 +689,7 @@ SELECT ROW_NUMBER() over(order by a.remitid desc) id
       ,a.[remark]
       ,a.[addtime]
       ,a.[updateuid]
-      ,a.[updatetime],b.mobile mobile,a.chargeremark
+      ,a.[updatetime],b.mobile mobile,a.chargeremark,b.username
   into  #list
   FROM owzx_userremit a
   join owzx_users b on a.uid=b.uid

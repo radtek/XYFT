@@ -367,16 +367,6 @@ namespace OWZX.Core
 
         #region 报表
         /// <summary>
-        /// 盈利报表
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="pageSize">-1 取全部</param>
-        /// <param name="pageNumber"></param>
-        /// <param name="condition"></param>
-        /// <returns></returns>
-        DataTable GetProfitList(string type, int pageSize, int pageNumber, string condition = "");
-
-        /// <summary>
         /// 盈利报表 彩票类型不参数分组,包含回水
         /// </summary>
         /// <param name="type"></param>
@@ -384,7 +374,7 @@ namespace OWZX.Core
         /// <param name="pageNumber"></param>
         /// <param name="condition"></param>
         /// <returns></returns>
-        DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string condition = "");
+        DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string start, string end);
         #endregion
 
         #region 获取竞猜页用户信息

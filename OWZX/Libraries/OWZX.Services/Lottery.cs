@@ -1070,19 +1070,7 @@ namespace OWZX.Services
         #endregion
 
         #region 报表
-        /// <summary>
-        /// 盈利报表
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="pageSize">-1 取全部</param>
-        /// <param name="pageNumber"></param>
-        /// <param name="condition"></param>
-        /// <returns></returns>
-        public static DataTable GetProfitList(string type, int pageSize, int pageNumber, string condition = "")
-        {
-            return OWZX.Data.Lottery.GetProfitList(type, pageSize, pageNumber, condition);
-        }
-
+        
         /// <summary>
         /// 盈利报表 彩票类型不参数分组,包含回水
         /// </summary>
@@ -1091,9 +1079,9 @@ namespace OWZX.Services
         /// <param name="pageNumber"></param>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public static DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string condition = "")
+        public static DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string start, string end)
         {
-            return OWZX.Data.Lottery.GetProfitListNoLottery(type, pageSize, pageNumber, condition);
+            return OWZX.Data.Lottery.GetProfitListNoLottery(type, pageSize, pageNumber, start, end);
         }
         #endregion
 

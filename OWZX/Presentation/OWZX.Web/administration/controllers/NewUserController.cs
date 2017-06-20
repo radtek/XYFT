@@ -126,8 +126,10 @@ namespace OWZX.Web.Admin.Controllers
             {
                 return PromptView("账号不存在");
             }
+            PartUserInfo user = Users.GetPartUserByMobile(remit.Mobile);
             MD_Remit rmt = new MD_Remit
             {
+                Uid=user.Uid,
                 Mobile = remit.Mobile,
                 Type = "人工充值",
                 Name = "系统充值",
@@ -223,7 +225,20 @@ namespace OWZX.Web.Admin.Controllers
             ViewData["referer"] = ShopUtils.GetAdminRefererCookie();
             ViewData["remitid"] = remitid;
             ViewData["status"] = status;
-            return View();
+            List<MD_Remit> remitlist = NewUser.GetUserRemitList(1, 1, " where a.remitid="+remitid.ToString());
+            UserRemit remit = new UserRemit();
+            if (remitlist.Count > 0)
+            {
+                remit = new UserRemit {
+                    UserName = remitlist[0].UserName,
+                    Name = remitlist[0].Name,
+                    Account = remitlist[0].Account,
+                    Money = remitlist[0].Money,
+                    Type = remitlist[0].Type,
+                    Addtime = remitlist[0].Addtime
+                };
+            }
+            return View(remit);
         }
         
         [HttpPost]
@@ -294,7 +309,7 @@ namespace OWZX.Web.Admin.Controllers
             StringBuilder strb = new StringBuilder();
             strb.Append(" where 1=1");
             if (Account != string.Empty)
-                strb.Append(" and rtrim(b.mobile)='" + Account + "'");
+                strb.Append(" and (rtrim(b.mobile)='" + Account + "' or b.username like '%"+Account+"%'");
             if(start!=string.Empty )
                 strb.Append(" and a.addtime between '" + start + "' and '"+end+"'");
 

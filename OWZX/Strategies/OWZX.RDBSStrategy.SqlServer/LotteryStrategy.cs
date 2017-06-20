@@ -1215,7 +1215,7 @@ drop table #list
 
 SELECT ROW_NUMBER() over(order by a.bettid desc) id,
 a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
-e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,a.roomid
+e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,rtrim(cast(a.roomid as char(2))) room,b.username
 into  #list
 FROM owzx_bett a
 join owzx_users b on a.uid=b.uid
@@ -2284,116 +2284,6 @@ end catch
         #endregion
 
         #region 报表
-        /// <summary>
-        /// 盈利报表 彩票类型参数分组,不包含回水
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="pageSize">-1 取全部</param>
-        /// <param name="pageNumber"></param>
-        /// <param name="condition"></param>
-        /// <returns></returns>
-        public DataTable GetProfitList(string type,int pageSize,int pageNumber,string condition="")
-        {
-            DbParameter[] parms = {
-                                      GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
-                                      GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
-                                  };
-
-            string sql = string.Format(@"
-begin try
-
-
-declare @type varchar(20)='{0}'
-
-if OBJECT_ID('tempdb..#list') is not null
-drop table #list
-
-select a.uid,b.expect,a.betttotal,b.luckresult,convert(varchar(10),b.opentime,120) opentime,b.type
-into #list
-from (
-select uid,lotterynum,SUM(money) betttotal from owzx_bett
-where isread=1 group by uid,lotterynum ) a
-join (
-select a.luckresult,b.expect,a.uid,b.opentime,b.type from 
-(select uid,lotteryid,SUM(luckresult) luckresult from owzx_bettprofitloss 
-where luckresult>0 group by uid,lotteryid) a 
-join owzx_lotteryrecord b on a.lotteryid=b.lotteryid
-) b on a.uid=b.uid and a.lotterynum=b.expect
-{1}
-
-
-if OBJECT_ID('tempdb..#listday') is not null
-drop table #listday
-
-if OBJECT_ID('tempdb..#listresult') is not null
-drop table #listresult
-
-create table #listresult
-(
-id int IDENTITY(1,1),
-type varchar(10),
-opentime varchar(10),
-betttotal decimal(18,2),
-luckresult decimal(18,2),
-profitresult decimal(18,2),
-)
-
-
-select type,opentime,SUM(betttotal) betttotal,SUM(luckresult) luckresult
-into #listday
-from #list a
-group by type,opentime
-
-if(@type='每日盈亏')
-begin
-insert into #listresult(type,opentime, betttotal,luckresult, profitresult)
-select type,opentime, betttotal,luckresult,betttotal-luckresult profitresult 
-from #listday a
-order by opentime
-end
-else if(@type='每周盈亏')
-begin
-insert into #listresult(type,opentime, betttotal,luckresult, profitresult)
-select type,opentime,betttotal,luckresult,betttotal-luckresult profitresult 
-from (
-select type,opentime, SUM(betttotal) betttotal,SUM(luckresult) luckresult  from (
-select type,datepart(WK,opentime) opentime, betttotal, luckresult from #listday 
-) a group by type,opentime
-) a order by opentime
-end
-else if(@type='每月盈亏')
-begin
-insert into #listresult(type,opentime, betttotal,luckresult,  profitresult)
-select type,opentime,betttotal,luckresult,betttotal-luckresult profitresult 
-from (
-select type,opentime,SUM(betttotal) betttotal,SUM(luckresult) luckresult  from (
-select type,datepart(month,opentime) opentime, betttotal,luckresult from #listday 
-) a group by type,opentime
-) a order by opentime
-end
-
-declare @total int
-select @total=(select count(1)  from #listresult)
-
-if(@pagesize=-1)
-begin
-select *,@total TotalCount from #listresult
-end
-else
-begin
-select *,@total TotalCount from #listresult where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex
-end
-
-end try
-begin catch
-select ERROR_MESSAGE() state
-end catch
-
-", type,condition);
-            DataTable dt = RDBSHelper.ExecuteTable(sql, parms)[0];
-            return dt;
-
-        }
 
         /// <summary>
         /// 盈利报表 彩票类型不参数分组,包含回水
@@ -2403,13 +2293,27 @@ end catch
         /// <param name="pageNumber"></param>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string condition = "")
+        public DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string start, string end)
         {
             DbParameter[] parms = {
                                       GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
                                       GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
                                   };
 
+            string bet = string.Empty; string back = string.Empty;
+
+            if (start != string.Empty)
+            {
+                bet += " and convert(varchar(10),b.opentime,120)>='" + start + "'";
+
+                back += " and convert(varchar(10),addtime,120)>='" + start + "'";
+            }
+            if (end != string.Empty)
+            {
+
+                bet += " and convert(varchar(10),b.opentime,120)<='" + end + "'";
+                back += " and convert(varchar(10),addtime,120)<='" + end + "'";
+            }
             string sql = string.Format(@"
 begin try
 
@@ -2419,18 +2323,13 @@ declare @type varchar(20)='{0}'
 if OBJECT_ID('tempdb..#list') is not null
 drop table #list
 
-select a.uid,b.expect,a.betttotal,b.luckresult,convert(varchar(10),b.opentime,120) opentime,b.type
+select a.uid,lotterynum expect,money,a.bettid,c.luckresult ,convert(varchar(10),b.opentime,120) opentime,
+b.type
 into #list
-from (
-select uid,lotterynum,SUM(money) betttotal from owzx_bett
-where isread=1 group by uid,lotterynum ) a
-join (
-select a.luckresult,b.expect,a.uid,b.opentime,b.type from 
-(select uid,lotteryid,SUM(luckresult) luckresult from owzx_bettprofitloss 
-where luckresult>0 group by uid,lotteryid) a 
-join owzx_lotteryrecord b on a.lotteryid=b.lotteryid
-) b on a.uid=b.uid and a.lotterynum=b.expect
-{1}
+from owzx_bett a
+join owzx_lotteryrecord b on a.lotteryid=b.type and a.lotterynum=b.expect
+join owzx_bettprofitloss c on a.bettid=c.bettid 
+where isread=1 {1}
 
 
 if OBJECT_ID('tempdb..#listday') is not null
@@ -2450,39 +2349,47 @@ profitresult decimal(18,2),
 )
 
 
-select a.*,money backtotal 
+select a.*,isnull(money,0) backtotal 
 into #listday
 from (
-select opentime,SUM(betttotal) betttotal,SUM(luckresult) luckresult
+select opentime,SUM(money) betttotal,SUM(luckresult) luckresult
 from #list a
 group by opentime )a
-join (
+left join (
 select sum(money) money,addtime from 
-(select money,convert(varchar(10),addtime,120) addtime 
-from owzx_userback where status=2)  a  group by addtime
+(
+select money,convert(varchar(10),addtime,120) addtime 
+from owzx_userback 
+where status=2 {2}
+) a  group by addtime
 ) b on a.opentime=b.addtime
 
 if(@type='每日盈亏')
 begin
 insert into #listresult(opentime, betttotal,luckresult,backtotal, profitresult)
-select opentime, betttotal,luckresult,backtotal,betttotal-luckresult-backtotal profitresult 
+select opentime, betttotal,luckresult,backtotal,
+(case when luckresult>0 then betttotal-luckresult-backtotal else betttotal+luckresult-backtotal end) profitresult 
 from #listday a
 order by opentime
 end
 else if(@type='每周盈亏')
 begin
 insert into #listresult(opentime, betttotal,luckresult,backtotal, profitresult)
-select opentime,betttotal,luckresult,backtotal,betttotal-luckresult-backtotal profitresult 
+select opentime,betttotal,luckresult,backtotal,
+(case when luckresult>0 then betttotal-luckresult-backtotal else betttotal+luckresult-backtotal end) profitresult 
 from (
 select opentime, SUM(betttotal) betttotal,SUM(luckresult) luckresult,SUM(backtotal) backtotal  from (
 select datepart(WK,opentime) opentime, betttotal, luckresult,backtotal from #listday 
 ) a group by opentime
-) a order by opentime
+) a 
+
+order by opentime
 end
 else if(@type='每月盈亏')
 begin
 insert into #listresult(opentime, betttotal,luckresult,backtotal,profitresult)
-select opentime,betttotal,luckresult,backtotal,betttotal-luckresult-backtotal profitresult 
+select opentime,betttotal,luckresult,backtotal,
+(case when luckresult>0 then betttotal-luckresult-backtotal else betttotal+luckresult-backtotal end) profitresult 
 from (
 select opentime,SUM(betttotal) betttotal,SUM(luckresult) luckresult,SUM(backtotal) backtotal  from (
 select datepart(month,opentime) opentime, betttotal,luckresult,backtotal from #listday 
@@ -2507,7 +2414,8 @@ begin catch
 select ERROR_MESSAGE() state
 end catch
 
-", type, condition);
+", type, bet, back);
+
             DataTable dt = RDBSHelper.ExecuteTable(sql, parms)[0];
             return dt;
 

@@ -78,7 +78,7 @@
     @*<th width="80" align="left">彩票类型</th>*@
     <th width="200" align="left">投注金额</th>
     <th width="60" align="left">中奖金额</th>
-      <th width="60" align="left">回水金额</th>
+      @*<th width="60" align="left">回水金额</th>*@
       <th width="60" align="left">盈亏</th>
     <th width="60" align="left">时间</th>
     </tr>
@@ -87,10 +87,11 @@
       @foreach (DataRow info in Model.ProfitList.Rows)
       {
         <tr>
+        <td></td>
         <td>@info["id"]</td>
         <td>@info["betttotal"]</td>
         <td>@info["luckresult"]</td>
-        <td>@info["backtotal"]</td>
+        @*<td>@info["backtotal"]</td>*@
         <td>@info["profitresult"]</td>
         <td>@info["opentime"]</td>
         </tr>

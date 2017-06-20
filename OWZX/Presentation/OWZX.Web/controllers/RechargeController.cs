@@ -1,4 +1,5 @@
-﻿using OWZX.Model;
+﻿using OWZX.Core;
+using OWZX.Model;
 using OWZX.Services;
 using OWZX.Web.Framework;
 using OWZX.Web.Models;
@@ -56,5 +57,46 @@ namespace OWZX.Web.controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 是否绑定手机
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ExistsMobile()
+        {
+            try
+            {
+                PartUserInfo user = Users.GetPartUserById(WorkContext.Uid);
+
+                if (user.Mobile.Trim() == string.Empty || user.Mobile == null)
+                    return Content("1");//未绑定
+                else
+                    return Content("2");
+
+            }
+            catch (Exception ex)
+            {
+                return Content("3");
+            }
+        }
+
+        #region 存取款
+        public ActionResult CQOperate()
+        {
+            ViewData["type"] = WebHelper.GetQueryInt("type");
+            ViewData["money"] = Users.GetPartUserById(WorkContext.Uid).TotalMoney;
+            List<DrawInfoModel> list = Recharge.GetDrawList(1, -1, " where a.uid=" + WorkContext.Uid.ToString() + " and CONVERT(varchar(10),a.addtime,120)=CONVERT(varchar(10),getdate(),120)");
+            int count = 3;
+            if (list == null || list.Count == 0)
+                count = 3;
+            else if (list.Count >= 3)
+                count = 0;
+            else
+                count = 3 - list.Count;
+            ViewData["drawcount"] = count;
+            ViewData["setdraw"] = Recharge.ValidateDrawPwdByUid(WorkContext.Uid).ToString().ToLower();
+            return View();
+        }
+        #endregion
     }
 }

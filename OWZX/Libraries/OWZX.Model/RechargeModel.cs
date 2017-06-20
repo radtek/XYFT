@@ -15,6 +15,11 @@ namespace OWZX.Model
             get { return rechargeid; }
             set { rechargeid = value; }
         }
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public string UserName { get; set; }
+
         private string account;
         /// <summary>
         /// 用户手机号

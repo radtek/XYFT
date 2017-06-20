@@ -61,7 +61,7 @@
   <tr>
     <th width="20"></th>
     <th width="60" align="left">编号</th>
-    <th width="80" align="left">手机号</th>
+    <th width="80" align="left">账号</th>
     <th width="80" align="left">汇款昵称</th>
     <th width="60" align="left">汇款账号</th>
     <th width="60" align="left">汇款金额</th>
@@ -80,13 +80,13 @@
   {
   <tr><td></td>
     <td>@info.Id</td>
-    <td>@info.Mobile</td>
+    <td>@info.UserName</td>
     <td>@info.Name</td>
     <td>@info.Account</td>
     <td>@info.Money</td>
     <td>@info.Bankname</td>
     <td>@info.Type</td>
-    <td>@info.Addtime</td>
+    <td>@info.Addtime.ToString("yyyy-MM-dd HH:mm:ss")</td>
     <td>
         @info.RealMoney
     </td>
@@ -118,7 +118,7 @@
         }
         @if (info.Status < 2)
         {
-            @Html.ActionLink("[审核完成]", "editremit", new { remitid = @info.Remitid, status = 2 }, new { @class = "editOperate" })
+            @Html.ActionLink("[审核]", "editremit", new { remitid = @info.Remitid, status = 2 }, new { @class = "editOperate" })
         }
         @*@if (info.Status < 2)
         {
@@ -143,192 +143,5 @@
     @Html.AdminPager(Model.PageModel)
 </div>
 </div>
-
-    <script>
-        $(function ()
-        {
-            $(".tishi .btn").click(function ()
-            {
-                if ($("#RealMoney").val() == "")
-                {
-                    layer.alert("实际充值金额不能为空", { icon: 2 });
-                    return;
-                }
-
-                if ($("#ChargeRemark").val() == "")
-                {
-                    layer.alert("审核备注不能为空", { icon: 2 });
-                    return;
-                }
-                $(".betbg").fadeOut(100);
-                $(".tishi").animate({ top: "100%", marginTop: "0" }, 300);
-
-                layer.load(2);
-                $.get("/admin/newuser/editremit", {
-                    "remitid": id, "status": status,
-                    "realmoney": $("#RealMoney").val(),
-                    "chargeremark": $("#ChargeRemark").val(),
-                    "remark": $("#Remark").val(),
-                }, function (data)
-                {
-                    setTimeout(function ()
-                    {
-                        layer.closeAll('loading');
-                    }, 2000);
-                    if (data != "0")
-                    {
-                        $(".tsnr input").val("");
-                        layer.alert("更新成功", { icon: 1 });
-                    } else
-                    {
-                        layer.alert(data, { icon: 2 });
-                    }
-                });
-            });
-            
-        });
-        
-        function opert(id, status)
-        {
-            var shcon='<div class="tishi">';
-            shcon+='<div class="ts">提示</div>'
-            shcon+= '<div class="tsnr">'
-            shcon+='<input id="RealMoney" type="text" placeholder="实际充值金额" /><br />'
-            shcon+='<input id="ChargeRemark" type="text" placeholder="充值审核备注" /><br />'
-            shcon+='<input id="Remark" type="text" placeholder="异常备注" /><br />'
-        shcon+='</div></div>';
-            //边缘弹出
-            layer.open({
-                type: 1
-              , offset: 't' //具体配置参考：offset参数项
-              , content: shcon
-              , btn: '确定'
-              , btnAlign: 'c' //按钮居中
-              , shade: 0 //不显示遮罩
-              , yes: function ()
-              {
-                  if ($("#RealMoney").val() == "")
-                  {
-                      layer.alert("实际充值金额不能为空", { icon: 2 });
-                      return;
-                  }
-
-                  if ($("#ChargeRemark").val() == "")
-                  {
-                      layer.alert("审核备注不能为空", { icon: 2 });
-                      return;
-                  }
-
-                  layer.load(2);
-                  $.get("/admin/newuser/editremit", {
-                      "remitid": id, "status": status,
-                      "realmoney": $("#RealMoney").val(),
-                      "chargeremark": $("#ChargeRemark").val(),
-                      "remark": $("#Remark").val(),
-                  }, function (data)
-                  {
-                      setTimeout(function ()
-                      {
-                          layer.closeAll('loading');
-                      }, 2000);
-                      if (data != "0")
-                      {
-                          $(".tsnr input").val("");
-                          layer.alert("更新成功", { icon: 1 });
-                      } else
-                      {
-                          layer.alert(data, { icon: 2 });
-                      }
-                  });
-                  layer.closeAll();
-              }
-            });
-            
-            
-        }
-
-    </script>
-    <script>
-    $(function ()
-    {
-        var oldremark = '';
-        if ($(".remarkinput").length > 0)
-        {
-            $(".remarkinput").focus(function ()
-            {
-                var remarkInputObj = $(this);
-                oldremark = remarkInputObj.val();
-                remarkInputObj.val("").attr("class", "selectedremarkinput");
-            });
-
-            $(".remarkinput").blur(function ()
-            {
-                var remarkInputObj = $(this);
-                if (remarkInputObj.val()!="" && remarkInputObj.val() != oldremark)
-                {
-                    layer.load(2);
-                    $.get("/admin/newuser/editremitremark?remitid=" + remarkInputObj.prop("id") + "&remark=" + remarkInputObj.val(), function (data)
-                    {
-                        setTimeout(function ()
-                        {
-                            layer.closeAll('loading');
-                        }, 2000);
-                        if (data != "0")
-                        {
-                            layer.alert("更新成功", { icon: 1 });
-                        } else
-                        {
-                            remarkInputObj.val(oldremark);
-                            layer.alert("更新失败，请联系管理员", { icon: 2 });
-                        }
-                    });
-                    remarkInputObj.attr("class", "unselectedremarkinput");
-                }else
-                    remarkInputObj.attr("class", "unselectedremarkinput");
-
-            });
-        }
-
-
-        var oldmoney = '';
-        if ($(".moneyinput").length > 0)
-        {
-            $(".moneyinput").focus(function ()
-            {
-                var remarkInputObj = $(this);
-                oldmoney = remarkInputObj.val();
-                remarkInputObj.val("").attr("class", "selectedremarkinput");
-            });
-
-            $(".moneyinput").blur(function ()
-            {
-                var remarkInputObj = $(this);
-                if (remarkInputObj.val() != "" && remarkInputObj.val() != oldremark)
-                {
-                    layer.load(2);
-                    $.get("/admin/newuser/editremitmoney?remitid=" + remarkInputObj.prop("id") + "&realmoney=" + remarkInputObj.val(), function (data)
-                    {
-                        setTimeout(function ()
-                        {
-                            layer.closeAll('loading');
-                        }, 2000);
-                        if (data != "0")
-                        {
-                            layer.alert("更新成功", { icon: 1 });
-                        } else
-                        {
-                            remarkInputObj.val(oldmoney);
-                            layer.alert("更新失败，请联系管理员", { icon: 2 });
-                        }
-                    });
-                    remarkInputObj.attr("class", "unselectedremarkinput");
-                }else
-                    remarkInputObj.attr("class", "unselectedremarkinput");
-
-            });
-        }
-    });
-
-    </script>
 }
 }

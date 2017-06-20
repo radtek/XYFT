@@ -26,7 +26,7 @@
                     <tr>
                         <td width="35"><img id="searchImg" src="/administration/images/search1.gif" /></td>
 
-                        @*<td>
+                        <td>
                             &nbsp;&nbsp;&nbsp;彩票类型：
                         </td>
                         <td width="130">
@@ -39,35 +39,35 @@
                                                 { <text> selected="selected" </text>                } value="@info.Systypeid">@info.Type</option>
                                 }
                             </select>
-                        </td>*@
-                        <td>
-                            &nbsp;&nbsp;&nbsp;房间类型：
                         </td>
-                        <td width="130">
-                            <select data-val="true" id="roomtype" name="roomtype">
-                                <option @if (-1 == Model.roomtype)
-                                        { <text> selected="selected" </text>          } value="-1">选择类型</option>
-                                @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=19"))
-                                {
-                                    <option @if (info.Systypeid == Model.roomtype)
-                                            { <text> selected="selected" </text>                  } value="@info.Systypeid">@info.Type</option>
-                                }
-                            </select>
-                        </td>
+                        @*<td>
+        &nbsp;&nbsp;&nbsp;房间类型：
+    </td>
+    <td width="130">
+        <select data-val="true" id="roomtype" name="roomtype">
+            <option @if (-1 == Model.roomtype)
+                    { <text> selected="selected" </text>          } value="-1">选择类型</option>
+            @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=19"))
+            {
+                <option @if (info.Systypeid == Model.roomtype)
+                        { <text> selected="selected" </text>                  } value="@info.Systypeid">@info.Type</option>
+            }
+        </select>
+    </td>
 
-                        <td>
-                            &nbsp;&nbsp;投注类型：
-                        </td>
-                        <td width="130">
-                            <select data-val="true" id="bttype" name="bttype">
-                                <option @if (-1 == Model.bttype) { <text> selected="selected" </text>          } value="-1">选择类型</option>
-                                @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=29"))
-                                {
-                                    <option @if (info.Systypeid == Model.bttype) { <text> selected="selected" </text>                  } value="@info.Systypeid">@info.Type</option>
-                                }
-                            </select>
+    <td>
+        &nbsp;&nbsp;投注类型：
+    </td>
+    <td width="130">
+        <select data-val="true" id="bttype" name="bttype">
+            <option @if (-1 == Model.bttype) { <text> selected="selected" </text>          } value="-1">选择类型</option>
+            @foreach (OWZX.Model.BaseTypeModel info in AdminBaseInfo.GetBaseTypeList(" where parentid=29"))
+            {
+                <option @if (info.Systypeid == Model.bttype) { <text> selected="selected" </text>                  } value="@info.Systypeid">@info.Type</option>
+            }
+        </select>
 
-                        </td>
+    </td>*@
 
                         <td style="height:24px;">
                             <input id="SearchUser" name="SearchUser" type="image" class="searchBut submit" src="/administration/images/s.jpg" style="vertical-align: middle;" height="24" />
@@ -83,28 +83,27 @@
                     <tr>
                         <th width="10"></th>
                         <th width="60" align="left">编号</th>
-                        @*<th width="100" align="left">彩票类型</th>*@
-                        <th width="100" align="left">房间类型</th>
-                        <th width="100" align="left">投注类型</th>
+                        <th width="100" align="left">彩票类型</th>
+                        @*<th width="100" align="left">房间类型</th>*@
+                        @*<th width="100" align="left">投注类型</th>*@
                         <th width="80" align="left">投注名称</th>
                         <th width="100" align="left">赔率</th>
-                        <th width="180" align="left">中奖和值</th>
+                        @*<th width="180" align="left">中奖和值</th>*@
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (OWZX.Model.MD_LotterySet info in Model.SetList)
                     {
-                        
+                        string type = info.RoomType == 20 ? "北京赛车" : "幸运飞艇";
                         <tr>
                             <td></td>
                             <td>@info.Id</td>
-                           @* <td>@info.Lottery</td>*@
-                            <td>@info.Room</td>
-                            <td>@info.Settype</td>
+                            <td>@type</td>
+                            @* <td>@info.Room</td>
+                            <td>@info.Settype</td>*@
                             <td>@info.Item</td>
                             <td><input type="text" class="remarkinput unselectedremarkinput" maxlength="200" height="30" value="@info.Odds" id="@info.Bttypeid" /></td>
-                            <td>@info.Nums</td>
-                           
+                            @*<td>@info.Nums</td>*@
                         </tr>
                     }
                 </tbody>

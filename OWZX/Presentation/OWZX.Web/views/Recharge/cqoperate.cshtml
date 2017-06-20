@@ -1,0 +1,431 @@
+﻿@{
+    ViewBag.Title = "cqoperate";
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/newstatic/css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/back.css" />
+    <link rel="stylesheet" type="text/css" href="/newstatic/css/accessmoney.css" />
+    <script src="~/newstatic/js/jquery-1.11.3.min.js"></script>
+    <script src="~/scripts/common.js"></script>
+    <style type="text/css">
+         .tixian form > input {
+            display: block;
+            width: 70%;
+            padding-left: 10px;
+            height: 28px;
+            margin: 0 auto;
+            color: #333;
+            line-height: 28px;
+            outline: 1px solid #ddd;
+            margin-top: 15px;
+        }
+
+        .tixian input[type="submit"] {
+            background: #0099FF;
+            color: white;
+            border: none;
+            outline: none;
+            margin-top: 30px;
+        }
+
+        .tixian p {
+            width: 70%;
+            margin: 0 auto;
+            height: 70px;
+            margin-top: 15px;
+            color: #666;
+            padding: 5px;
+            line-height: 32px;
+        }
+
+
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .clearfix:before, .clearfix:after {
+            content: " ";
+            display: table;
+        }
+
+        .alieditContainer {
+            position: relative;
+            margin-top: -40px;
+        }
+
+        .sixDigitPassword {
+            position: absolute;
+            left: 0px;
+            top: 0;
+            width: 1000px;
+            height: 33px !important;
+            color: #fff;
+            font-size: 12px;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+            -webkit-user-select: initial;
+            outline: none;
+            z-index: 999;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            margin-top: 0 !important;
+        }
+
+        .sixDigitPassword-box {
+            cursor: text;
+            background: #fff;
+            outline: none;
+            position: relative;
+            padding: 8px 0;
+            height: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 2px;
+        }
+
+            .sixDigitPassword-box i {
+                float: left;
+                display: block;
+                padding: 4px 0;
+                height: 7px;
+                border-left: 1px solid #cccccc;
+            }
+
+            .sixDigitPassword-box .active {
+                background: url('/newstatic/img/password-blink.gif') no-repeat center center;
+            }
+
+            .sixDigitPassword-box b {
+                display: block;
+                margin: 0 auto;
+                width: 7px;
+                height: 7px;
+                overflow: hidden;
+                visibility: hidden;
+                background: url('/newstatic/img/passeord-dot.png') no-repeat;
+            }
+
+            .sixDigitPassword-box span {
+                position: absolute;
+                display: block;
+                left: 0px;
+                top: 0px;
+                height: 30px;
+                border: 1px solid rgba(82, 168, 236, .8);
+                border: 1px solid #00ffff\9;
+                border-radius: 2px;
+                visibility: hidden;
+                -webkit-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.75), 0 0 8px rgba(82, 168, 236, 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            }
+
+        .ui-securitycore .ui-form-item .ui-form-explain {
+            margin-top: 8px;
+        }
+
+        .i-block {
+            display: inline-block;
+        }
+
+        .six-password {
+            position: relative;
+            height: 33px;
+            width: 182px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+
+        #payPassword_rsainput-error {
+            display: block;
+        }
+
+         .tixian select, .tixian input {
+            width: 100%;
+            height: 2em;
+            line-height: 2em;
+            margin-top: 1em;
+            border: #eee solid 1px;
+            background: #fff;
+        }
+
+        .tixian h3 {
+            line-height: 3em;
+            color: #3b85ff;
+            font-size: 1em;
+        }
+
+        .tixian .txxz {
+            line-height: 1.5em;
+            background: #fff;
+            padding: .5em;
+            border-radius: 5px;
+            border: #eee solid 1px;
+        }
+
+            .tixian .txxz i {
+                color: red;
+                padding: 0 2px;
+            }
+        .tabpayways li {
+        width:50%;
+        }
+    </style>
+</head>
+
+<body style="background:#ffffff">
+    <header>
+        <h2><span onclick="window.history.go(-1)"><i class="icon"></i></span>存取款</h2>
+    </header>
+    <div class="headblank"></div>
+    <div class="tabpayways">
+        <ul>
+            <li >充值</li>
+            <li >提现</li>
+        </ul>
+    </div>
+    <div class="main main1" style="display: none;">
+        <h3>线上充值</h3>
+        <div class="jine" style="padding-bottom:1em;border:none">
+            <p style="margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;" class="p1">
+                <span><img src="/newstatic/img/zhifub.png" width="55"></span>
+                <span style="margin-left:.8rem;">支付宝</span>
+                <span class="span3" style="float:right;"><img src="/newstatic/img/s1.png" width="18"></span>
+            </p>
+            <p style="margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;" class="p2">
+                <span>
+                    <img src="/newstatic/img/weix.jpg" width="30" style="margin-left: 1em;">
+                </span>
+                <span style="margin-left:1.9rem;">微信</span>
+                <span class="span4" style="float:right;"><img src="/newstatic/img/s1.png" width="18"></span>
+            </p>
+            <button type="submit" class="btn" onclick="Msubmit()">
+                立即充值
+            </button>
+        </div>
+
+        <h3>线下充值</h3>
+        <div class="jine">
+            <p onclick="window.location.href='/recharge/bankcharge'">
+                <span><img src="/newstatic/img/yinl.png" width="45" height="22"></span>
+                <span style="margin-left:1.2rem;">银行转账</span>
+            </p>
+            <p onclick="window.location.href = '/recharge/alipaycharge'">
+                <span><img src="/newstatic/img/zhifub.png" width="50"></span>
+                <span style="margin-left:.8rem;">支付宝转账</span>
+            </p>
+            <p onclick="window.location.href = '/recharge/wechatcharge'">
+                <span style="margin-left: 1rem;"><img src="/newstatic/img/weix.jpg" width="30" height="22"></span>
+                <span style="margin-left:1.4rem;">微信转账</span>
+            </p>
+        </div>
+
+        <a href='/recharge/chargelist' class="borbtn fl" style="margin-left:14%;">转账记录</a>
+        <a href="kefu.html" class="borbtn fr" style="margin-right:14%;">联系客服</a>
+        <div class="clearfix"></div>
+        <div class="footblank"></div>
+
+    </div>
+    <!-- 提现 -->
+    <div class="main main2 tixian" style="display: none;">
+        <select id="UnionPayId">
+            @foreach (OWZX.Model.MD_DrawAccount info in Recharge.GetDrawAccountList(1, 20, " where b.Uid=" + WorkContext.Uid + ""))
+            {
+                <option value="@info.Drawaccid">@info.Card</option>
+            }
+        </select>
+        <h3>提现须知</h3>
+        <div class="txxz">
+            最低提现金额100<br>
+            提现10分钟到账，如高峰期30分钟到账<br>
+            提现处理成功请查看您的银行账户<br>
+            未到账请联系平台客服
+        </div>
+        <h3>提醒</h3>
+        <div class="txxz">
+            您的余额为<i>@ViewData["money"]元宝</i><br>
+            每日有<i>3</i>次免费提现机会，当日还剩<i>@ViewData["drawcount"]</i>次<br>
+            超过则每次收取<i>1%</i>手续费
+        </div>
+        <input type="text" id="Money" placeholder="请输入整数提现金额">
+        <input type="password" id="Pwd" placeholder="请输入提现密码" maxlength="16">
+        <button type="submit" class="btn" id="Q-btn" style="width:80%;margin:2em auto;display:block;">确认提现</button>
+
+    </div>
+    
+    <!-- 底部导航 -->
+    @Html.Partial("_footer")
+    <!-- 底部导航 -->
+
+    <script>
+    $(function ()
+    {
+        if('@ViewData["type"]'=="1")
+        {
+            $(".tabpayways li:eq(0)").addClass("paywayscur").siblings().removeClass("paywayscur");
+            $(".main2").hide();
+            $(".main1").show();
+            
+        }else if('@ViewData["type"]'=="2")
+        {
+            $(".tabpayways li:eq(1)").addClass("paywayscur").siblings().removeClass("paywayscur");
+            $(".main1").hide();
+            $(".main2").show();
+            
+        }
+        $.get("/recharge/ExistsMobile", function (data)
+        {
+            if (data == "1")
+            {
+                tishi("请绑定手机号");
+                setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
+
+                return;
+            } else if (data == "3")
+            {
+                tishi("验证失败");
+                return;
+            }
+        })
+
+        if ('@ViewData["setdraw"]' == "false")
+        {
+            tishi("请设置提现密码");
+            setTimeout(function () { window.location.href = "/ucenter/drawpwd"; }, 2000);
+            return false;
+        }
+
+        $("#sixDigitPassword").css("margin-right",($(document).width()-184)/2+"px")
+
+        $(".tabpayways li").click(function(){
+            $(this).addClass("paywayscur").siblings().removeClass("paywayscur");
+            if ($(this).index()==0) {
+                $(".main1").show();
+                $(".main2").hide();
+            }else{
+                $(".main2").show();
+                $(".main1").hide();
+            }
+        })
+
+    })
+
+    $(".main1 .jine a").click(function(){
+        $(".main1 .jine a").css("outline","1px solid #EEEEEE");
+        $(".main1 .jine input").css("border","1px solid #EEEEEE");
+        // $("#money").html($(this).attr("m"));
+        // $("#money").attr("dm",$(this).attr("m"));
+        $(this).css("outline","1px solid #FD645E")
+    })
+
+    $(".main1 .jine input").click(function(){
+        $(".main1 .jine a").css("outline","1px solid #EEEEEE");
+        $(".main1 .jine input").css("border","1px solid #EEEEEE");
+        $(this).css("border","1px solid #FD645E");
+    })
+
+
+
+    $(".p1").click(function ()
+    {
+        $(".span4").html("<img src='/newstatic/img/s1.png' width='18'>");
+        $(".span4").removeAttr("alipay");
+
+        $(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+        $(".span5").removeAttr("alipay");
+
+        $(".span3").html("<img src='/newstatic/img/s2.png' width='18'>");
+        $(".span3").attr("alipay", "1");
+    })
+
+
+    $(".p2").click(function ()
+    {
+        $(".span3").html("<img src='/newstatic/img/s1.png' width='18'>");
+        $(".span3").removeAttr("alipay");
+
+        $(".span5").html("<img src='/newstatic/img/s1.png' width='18'>");
+        $(".span5").removeAttr("alipay");
+
+        $(".span4").html("<img src='/newstatic/img/s2.png' width='18'>");
+        $(".span4").attr("alipay", "2");
+    })
+
+
+    $("#Q-btn").click(function ()
+    {
+        var UnionPayId = $("#UnionPayId").val();
+        var Money = $("#Money").val();
+        var Pwd = $("#Pwd").val();
+
+        if (Money == "")
+        {
+            tishi("提现金额不可以为空");
+            return false;
+        }
+        if(!isNumber(Money) || !isInt(Money))
+        {
+            tishi("提现金额只能为数字");
+            return false;
+        }
+        if (Money < 100)
+        {
+            tishi("提现金额不可以小余100元");
+            return false;
+        }
+
+        if (Pwd == "")
+        {
+            tishi("提现密码不可以为空");
+            return false;
+        }
+        if (!isPwd(Pwd))
+        {
+            tishi("密码格式为数字 字母 _ 长度6~16");
+            return false;
+        }
+        var my=@ViewData["money"];
+        if(Money>my)
+        {
+            tishi("余额不足");
+            return false;
+        }
+
+        $.post('/api/userdraw',{
+            "drawaccid": UnionPayId,
+            "money": Money,
+            "password": Pwd
+        },
+            function (data)
+            {
+                if (data == 1)
+                    tishi("提现密码错误");
+                else if (data == 2)
+                    tishi("账户余额不足,或者提款金额小于100元");
+                else if (data == 4)
+                {
+                    tishi("已经提交请等待客服处理");
+                    setTimeout(function () { window.location.href="/recharge/cqoperate?type=2"; }, 2000);
+                    
+                }
+                else if(data==3)
+                    tishi("提交失败");
+                else if(data==5)
+                {
+                    tishi("请设置提现密码");
+                    setTimeout(function () { window.location.href="/ucenter/drawpwd"; }, 2000);
+                }
+            });
+    });
+
+        
+    </script>
+   
+</body>
+</html>
+

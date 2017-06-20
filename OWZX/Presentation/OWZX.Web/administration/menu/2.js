@@ -9,9 +9,6 @@
             {
                 "title": "充值记录",
                 "url": "/admin/newuser/remitlist"
-            }, {
-                "title": "回水记录",
-                "url": "/admin/newuser/backlist"
             }
          ]
      },
@@ -33,19 +30,19 @@
                }
            ]
        },
-         {
-             "title": "公告管理",
-             "subMenuList": [
-                 {
-                     "title": "公告列表",
-                     "url": "/admin/news/newslist"
-                 },
-                 {
-                     "title": "广告列表",
-                     "url": "/admin/advert/advertlist"
-                 }
-             ]
-         },
+         //{
+         //    "title": "公告管理",
+         //    "subMenuList": [
+         //        {
+         //            "title": "公告列表",
+         //            "url": "/admin/news/newslist"
+         //        },
+         //        {
+         //            "title": "广告列表",
+         //            "url": "/admin/advert/advertlist"
+         //        }
+         //    ]
+         //},
 	{
 	    "title": "用户管理",
 	    "subMenuList": [
@@ -62,11 +59,6 @@
                 "title": "银行卡列表",
                 "url": "/admin/newuser/userbanklist"
             },
-            
-            {
-                "title": "访问IP列表",
-                "url": "/admin/stat/visitiplist"
-            },
             {
                 "title": "账变记录",
                 "url": "/admin/newuser/changelist"
@@ -80,18 +72,7 @@
             {
                 "title": "基础类型",
                 "url": "/admin/baseinfo/basetypelist"
-            }, {
-                "title": "客服回复",
-                "url": "/admin/baseinfo/baseinfolist"
             },
-			{
-			    "title": "房间信息",
-			    "url": "/admin/baseinfo/roomlist"
-			},
-			{
-			    "title": "回水规则",
-			    "url": "/admin/baseinfo/backrulelist"
-			},
 			{
 			    "title": "竞猜赔率",
 			    "url": "/admin/baseinfo/lotterysetlist"
