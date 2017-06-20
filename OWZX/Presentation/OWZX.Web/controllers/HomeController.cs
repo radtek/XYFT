@@ -35,7 +35,10 @@ namespace OWZX.Web.Controllers
             ViewData["ID"] = id;
             return View();
         }
-
+        public ActionResult KFService()
+        {
+            return View();
+        }
         /// <summary>
         /// 推广
         /// </summary>

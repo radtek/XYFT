@@ -802,6 +802,7 @@
     <Content Include="views\Recharge\alipaycharge.cshtml" />
     <Content Include="views\Recharge\wechatcharge.cshtml" />
     <Content Include="views\Recharge\cqoperate.cshtml" />
+    <Content Include="views\home\kfservice.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
