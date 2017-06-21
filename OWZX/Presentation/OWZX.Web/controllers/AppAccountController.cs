@@ -317,13 +317,18 @@ namespace OWZX.Web.controllers
                 
                 PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
-                if (Users.CreateUserPassword(oldpwd, partUserInfo.Salt) != partUserInfo.Password)
+                //if (Users.CreateUserPassword(oldpwd, partUserInfo.Salt) != partUserInfo.Password)
+                //{
+                //    //原始密码错误
+                //    return Content("2");
+                //}
+                if (oldpwd!= partUserInfo.Password)
                 {
                     //原始密码错误
                     return Content("2");
                 }
                 //生成用户新密码
-                string p = Users.CreateUserPassword(password, partUserInfo.Salt);
+                string p = password;// Users.CreateUserPassword(password, partUserInfo.Salt);
                 //设置用户新密码
                 bool upres = Users.UpdateUserPasswordByUid(WorkContext.Uid, p);
 
@@ -366,10 +371,11 @@ namespace OWZX.Web.controllers
 
                 PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
-                draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
+                //draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
                 if (parmas.AllKeys.Contains("oldpwd") && parmas["oldpwd"]!="")
                 {
-                    string oldpwd = Users.CreateUserPassword(parmas["oldpwd"], partUserInfo.Salt);
+                    //string oldpwd = Users.CreateUserPassword(parmas["oldpwd"], partUserInfo.Salt);
+                    string oldpwd = parmas["oldpwd"];
                     bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, oldpwd);
                     if (!pwdres)
                         return APIResult("error", "原有密码错误");
@@ -443,7 +449,7 @@ namespace OWZX.Web.controllers
 
                 PartUserInfo partUserInfo = Users.GetPartUserById(WorkContext.Uid);
 
-                draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
+                //draw.Drawpwd = Users.CreateUserPassword(draw.Drawpwd, partUserInfo.Salt);
 
                 bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, draw.Drawpwd);
                 if (!pwdres)

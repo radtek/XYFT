@@ -253,7 +253,7 @@
             超过则每次收取<i>1%</i>手续费
         </div>
         <input type="text" id="Money" placeholder="请输入整数提现金额">
-        <input type="password" id="Pwd" placeholder="请输入提现密码" maxlength="16">
+        <input type="password" id="Pwd" placeholder="请输入提现密码" maxlength="4">
         <button type="submit" class="btn" id="Q-btn" style="width:80%;margin:2em auto;display:block;">确认提现</button>
 
     </div>
@@ -387,6 +387,12 @@
         var Money = $("#Money").val();
         var Pwd = $("#Pwd").val();
 
+        if(UnionPayId=="")
+        {
+            tishi("请添加提现银行卡信息");
+            setTimeout(function () { window.location.href="/ucenter/banklist"; }, 2000);
+        }
+
         if (Money == "")
         {
             tishi("提现金额不可以为空");
@@ -408,9 +414,9 @@
             tishi("提现密码不可以为空");
             return false;
         }
-        if (!isPwd(Pwd))
+        if (!isDrawPwd(Pwd))
         {
-            tishi("密码格式为数字 字母 _ 长度6~16");
+            tishi("密码格式为数字 4");
             return false;
         }
         var my=@ViewData["money"];
@@ -443,6 +449,10 @@
                 {
                     tishi("请设置提现密码");
                     setTimeout(function () { window.location.href="/ucenter/drawpwd"; }, 2000);
+                }else if(data==6)
+                {
+                    tishi("请添加提现银行卡信息");
+                    setTimeout(function () { window.location.href="/ucenter/banklist"; }, 2000);
                 }
             });
     });

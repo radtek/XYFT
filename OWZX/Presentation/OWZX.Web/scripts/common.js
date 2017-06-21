@@ -98,6 +98,12 @@ function isPwd(s)
     if (!patrn.exec(s)) return false
     return true
 }
+function isDrawPwd(s)
+{
+    var patrn = /^[0-9]{4}$/;
+    if (!patrn.exec(s)) return false
+    return true
+}
 
 //搜索
 function search()

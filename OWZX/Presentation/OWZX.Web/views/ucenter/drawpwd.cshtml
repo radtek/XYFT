@@ -27,9 +27,9 @@
             <ul class="form">
                 
                 <li @if (!(bool)ViewData["isext"]) { <text>style="display:none;"</text>}
-                    ><label>原密码</label><input type="password" id="oldpwd" maxlength="16" ></li> 
-                <li><label>新密码</label><input type="password" id="pwd1" maxlength="16"></li>
-                <li><label>确认密码</label><input type="password" id="pwd2" maxlength="16"></li>
+                    ><label>原密码</label><input type="password" id="oldpwd" maxlength="4" ></li> 
+                <li><label>新密码</label><input type="password" id="pwd1" maxlength="4"></li>
+                <li><label>确认密码</label><input type="password" id="pwd2" maxlength="4"></li>
                 <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">修改</a>
             </ul>
         </form>
@@ -63,9 +63,9 @@
                 return false;
             }
 
-            if ((oldpwd!="" &&!isPwd(oldpwd)) || (pwd1!=""&&!isPwd(pwd1)) || (pwd2!=""&&!isPwd(pwd2)))
+            if ((oldpwd != "" && !isDrawPwd(oldpwd)) || (pwd1 != "" && !isDrawPwd(pwd1)) || (pwd2 != "" && !isDrawPwd(pwd2)))
             {
-                tishi("密码格式为数字 字母 _ 长度6~16");
+                tishi("密码格式为数字 长度4");
                 return false;
             }
 

@@ -115,7 +115,12 @@ namespace OWZX.Web.Controllers
 
                 if (partUserInfo != null)
                 {
-                    if (Users.CreateUserPassword(password, partUserInfo.Salt) != partUserInfo.Password)//判断密码是否正确
+                    //if (Users.CreateUserPassword(password, partUserInfo.Salt) != partUserInfo.Password)//判断密码是否正确
+                    //{
+                    //    LoginFailLogs.AddLoginFailTimes(WorkContext.IP, DateTime.Now);//增加登陆失败次数
+                    //    errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "password", "密码不正确", "}");
+                    //}
+                    if (password != partUserInfo.Password)//判断密码是否正确
                     {
                         LoginFailLogs.AddLoginFailTimes(WorkContext.IP, DateTime.Now);//增加登陆失败次数
                         errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "password", "密码不正确", "}");
@@ -402,7 +407,7 @@ namespace OWZX.Web.Controllers
                 #region 绑定用户信息
 
                 userInfo.Salt = Randoms.CreateRandomValue(6);
-                userInfo.Password = Users.CreateUserPassword(password, userInfo.Salt);
+                userInfo.Password = password;// Users.CreateUserPassword(password, userInfo.Salt);
                 userInfo.UserRid = UserRanks.GetLowestUserRank().UserRid;
                 userInfo.AdminGid = 1;//非管理员组
                 if (nickName.Length > 0)

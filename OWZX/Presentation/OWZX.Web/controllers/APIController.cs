@@ -300,6 +300,16 @@ namespace OWZX.Web.controllers
             {
                 return Content("5");//没有设置提现密码
             }
+
+            if (parmas["drawaccid"]=="")
+            {
+                return Content("6");//没有添加银行卡信息
+            }
+            List<MD_DrawAccount> drawgt = Recharge.GetDrawAccountList(1, 1, " where a.drawaccid=" + parmas["drawaccid"].ToString() + "");
+            if (drawgt == null || drawgt.Count == 0)
+            {
+                return Content("6");//没有添加银行卡信息
+            }
             //string account = parmas["account"];
             decimal money = decimal.Parse(parmas["money"]);
 
@@ -313,8 +323,8 @@ namespace OWZX.Web.controllers
                 //return APIResult("error", "账户余额不足");
                 return Content("2");
 
-            string mdpwd = Users.CreateUserPassword(parmas["password"], partUserInfo.Salt);
-
+            string mdpwd =parmas["password"];// Users.CreateUserPassword(parmas["password"], partUserInfo.Salt);
+           
             bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, mdpwd);
             if (!pwdres)
                 //return APIResult("error", "提现密码错误");

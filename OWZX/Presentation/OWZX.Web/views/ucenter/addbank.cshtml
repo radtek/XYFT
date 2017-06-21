@@ -30,7 +30,7 @@
                 </li>
                 <li><label>开户姓名</label><input type="text" id="TrueName" placeholder=""></li>
                 <li><label>银行卡号</label><input type="text" id="BankNum"></li>
-                <li><label>提现密码</label><input type="password" id="Pwd"></li>
+                <li><label>提现密码</label><input type="password" id="Pwd" maxlength="4"></li>
                 <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;"> @(ViewData["ID"].ToString()=="-1"?"新增": "修改")</a>
             </ul>
         </div>
@@ -38,7 +38,8 @@
       
         @Html.Partial("_footer")
         <!-- 底部导航 --> 
-        
+
+        <script src="~/scripts/common.js"></script>
     <script type="text/javascript">
         var id = '@ViewData["ID"]'; 
         $(function ()
@@ -90,6 +91,11 @@
 
                 if (Pwd == "") {
                     tishi("提现密码不可为空");
+                    return false;
+                }
+                if ((Pwd != "" && !isDrawPwd(Pwd)))
+                {
+                    tishi("密码格式为数字 长度4");
                     return false;
                 }
                 $.post('/AppAccount/SetDrawAccount', {
