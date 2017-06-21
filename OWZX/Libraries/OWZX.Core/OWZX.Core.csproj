@@ -148,6 +148,7 @@
     <Compile Include="Event\TaskList.cs" />
     <Compile Include="Helper\CCPRestSDK.cs" />
     <Compile Include="Helper\ExcelHelper.cs" />
+    <Compile Include="Helper\HtmlOrTxtHelper.cs" />
     <Compile Include="Helper\HttpUtils.cs" />
     <Compile Include="Helper\JsonLimitOutPut.cs" />
     <Compile Include="Helper\CommonHelper.cs" />

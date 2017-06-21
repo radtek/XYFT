@@ -146,8 +146,8 @@
                 }
 
         .btn-toolbar span {
-            text-shadow: 1px 1px 1px #fff;
-            color: #000;
+            text-shadow: 1px 1px 1px #000;
+            color: #fff;
         }
     </style>
     <!--[if IE]>
@@ -203,10 +203,10 @@
                   int time=int.Parse(ViewData["lot_msg"].ToString());
                   if(time>30)
                   {
-                     <text>距离下期封盘剩余：<span class="ct-time">@time</span> 秒</text>
+                     <text>距离本期封盘剩余：<span class="ct-time">@time</span> 秒</text>
                   }else
                   {
-                    <text>距离下期开奖剩余：<span class="ct-time">@time</span> 秒</text>
+                    <text>距离本期开奖剩余：<span class="ct-time">@time</span> 秒</text>
                   }
                 }
                 <script>

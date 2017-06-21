@@ -370,7 +370,7 @@ namespace OWZX.Web.controllers
                 if (parmas.AllKeys.Contains("oldpwd") && parmas["oldpwd"]!="")
                 {
                     string oldpwd = Users.CreateUserPassword(parmas["oldpwd"], partUserInfo.Salt);
-                    bool pwdres = Recharge.ValidateDrawPwd(draw.Account, oldpwd);
+                    bool pwdres = Recharge.ValidateDrawPwdByUid(WorkContext.Uid, oldpwd);
                     if (!pwdres)
                         return APIResult("error", "原有密码错误");
                 }

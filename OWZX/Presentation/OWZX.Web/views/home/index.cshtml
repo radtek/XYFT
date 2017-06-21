@@ -46,7 +46,6 @@
     <script type="text/javascript" src="~/newstatic/js/time.js"></script>
     <script type="text/javascript" src="~/newstatic/js/jquery.rotate.min.js"></script>
     
-    
     <title>首页</title>
 </head>
 <body>
@@ -127,12 +126,6 @@
     <div id="gongao">
         <div style="width:900px;height:30px;margin:0 auto;white-space: nowrap;overflow:hidden;" id="scroll_div" class="scroll_div">
             <ul id="scroll_begin"> 
-                <li>国庆节放假10天</li>
-                <li>成人高考即开始</li>
-                <li>到黄打黑下单了可根据贷款</li>
-                <li>数据谁看见的风格的</li>
-                <li>肯定见过很多还是赶快打开过贷款机构开发机构开发</li>
-                <li>如同仁堂的价格附近的韩国风景很多时候公司的贷款的时刻</li>
             </ul>
             <div id="scroll_end"></div>
         </div>
@@ -141,36 +134,32 @@
     <div class="main"> 
         <div class="mid-container caidan">
             <!-- 轮盘菜单 -->
-            <div class="lunpan">
-                <div id="outerDiv" style="width:100%;height:300px;border-radius:150px;position: absolute;">
-                    <div id="bg" style="background: url(/newstatic/img/all1.png)no-repeat;width: 140px;height: 140px;margin:100px auto 0 auto;  z-index: -1;"></div>
-                    <div id="m8">
-                         <a href="/nwlottery/index?type=10"><img src="~/newstatic/img/first/pk.png" /><br />直播赛区</a>
+
+                <div class="lunpan" style="text-align: center;">
+                    <div id="bg" style="background: url(/newstatic/img/all1.png)no-repeat;width: 140px;height: 140px;z-index: -1;display: inline-block;margin-top: 40px;"></div>
+                    <div id="outerDiv" style="width:76%;height:200px;top: 0;left: 12%;position: relative;margin-top: -190px;">
+                        <div id="m8"><a href="/nwlottery/index?type=10"><img src="/newstatic/img/first/pk.png" /><br />直播赛区</a></div>
+                        <div id="m2"><a href="/nwlottery/index?type=11"><img src="/newstatic/img/first/ft.png" /><br />幸运飞艇</a></div>
+                        <div id="m6"><a class="explain"><img src="/newstatic/img/first/wf.png" /><br />玩法说明</a></div>
+                        <div id="m4"><a href="/Account/Login"><img src="/newstatic/img/first/login.png" /><br />登录、注册<br /><span style="font-size: 12px;color: red;">新注册用户立赠28元</span></a></div>
+                        <div id="m5"><a href="/nwlottery/historymessage?type=11"><img src="/newstatic/img/first/ls.png" /><br />历史资讯</a></div>
                     </div>
-                    <div id="m2">
-                         <a href="/nwlottery/index?type=11"><img src="~/newstatic/img/first/ft.png" /><br />幸运飞艇</a>
+                </div>
+                <!-- 轮盘菜单 -->
+                <div class="set-div">
+                    <div class="set">
+                        <a href="User/set.html">
+                            <img src="/newstatic/img/first/sz.png" alt="设置" /><br />设置
+                        </a>
                     </div>
-                    <div id="m5">
-                          <a href="/nwlottery/historymessage?type=11"><img src="~/newstatic/img/first/ls.png" /><br />历史资讯</a>
+                    <div class="app">
+                        <a href="">
+                            <img src="/newstatic/img/first/xz.png" alt="APP下载" /><br />APP下载
+                        </a>
                     </div>
-                    <div id="m4"><a href="/Account/Login"><img src="~/newstatic/img/first/login.png" /><br />登录、注册<br /><span style="font-size: 12px;color: red;">新注册用户立赠28元</span></a></div>
-                    <div id="m6"><a class="explain"><img src="~/newstatic/img/first/wf.png" /><br />玩法说明</a></div>
+                    <div style="clear: both;"></div>
                 </div>
-            </div>
-            <!-- 轮盘菜单 -->
-            <div class="set-div">
-                <div class="set">
-                    <a href="/UCenter/set">
-                        <img src="~/newstatic/img/first/sz.png" alt="设置" /><br />设置
-                    </a>
-                </div>
-                <div class="app">
-                    <a href="">
-                        <img src="~/newstatic/img/first/xz.png" alt="APP下载" /><br />APP下载
-                    </a>
-                </div>
-                <div style="clear: both;"></div>
-            </div>
+            
         </div>
         <!-- 玩法说明 -->
         <div class="mid-container pk10" style="display: none">
@@ -178,7 +167,7 @@
             <!--<p>1、<font style="color:#f00; font-size:16px">猜冠军， 即前一</font>，猜开奖号码的<font style="color:#f00; font-size:16px">第一位</font>，奖金<font style="color:#f00; font-size:16px">10</font>元，例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>。第一位是1，那么投注第一位包含<font style="color:#f00; font-size:16px"> 1 </font>时，即为中奖。</p><br>
             <p>2、<font style="color:#f00; font-size:16px">猜冠亚军 ，即前二</font>，猜开奖号码的<font style="color:#f00; font-size:16px">前二位</font>，奖金<font style="color:#f00; font-size:16px">10</font>元，例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>；那么投注<font style="color:#f00; font-size:16px">第一位包含1，第二位包含2</font>时，即为中奖。选2中2，奖金55元。选2中1，奖金2元。</p><br>
             <p>3、<font style="color:#f00; font-size:16px">猜冠亚季军 ，即前三</font>，猜开奖号码的<font style="color:#f00; font-size:16px">前三位</font>。例如开奖号码为<font style="border:1px solid #f00; padding:5px; margin:3px; border-radius:30px; color:#f00">1,2,3,4,5,6,7,8,9,10</font>；那么投注<font style="color:#f00; font-size:16px">第一位包含1，第二位包含2时，第三位包含3</font>时，即为中奖。选3中3，奖金160元。选3中2，奖金10元。选3中1，奖金2元。</p>-->
-            <img src="~/newstatic/img/js.jpg" width="100%" />
+            <img src="/newstatic/img/js.jpg" width="100%" />
             <br /><br /><br />
         </div>
         <!-- 玩法说明 -->
@@ -209,9 +198,23 @@
             $(".mid-container").css('display', 'none');
             $(".caidan").css("display", "block");
         });
+        $.post("/api/notice", { "page": 1 }, function (data)
+        {
+            var dt = JSON.parse(data);
+            var cztext = "";
+            $.each(dt.biz_content, function ()
+            {
+                cztext += '<li>' + this.body + '</li>';
+            });
+
+            if (cztext != "")
+            {
+                $("#scroll_begin").html(cztext);
+            }
+        })
     })
 </script>
-    <script src="~/newstatic/js/lun.js"></script>
+
 </body>
 </html>
 

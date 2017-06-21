@@ -115,6 +115,7 @@ function GetRTime(type, ctime, fcnum, totalime, stoptime)
 var lothmtime;
 function LotHMime(type, ctime, fcnum, totalime, stoptime)
 {
+    clearTimeout(lothmtime);
     var nS = parseInt(ctime);
 
     //ns 开奖时间
@@ -203,7 +204,7 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
             {
 
                 $(".ct-down").html(
-                    '距离下期封盘剩余：<span class="ct-time">' + rems + '</span> 秒');
+                    '距离本期封盘剩余：<span class="ct-time">' + rems + '</span> 秒');
             } else
             {
 
@@ -215,7 +216,7 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
             if (type != 13)
             {
                 $(".ct-down").html(
-                '距离下期开奖剩余：<span class="ct-time">' + nS + '</span> 秒');
+                '距离本期开奖剩余：<span class="ct-time">' + nS + '</span> 秒');
             } else
             {
 

@@ -63,7 +63,7 @@
                 return false;
             }
 
-            if (!isPwd(oldpwd) || !isPwd(pwd1) || !isPwd(pwd2))
+            if ((oldpwd!="" &&!isPwd(oldpwd)) || (pwd1!=""&&!isPwd(pwd1)) || (pwd2!=""&&!isPwd(pwd2)))
             {
                 tishi("密码格式为数字 字母 _ 长度6~16");
                 return false;
@@ -84,7 +84,8 @@
                         if (result.state == "success")
                         {
                             tishi("保存成功");
-                            window.location.href = "/ucenter/set";
+                            setTimeout(function () { window.location.href = "/ucenter/set"; }, 2000);
+                            
                         }
                         else
                             tishi(result.biz_content);

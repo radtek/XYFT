@@ -1,3 +1,4 @@
+html{font-family: "微软雅黑"!important;}
 .bg-hide{
 	display: none;
 }
@@ -68,7 +69,7 @@
 	width: 100%;
 	position: absolute;
 	bottom: 50px;
-	top: 14em;
+	top: 14.5em;
 	background: rgba(215, 202, 153, 0.24);
 }
 .lunpan{
@@ -80,6 +81,7 @@
 }
 #outerDiv div{
 	text-align: center;
+	position: absolute;
 }
 #outerDiv div a{
 	display: block;
@@ -108,6 +110,11 @@
 	float: right;
 	margin-right: 20px;   
 }
+#m8{top: 30px;left: 19%;}
+#m2{top: 30px;right: 19%;}
+#m6{top: 120px;left: 7%;}
+#m5{top: 120px;right: 7%;}
+#m4{display:inline-block;position: static!important;margin-top: 180px;}
 /*===========================================================
      玩法说明 
  * ==========================================================*/

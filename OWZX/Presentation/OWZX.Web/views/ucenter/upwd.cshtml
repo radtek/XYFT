@@ -66,6 +66,7 @@
                     tishi("密码不可为空");
                     return false;
                 }
+
                 $.post('/appaccount/resetpwd',
                     { oldpwd: oldpwd, password: pwd1 },
                     function (data)
@@ -73,7 +74,7 @@
                         if (data == 1)
                         {
                             tishi("保存成功");
-                            window.location.hre = "/account/login";
+                            setTimeout(function () { window.location.href = "/account/login"; }, 2000);
                         }
                         else if (data == 2)
                             tishi("原密码错误");

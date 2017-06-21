@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using OWZX.Core;
 using OWZX.Core.Alipay;
+using OWZX.Core.Helper;
 using OWZX.Model;
 using OWZX.Services;
 using OWZX.Web.Framework;
@@ -457,13 +458,13 @@ namespace OWZX.Web.controllers
             {
                 NameValueCollection parmas = WorkContext.postparms;
                 int page = int.Parse(parmas["page"]);
-                DataTable dt = News.GetNewsList(10, page, "where newstypeid=2");
+                DataTable dt = News.GetNewsList(10, page, "where newstypeid=2 and isshow=1");
                 List<MD_NewsInfo> list = (List<MD_NewsInfo>)ModelConvertHelper<MD_NewsInfo>.ConvertToModel(dt);
                 if (list.Count > 0)
                 {
                     list.ForEach((x) =>
                     {
-                        x.Body = BSPConfig.ShopConfig.SiteUrl + "/home/notice/" + x.NewsId.ToString();
+                        x.Body = new HtmlOrTxtHelper().Convert(x.Body); 
                     });
                     JsonSerializerSettings jsetting = new JsonSerializerSettings();
                     jsetting.DateFormatString = "yyyy-MM-dd HH:mm:ss";

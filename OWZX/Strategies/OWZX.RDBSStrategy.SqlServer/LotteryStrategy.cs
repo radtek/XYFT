@@ -90,14 +90,13 @@ namespace OWZX.RDBSStrategy.SqlServer
             lock (lkstate)
             {
                 string sql = string.Format(@" 
-                --逻辑：北京 投注4:30s 封盘30s ,到开奖时间加载新的一期；
-                --加拿大 投注3分，封盘30s,到开奖时间加载新的一期；
+
                 declare @type int ={0}
                 declare @min varchar(5), @sec varchar(5),@expect varchar(50),@totalsec varchar(5)
 
                 select top 1 opencode from owzx_lotteryrecord where type=10 and status=2 order by lotteryid desc
 
-                if(@type=10) 
+                 if(@type=10) 
                 begin
 
                 if exists(select top 1 1 from owzx_lotteryrecord where type=10 and 
@@ -116,8 +115,8 @@ namespace OWZX.RDBSStrategy.SqlServer
                 begin
                 select top 1 @expect=expect,@totalsec =CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
                 from  owzx_lotteryrecord where type=10 and  status=0 
-                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120)
-                select @expect expect,@totalsec time
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120) and datediff(second,getdate(),opentime)>0
+                select isnull(@expect,'') expect,isnull(@totalsec,'') time
                 end
                 else
                 begin
@@ -143,8 +142,8 @@ namespace OWZX.RDBSStrategy.SqlServer
                 begin
                 select top 1 @expect=expect,@totalsec =CONVERT(VARCHAR(10),DATEDIFF(SECOND,getdate(),opentime))
                 from  owzx_lotteryrecord where type=11 and  status=0 
-                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120)
-                select @expect expect,@totalsec time
+                and convert(varchar(10),opentime,120)=convert(varchar(10),getdate(),120) and datediff(second,getdate(),opentime)>0
+                select isnull(@expect,'') expect,isnull(@totalsec,'') time
                 end
                 else
                 begin
@@ -1215,7 +1214,7 @@ drop table #list
 
 SELECT ROW_NUMBER() over(order by a.bettid desc) id,
 a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
-e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,rtrim(cast(a.roomid as char(2))) room,b.username
+e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,a.roomid,rtrim(cast(a.roomid as char(2))) room,b.username
 into  #list
 FROM owzx_bett a
 join owzx_users b on a.uid=b.uid

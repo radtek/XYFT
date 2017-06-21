@@ -316,6 +316,7 @@ namespace OWZX.Web.Admin.Controllers
             newsTypeList.Add(new SelectListItem() { Text = "请选择类型", Value = "0" });
             foreach (NewsTypeInfo newsTypeInfo in AdminNews.GetNewsTypeList())
             {
+                if(newsTypeInfo.NewsTypeId!=3)
                 newsTypeList.Add(new SelectListItem() { Text = newsTypeInfo.Name, Value = newsTypeInfo.NewsTypeId.ToString() });
             }
             ViewData["newsTypeList"] = newsTypeList;

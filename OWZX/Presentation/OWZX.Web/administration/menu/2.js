@@ -30,19 +30,15 @@
                }
            ]
        },
-         //{
-         //    "title": "公告管理",
-         //    "subMenuList": [
-         //        {
-         //            "title": "公告列表",
-         //            "url": "/admin/news/newslist"
-         //        },
-         //        {
-         //            "title": "广告列表",
-         //            "url": "/admin/advert/advertlist"
-         //        }
-         //    ]
-         //},
+         {
+             "title": "公告管理",
+             "subMenuList": [
+                 {
+                     "title": "公告列表",
+                     "url": "/admin/news/newslist"
+                 }
+             ]
+         },
 	{
 	    "title": "用户管理",
 	    "subMenuList": [

@@ -284,22 +284,24 @@
             $(".tabpayways li:eq(1)").addClass("paywayscur").siblings().removeClass("paywayscur");
             $(".main1").hide();
             $(".main2").show();
+
+            $.get("/recharge/ExistsMobile", function (data)
+            {
+                if (data == "1")
+                {
+                    tishi("请绑定手机号");
+                    setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
+
+                    return;
+                } else if (data == "3")
+                {
+                    tishi("验证失败");
+                    return;
+                }
+            })
             
         }
-        $.get("/recharge/ExistsMobile", function (data)
-        {
-            if (data == "1")
-            {
-                tishi("请绑定手机号");
-                setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
-
-                return;
-            } else if (data == "3")
-            {
-                tishi("验证失败");
-                return;
-            }
-        })
+        
 
         if ('@ViewData["setdraw"]' == "false")
         {
@@ -318,6 +320,20 @@
             }else{
                 $(".main2").show();
                 $(".main1").hide();
+                $.get("/recharge/ExistsMobile", function (data)
+                {
+                    if (data == "1")
+                    {
+                        tishi("请绑定手机号");
+                        setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
+
+                        return;
+                    } else if (data == "3")
+                    {
+                        tishi("验证失败");
+                        return;
+                    }
+                })
             }
         })
 
