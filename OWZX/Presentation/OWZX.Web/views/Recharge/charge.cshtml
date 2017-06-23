@@ -207,20 +207,7 @@
     <script>
         $(function ()
         {
-            $.get("/recharge/ExistsMobile", function (data)
-            {
-                if (data == "1")
-                {
-                    tishi("请绑定手机号");
-                    setTimeout(function () { window.location.href = "/ucenter/bindtel"; }, 2000);
-                   
-                    return;
-                } else if (data == "3")
-                {
-                    tishi("验证失败");
-                    return;
-                }
-            })
+
             $("#sixDigitPassword").css("margin-right", ($(document).width() - 184) / 2 + "px")
 
             $(".tabpayways li").click(function ()

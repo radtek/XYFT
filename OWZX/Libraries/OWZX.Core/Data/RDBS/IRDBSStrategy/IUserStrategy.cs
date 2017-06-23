@@ -135,7 +135,13 @@ namespace OWZX.Core
         /// <param name="uid">用户id</param>
         /// <returns></returns>
         DataTable GetUserById(int uid);
-
+        /// <summary>
+        /// 获得用户
+        /// </summary>
+        /// <param name="uid">用户id</param>
+        /// <returns></returns>
+        DataTable GetUserInfoById(int uid);
+        
          /// <summary>
         /// 添加邀请码信息（推广页面）
         /// </summary>
@@ -231,7 +237,11 @@ namespace OWZX.Core
         /// </summary>
         /// <returns></returns>
         bool UpdateUser(UserInfo userInfo);
-
+         /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <returns></returns>
+        bool UpdateUser(string username, string password, string drawpwd, string totalmoney, string bio);
         /// <summary>
         /// 更新部分用户
         /// </summary>

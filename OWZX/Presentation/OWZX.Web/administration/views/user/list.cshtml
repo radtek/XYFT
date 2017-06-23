@@ -35,12 +35,12 @@
                         <td width="130" >
                             @Html.TextBox("UserName", Model.UserName, new { height = "18" })
                         </td>
-                        <td style="display:none;">
+                        @*<td style="display:none;">
                             &nbsp;&nbsp;&nbsp;手机：
                         </td>
                         <td width="130" style="display:none;">
                             @Html.TextBox("Mobile", Model.Mobile, new { height = "18" })
-                        </td>
+                        </td>*@
                        
                         <td style="height:24px;">
                             <input id="SearchUser" name="SearchUser" type="image" class="searchBut submit" src="/administration/images/s.jpg" style="vertical-align: middle;" height="24" />
@@ -57,11 +57,13 @@
                         <th width="10"></th>
                         <th width="60" align="left">编号</th>
                         <th width="80" align="left">用户名</th>
-                        <th width="80" align="left">手机</th>
-                        <th width="80" align="left">昵称</th>
-                        <th width="80" align="left">账户余额</th>
+                        @*<th width="80" align="left">手机</th>
+                        <th width="80" align="left">昵称</th>*@
+                        <th width="80" align="left">用户余额</th>
+                        <th width="80" align="left">盈利</th>
+                        <th width="80" align="left">流水</th>
                         <th width="80" align="left">注册时间</th>
-                        <th width="80" align="left">访问时间</th>
+                        @*<th width="80" align="left">访问时间</th>*@
                         <th width="80" align="left">权限</th>
 
                         <th width="86" align="left">管理操作</th>
@@ -74,15 +76,16 @@
                             <td></td>
                             <td>@row["id"]</td>
                             <td>@row["username"]</td>
-                            <td>@row["mobile"]</td>
-                            <td>@row["nickname"]</td>
+                            <td>@row["bet_total"]</td><td>@row["lk_total"]</td>
+                            @*<td>@row["mobile"]</td>
+                            <td>@row["nickname"]</td>*@
                             <td>@row["totalmoney"]</td>
                             <td>@row["registertime"]</td>
-                            <td>@row["lastvisittime"]</td><td>@row["admingtitle"]</td>
+                            @*<td>@row["lastvisittime"]</td>*@<td>@row["admingtitle"]</td>
 
                             <td>
-                                @Html.ActionLink("[编辑]", "edit", new { uid = row["uid"] }, new { @class = "editOperate" })|
-                                @Html.ActionLink("[重置提现密码]", "editdraw", new { uid = row["uid"] }, new { @class = "editOperate" })|
+                                @Html.ActionLink("[编辑]", "edituser", new { uid = row["uid"] }, new { @class = "editOperate" })|
+                                @*@Html.ActionLink("[重置提现密码]", "editdraw", new { uid = row["uid"] }, new { @class = "editOperate" })|*@
                                 @Html.ActionLink("[删除]", "del", new { uid = row["uid"] }, new { @class = "deleteOperate" })
                             </td>
 

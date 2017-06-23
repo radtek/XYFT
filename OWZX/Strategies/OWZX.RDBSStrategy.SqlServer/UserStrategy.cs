@@ -418,6 +418,24 @@ select * from owzx_userinvite a where a.chaildaccount='{0}'
                 return ds.Tables[0];
         }
         /// <summary>
+        /// 获得用户
+        /// </summary>
+        /// <param name="uid">用户id</param>
+        /// <returns></returns>
+        public DataTable GetUserInfoById(int uid)
+        {
+            
+            string sql = string.Format(@"
+select a.uid,a.username,a.password,
+(select top 1 drawpwd from owzx_userdrawaccount where uid=a.uid) drawpwd,
+a.totalmoney,c.bio
+from owzx_users a 
+join owzx_userdetails c on a.uid=c.uid and a.uid={0}
+
+",uid);
+          return  RDBSHelper.ExecuteTable(sql,null)[0];
+        }
+        /// <summary>
         /// 删除用户
         /// </summary>
         /// <param name="uid"></param>
@@ -650,7 +668,49 @@ delete from owzx_onlineusers where uid={1}", RDBSHelper.RDBSTablePre, uid);
             else
                 return false;
         }
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <returns></returns>
+        public bool UpdateUser(string username,string password,string drawpwd,string totalmoney,string bio)
+        {
+            string sql = string.Format(@"
+begin try
+            begin tran t1
+            if exists(select 1 from owzx_users where rtrim(username)='{0}')
+            begin
+            UPDATE owzx_users
+               SET password = '{1}',totalmoney={3}
+            where rtrim(username)='{0}'
 
+            UPDATE a SET a.drawpwd = '{2}'
+            from owzx_userdrawaccount a join owzx_users b on a.uid=b.uid
+                        where rtrim(b.username)='{0}'
+
+            UPDATE a SET bio = '{4}'
+            from owzx_userdetails a join  owzx_users b on a.uid=b.uid
+            where rtrim(b.username)='{0}'
+
+            select '修改成功' state
+            commit tran t1
+            end
+            else
+            begin
+            select '记录已被删除' state
+            commit tran t1
+            end
+            end try
+            begin catch
+            rollback tran t1
+            select ERROR_MESSAGE() state
+            end catch
+",username,password,drawpwd,totalmoney,bio);
+            string result =RDBSHelper.ExecuteScalar(sql).ToString();
+            if (result.EndsWith("成功"))
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// 更新部分用户
         /// </summary>
@@ -886,10 +946,16 @@ if OBJECT_ID('tempdb..#list') is not null
   drop table #list
 
 select ROW_NUMBER() over(order by a.uid desc) id, a.uid,a.username,a.mobile,a.nickname,a.totalmoney,
-convert(varchar(25),b.registertime,120) registertime,convert(varchar(25),b.lastvisittime,120) lastvisittime,c.title AS admingtitle
+convert(varchar(25),b.registertime,120) registertime,convert(varchar(25),b.lastvisittime,120) lastvisittime,c.title AS admingtitle,
+isnull(d.bet_total,0) bet_total,isnull(d.lk_total,0) lk_total
 into #list
 from owzx_users a
 join owzx_userdetails b on a.uid=b.uid 
+join (
+select a.uid,sum(a.money) bet_total,sum(b.luckresult) lk_total from owzx_bett a
+ left join owzx_bettprofitloss b on a.bettid=b.bettid 
+group by a.uid
+) d on a.uid=d.uid
 LEFT JOIN [owzx_admingroups] c ON c.[admingid]=a.[admingid] {0}
 
 

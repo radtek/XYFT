@@ -235,6 +235,7 @@
     <None Include="views\userrank\edit.cshtml" />
     <None Include="views\userrank\list.cshtml" />
     <None Include="views\user\add.cshtml" />
+    <None Include="views\user\edituser.cshtml" />
     <None Include="views\user\editdraw.cshtml" />
     <None Include="views\user\edit.cshtml" />
     <None Include="views\user\list.cshtml" />

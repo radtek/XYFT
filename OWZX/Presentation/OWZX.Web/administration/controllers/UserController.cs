@@ -327,6 +327,65 @@ namespace OWZX.Web.Admin.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 编辑用户
+        /// </summary>
+        [HttpGet]
+        public ActionResult EditUser(int uid = -1)
+        {
+            DataTable userInfo = AdminUsers.GetUserInfoById(uid);
+            if (userInfo == null || userInfo.Rows.Count==0)
+                return PromptView("用户不存在");
+
+            UserModel model = new UserModel();
+            model.UserName = userInfo.Rows[0]["username"].ToString();
+            model.Password = userInfo.Rows[0]["password"].ToString();
+            model.DrawPwd = userInfo.Rows[0]["drawpwd"].ToString();
+            model.TotalMoney =decimal.Parse(userInfo.Rows[0]["totalmoney"].ToString());
+            model.Bio = userInfo.Rows[0]["bio"].ToString();
+            Load(model.RegionId);
+            return View(model);
+        }
+
+        /// <summary>
+        /// 编辑用户
+        /// </summary>
+        [HttpPost]
+        public ActionResult EditUser(UserModel model, int uid = -1)
+        {
+            UserInfo userInfo = AdminUsers.GetUserById(uid);
+            if (userInfo == null)
+                return PromptView("用户不存在");
+
+
+            if (ModelState.IsValid)
+            {
+                string UserName = model.UserName;
+                string password = model.Password;
+                string drawpwd = model.DrawPwd;
+                string totalmoney = model.TotalMoney.ToString();
+                //string mytype = model.MyType;
+                string money = model.Money;
+                string bio = model.Bio;
+                bool result = false;
+
+                result = AdminUsers.UpdateUser(UserName,password,drawpwd,totalmoney,bio);
+                if (result)
+                {
+                    AddAdminOperateLog("修改用户", "修改用户,用户ID为:" + uid);
+                    return PromptView("用户修改成功");
+                }
+                else
+                {
+                    return PromptView("用户修改失败");
+                }
+            }
+
+            Load(model.RegionId);
+
+            return View(model);
+        }
+
 
         /// <summary>
         /// 编辑用户提现密码

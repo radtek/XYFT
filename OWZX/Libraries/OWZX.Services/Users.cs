@@ -51,6 +51,16 @@ namespace OWZX.Services
             return null;
         }
         /// <summary>
+        /// 获得用户
+        /// </summary>
+        /// <param name="uid">用户id</param>
+        /// <returns></returns>
+        public static DataTable GetUserInfoById(int uid)
+        {
+            DataTable dt = OWZX.Data.Users.GetUserInfoById(uid);
+            return dt;
+        }
+        /// <summary>
         /// 添加邀请码信息（推广页面）
         /// </summary>
         /// <param name="paccount"></param>
@@ -280,7 +290,14 @@ namespace OWZX.Services
         {
             return OWZX.Data.Users.UpdateUser(userInfo);
         }
-
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <returns></returns>
+        public static bool UpdateUser(string username, string password, string drawpwd, string totalmoney, string bio)
+        {
+            return OWZX.Data.Users.UpdateUser(username, password, drawpwd, totalmoney, bio);
+        }
         /// <summary>
         /// 更新部分用户
         /// </summary>

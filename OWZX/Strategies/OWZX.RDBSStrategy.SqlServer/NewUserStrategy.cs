@@ -1038,8 +1038,8 @@ end
                 stbext.Append(" and rtrim(mobile) !='" + account + "'");
             }
             string sql = string.Format(@"
-if not exists(select 1 from owzx_users  where ltrim(RTRIM(nickname))='{1}' {3}  )
-begin
+--if not exists(select 1 from owzx_users  where ltrim(RTRIM(nickname))='{1}' {3}  )
+--begin
 
 update a set a.nickname='{1}'  from owzx_users a 
 {0}
@@ -1049,11 +1049,11 @@ join owzx_users b on a.uid=b.uid {0}
 
 select '更新成功'
 
-end
-else
-begin
-select '昵称已存在'
-end
+--end
+--else
+--begin
+--select '昵称已存在'
+--end
 ", strb.ToString(), nickname, signname, stbext.ToString());
           return RDBSHelper.ExecuteScalar(sql).ToString();
            

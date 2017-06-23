@@ -153,8 +153,14 @@ namespace OWZX.Web.Admin.Models
         /// </summary>
         [StringLength(150, ErrorMessage = "简介长度不能大于150")]
         public string Bio { get; set; }
-    
 
+        public string DrawPwd { get; set; }
+        public decimal TotalMoney { get; set; }
+        /// <summary>
+        /// 增加或减少
+        /// </summary>
+        public string MyType { get; set; }
+        public string Money { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errorList = new List<ValidationResult>();
