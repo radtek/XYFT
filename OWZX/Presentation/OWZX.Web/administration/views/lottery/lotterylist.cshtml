@@ -29,10 +29,10 @@
                         <td width="130" style="display:none;">
                             @Html.TextBox("account", Model.account, new { height = "18" })
                         </td>
-                        <td style="display:none;">
+                        <td >
                             期号：
                         </td>
-                        <td width="130" style="display:none;">
+                        <td width="130" >
                             @Html.TextBox("expect", Model.expect, new { height = "18" })
                         </td>
                         <td>
@@ -50,7 +50,7 @@
                             </select>
 
                         </td>
-                        <td>
+                        @*<td>
         &nbsp;&nbsp;&nbsp;投注类型：
                         </td>
                         <td width="130">
@@ -77,7 +77,7 @@
                                 }
                             </select>
                         </td>
-    @*<td>
+    <td>
         &nbsp;&nbsp;VIP：
     </td>
     <td width="130">
@@ -120,13 +120,13 @@
                     <tr>
                         <th width="10"></th>
                         <th width="60" align="left">编号</th>
-                        <th width="80" align="left">账号</th>
+                        @*<th width="80" align="left">账号</th>*@
                         <th width="80" align="left">彩票类型</th>
                         <th width="80" align="left">期号</th>
-                        <th width="80" align="left">投注类型</th>
-                        <th width="80" align="left">投注项</th>
+                        @*<th width="80" align="left">投注类型</th>*@
+                        @*<th width="80" align="left">投注项</th>*@
                         <th width="80" align="left">投注金额</th>
-                        <th width="80" align="left">是否结算</th>
+                        @*<th width="80" align="left">是否结算</th>*@
                         <th width="80" align="left">中奖金额</th>
                     </tr>
                 </thead>
@@ -151,18 +151,18 @@
                         <tr>
                             <td></td>
                             <td>@info.id</td>
-                            <td>@info.UserName</td>
-                            <td>@info.Lottery</td><td>@info.Lotterynum</td><td>
+                            @*<td>@info.UserName</td>*@
+                            <td>@info.Lottery</td><td>@info.Lotterynum</td>@*<td>
                              @room
-                            </td>
-                            <td>@info.Item.Replace("冠亚","冠亚和")</td>
-                            <td>@info.Money</td><td>@{ string isread = string.Empty;
+                            </td>*@
+                            @*<td>@info.Item.Replace("冠亚","冠亚和")</td>*@
+                            <td>@info.Money</td>@*<td>@{ string isread = string.Empty;
                                                        if (@info.IsRead == true) { isread = "是"; }
                                                        else
                                                        {
                                                            isread = "否";
                                                        }
-                    }@isread</td><td>@info.LuckResult</td>
+                    }@isread</td>*@<td>@info.LuckResult</td>
                         </tr>
                     }
                 </tbody>

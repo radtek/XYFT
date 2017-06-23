@@ -740,7 +740,17 @@ namespace OWZX.Services
             }
             return false;
         }
-
+        /// <summary>
+        ///  获取投注记录(按照期数分组)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public static DataTable GetBettListGpByNum(int pageNumber, int pageSize, string condition = "")
+        {
+            return OWZX.Data.Lottery.GetBettListGpByNum(pageNumber, pageSize, condition);
+        }
         /// <summary>
         ///  获取投注记录(分页)
         /// </summary>
@@ -1082,6 +1092,19 @@ namespace OWZX.Services
         public static DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string start, string end)
         {
             return OWZX.Data.Lottery.GetProfitListNoLottery(type, pageSize, pageNumber, start, end);
+        }
+
+        /// <summary>
+        /// 盈利报表 彩票类型不参数分组,包含回水
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="pageNumber"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public static DataTable GetProfitListGpByUser(int pageSize, int pageNumber, string start, string end)
+        {
+            return OWZX.Data.Lottery.GetProfitListGpByUser(pageSize, pageNumber, start, end);
         }
         #endregion
 

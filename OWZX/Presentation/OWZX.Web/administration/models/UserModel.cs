@@ -81,12 +81,12 @@ namespace OWZX.Web.Admin.Models
         /// <summary>
         /// 密码
         /// </summary>
-        [StringLength(32, MinimumLength = 4, ErrorMessage = "密码长度必须大于3且小于33")]
+        //[StringLength(32, MinimumLength = 4, ErrorMessage = "密码长度必须大于3且小于33")]
         public string Password { get; set; }
         /// <summary>
         /// 确认密码
         /// </summary>
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码必须相同")]
+        //[System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码必须相同")]
         public string ConfirmPassword { get; set; }
 
         /// <summary>

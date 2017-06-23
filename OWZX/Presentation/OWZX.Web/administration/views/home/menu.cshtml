@@ -39,7 +39,22 @@
 
         #menu ul li a{ display:block; background:url(/administration/images/li.jpg) no-repeat 35px center; height:25px; line-height:25px; padding-left:48px;}
         #menu ul li a:hover,#menu ul li a.hot{ background:url(/administration/images/li1.jpg) no-repeat 35px center; color:#e17a00; }
+
+        .ps-total {
+    position: absolute;
+    left: 97px;
+    top: 78px;
+    font-size: 12px;
+    background: red;
+   border-radius: 24px;
+    width: 20px;
+    text-align: center;line-height: 18px;height:18px;
+}
+.re-color {
+    color: #fff;
+}
     </style>
+    <script src="~/newstatic/js/jquery.jplayer.min.js"></script>
 </head>
 <body style="background: #e6e7e9;">
     <div id="menu">
@@ -49,45 +64,103 @@
         </ul>
         <img src="/administration/images/menubg_bottom.jpg" width="142px" height="47" />
     </div>
+    <div id="jquery_jplayer_1" style="display: none; width: 0px; height: 0px;"><img id="jp_poster_0" style="width: 0px; height: 0px; display: none;" />
+    <audio id="jp_audio_0" preload="metadata" src="@BSPConfig.ShopConfig.SiteUrl/images/security.mp3"></audio></div>
     <script type="text/javascript">
-        $(function () {
-            var menuLiList = "";
-            if (menuList != undefined && menuList != null && menuList.length > 0) {
-                for (var i = 0; i < menuList.length; i++) {
-                    if (i == 0) {
-                        menuLiList += "<li class='hot'><h2>" + menuList[i].title + "</h2>";
-                    }
-                    else {
-                        menuLiList += "<li><h2>" + menuList[i].title + "</h2>";
-                    }
-                    for (var j = 0; j < menuList[i].subMenuList.length; j++) {
-                        menuLiList += "<a href='" + menuList[i].subMenuList[j].url + "' target='frameRight'>" + menuList[i].subMenuList[j].title + "</a>";
-                    }
-                    menuLiList += "</li>";
-                }
+        @{
+            List<OWZX.Model.DrawInfoModel> drawlist = Recharge.GetDrawList(1, -1, " where a.state in (0,1)");
+            List<OWZX.Model.MD_Remit> remitlist = NewUser.GetUserRemitList(1, -1, " where a.status in (0,1)");
+            ViewData["draw"] = 0; ViewData["remit"] = 0;
+            int draw = 0; int remit = 0;
+            if (drawlist != null && drawlist.Count > 0)
+            {  draw= drawlist.Count;
             }
-            if (menuLiList != "") {
-                document.getElementById("menuUl").innerHTML = menuLiList;
+            if (remitlist != null && remitlist.Count > 0)
+            {
+               remit = remitlist.Count;
             }
+            string drawcon = draw > 99 ? "99+" : draw.ToString(); string remitcon = remit > 99 ? "99+" : remit.ToString();
 
-            $("#menu h2").click(function () {
-                if ($(this).parent("li").hasClass("hot")) {
-                    $(this).removeClass("hot").parent("li").removeClass("hot");
-                } else {
-                    $("#menu h2").removeClass("hot");
-                    $(this).addClass("hot").parent("li").addClass("hot");
+        }
+    $(function () {
+        var menuLiList = "";
+        if (menuList != undefined && menuList != null && menuList.length > 0) {
+            for (var i = 0; i < menuList.length; i++) {
+                if (i == 0) {
+                    menuLiList += "<li class='hot'><h2>" + menuList[i].title + "</h2>";
                 }
-            })
+                else {
+                    menuLiList += "<li><h2>" + menuList[i].title + "</h2>";
+                }
+                for (var j = 0; j < menuList[i].subMenuList.length; j++)
+                {
 
+                    menuLiList += "<a href='" + menuList[i].subMenuList[j].url + "' target='frameRight'>" + menuList[i].subMenuList[j].title;
+                    if (menuList[i].subMenuList[j].title == "提现记录" && @draw>0)
+                        menuLiList += '<span class="ps-total re-color draw"> @drawcon</span>';
+                    else
+                        menuLiList += '<span class="ps-total re-color draw" style="display:none;"></span>';
+                    if (menuList[i].subMenuList[j].title == "充值记录" && @remit>0)
+                        menuLiList += '<span class="ps-total re-color remit" style="top: 105px;">@remitcon</span>';
+                    else
+                        menuLiList += '<span class="ps-total re-color remit" style="top: 105px;display:none;" hiden></span>';
+                    menuLiList+="</a>";
+                }
+                menuLiList += "</li>";
+            }
+        }
+        if (menuLiList != "") {
+            document.getElementById("menuUl").innerHTML = menuLiList;
+        }
 
-            $("#menu ul li a").click(function () {
+        $("#menu h2").click(function () {
+            if ($(this).parent("li").hasClass("hot")) {
+                $(this).removeClass("hot").parent("li").removeClass("hot");
+            } else {
                 $("#menu h2").removeClass("hot");
-                $("#menu a").removeClass("hot");
-                $(this).addClass("hot").parent("li").children("h2").addClass("hot")
-
-            })
+                $(this).addClass("hot").parent("li").addClass("hot");
+            }
         })
 
-    </script>
+
+        $("#menu ul li a").click(function () {
+            $("#menu h2").removeClass("hot");
+            $("#menu a").removeClass("hot");
+            $(this).addClass("hot").parent("li").children("h2").addClass("hot")
+
+        })
+
+        setTimeout(function(){gettishi();},4000);
+    })
+    function gettishi()
+    {
+        $.get("/home/GetTS",function(data){
+            var dt=data.split('_');
+            if(dt[0]>0 || dt[1]>0)
+            {
+                if(dt[0]>0)
+                {
+                    $(".draw").text(dt[0]).show();
+                }
+                if(dt[1]>0)
+                {
+                    $(".remit").text(dt[1]).show();
+                }
+                $("#jquery_jplayer_1").jPlayer({
+                    ready: function () {
+                        $("#jquery_jplayer_1").jPlayer("setMedia", {
+                            mp3: "@BSPConfig.ShopConfig.SiteUrl/images/security.mp3"
+                        }).jPlayer("play").jPlayer("repeat");
+                    },
+                    swfPath: "jPlayer",
+                    supplied: "mp3"
+                });
+
+
+            }
+        });
+
+    }
+</script>
 </body>
 </html>

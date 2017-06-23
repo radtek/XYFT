@@ -246,7 +246,17 @@ namespace OWZX.Data
         {
             return OWZX.Core.BSPData.RDBS.DeleteBett(uid,lotterytype,expect,bttype,roomid);
         }
-
+         /// <summary>
+        ///  获取投注记录(按照期数分组)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public static DataTable GetBettListGpByNum(int pageNumber, int pageSize, string condition = "")
+        {
+            return OWZX.Core.BSPData.RDBS.GetBettListGpByNum(pageNumber, pageSize, condition);
+        }
         /// <summary>
         ///  获取投注记录(分页)
         /// </summary>
@@ -519,6 +529,19 @@ namespace OWZX.Data
         {
             return OWZX.Core.BSPData.RDBS.GetProfitListNoLottery(type, pageSize, pageNumber, start,end);
 
+        }
+
+        /// <summary>
+        /// 盈利报表 彩票类型不参数分组,包含回水
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="pageNumber"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public static DataTable GetProfitListGpByUser(int pageSize, int pageNumber, string start, string end)
+        {
+            return OWZX.Core.BSPData.RDBS.GetProfitListGpByUser(pageSize, pageNumber, start, end);
         }
         #endregion
 

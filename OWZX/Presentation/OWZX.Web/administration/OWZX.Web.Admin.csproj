@@ -184,6 +184,8 @@
     <None Include="views\home\shopruninfo.cshtml" />
     <None Include="views\log\adminoperateloglist.cshtml" />
     <None Include="views\log\creditloglist.cshtml" />
+    <None Include="views\lottery\lotterylistnew.cshtml" />
+    <None Include="views\lottery\profitlistnew.cshtml" />
     <None Include="views\lottery\profitlist.cshtml" />
     <None Include="views\lottery\lotterylist.cshtml" />
     <None Include="views\nav\add.cshtml" />

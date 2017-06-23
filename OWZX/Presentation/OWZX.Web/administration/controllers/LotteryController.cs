@@ -37,7 +37,45 @@ namespace OWZX.Web.Admin.Controllers
             if (bttype != -1)
                 strb.Append(" and c.type=" + bttype);
 
-            List<MD_Bett> btlist = Lottery.GetBettList(pageNumber, pageSize, strb.ToString());
+            //List<MD_Bett> btlist = Lottery.GetBettList(pageNumber, pageSize, strb.ToString());
+            //LotteryListModel list = new LotteryListModel
+            //{
+            //    account = account,
+            //    lottype = lottype,
+            //    expect = expect,
+            //    roomtype = roomtype,
+            //    vip = vip,
+            //    bttype = bttype,
+            //    PageModel = new PageModel(pageSize, pageNumber, btlist.Count > 0 ? btlist[0].TotalCount : 0),
+            //    bettList = btlist
+            //};
+            //return View(list);
+            DataTable dt= Lottery.GetBettListGpByNum(pageNumber, pageSize, strb.ToString());
+            ViewData["lot"] = dt;
+            return View();
+        }
+        /// <summary>
+        /// 投注记录
+        /// </summary>
+        public ActionResult LotteryListNew(string account = "", int lottype = -1, string expect = "", int roomtype = -1, int vip = -1, int bttype = -1, int pageSize = 15, int pageNumber = 1)
+        {
+            StringBuilder strb = new StringBuilder();
+            strb.Append(" where 1=1");
+            if (account != "")
+                strb.Append(" and rtrim(b.mobile)='" + account + "'");
+            if (lottype != -1)
+                strb.Append(" and a.lotteryid=" + lottype);
+            if (expect != "")
+                strb.Append(" and a.lotterynum='" + expect + "'");
+            if (roomtype != -1)
+                strb.Append(" and a.roomid=" + roomtype);
+            if (vip != -1)
+                strb.Append(" and a.vipid=" + vip);
+            if (bttype != -1)
+                strb.Append(" and c.type=" + bttype);
+
+           
+            DataTable dt= Lottery.GetBettListGpByNum(pageNumber, pageSize, strb.ToString());
             LotteryListModel list = new LotteryListModel
             {
                 account = account,
@@ -46,11 +84,12 @@ namespace OWZX.Web.Admin.Controllers
                 roomtype = roomtype,
                 vip = vip,
                 bttype = bttype,
-                PageModel = new PageModel(pageSize, pageNumber, btlist.Count > 0 ? btlist[0].TotalCount : 0),
-                bettList = btlist
+                PageModel = new PageModel(pageSize, pageNumber, dt.Rows.Count > 0 ? int.Parse(dt.Rows[0]["TotalCount"].ToString()) : 0),
             };
+            ViewData["lot"] = dt;
             return View(list);
         }
+        
 
         #region 财务报表
         public ActionResult ProfitList(int lottery = -1, string type = "每日盈亏", string start = "", string end = "", int pageSize = 15, int pageNumber = 1)
@@ -78,6 +117,27 @@ namespace OWZX.Web.Admin.Controllers
             return View(list);
         }
 
+        public ActionResult ProfitListNew(string start = "", string end = "", int pageSize = 15, int pageNumber = 1)
+        {
+            Load();
+            StringBuilder strb = new StringBuilder();
+            strb.Append(" where 1=1");
+           
+
+
+            DataTable dt = Lottery.GetProfitListGpByUser(pageSize, pageNumber,
+                start == "" ? DateTime.Now.ToString("yyyy-MM-dd") : start,
+                end == "" ? DateTime.Now.ToString("yyyy-MM-dd") : end);
+
+            ProfitStatList list = new ProfitStatList
+            {
+                Start = start == "" ? DateTime.Now.ToString("yyyy-MM-dd") : start,
+                End = end == "" ? DateTime.Now.ToString("yyyy-MM-dd") : end,
+                ProfitList = dt,
+                PageModel = new PageModel(pageSize, pageNumber, dt.Rows.Count > 0 ? int.Parse(dt.Rows[0]["TotalCount"].ToString()) : 0)
+            };
+            return View(list);
+        }
         private void Load()
         {
             List<SelectListItem> statlist = new List<SelectListItem>();

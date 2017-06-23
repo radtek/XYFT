@@ -1191,7 +1191,69 @@ end catch
             ", id);
             return RDBSHelper.ExecuteScalar(commandText).ToString();
         }
+        /// <summary>
+        ///  获取投注记录(按照期数分组)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        public DataTable GetBettListGpByNum(int pageNumber, int pageSize, string condition = "")
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
+                                      GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
+                                  };
 
+
+            string commandText = string.Format(@"
+begin try
+if OBJECT_ID('tempdb..#list') is not null
+drop table #list
+if OBJECT_ID('tempdb..#listgp') is not null
+drop table #listgp
+
+
+
+SELECT 
+a.[bettid],a.[uid],a.[lotteryid],a.[bttypeid],a.[money],a.[lotterynum],a.isread,a.[addtime],b.mobile account,
+e.type lottery,f.type bttype,c.item,cc.luckresult,aa.opencode,a.roomid,rtrim(cast(a.roomid as char(2))) room,b.username,aa.opentime
+into  #list
+FROM owzx_bett a
+join owzx_users b on a.uid=b.uid
+join owzx_lotteryset c on a.bttypeid=c.bttypeid
+join owzx_lotteryrecord aa on a.lotterynum=aa.expect
+left join owzx_bettprofitloss cc on a.bettid=cc.bettid
+join owzx_sys_basetype e on a.lotteryid=e.systypeid
+join owzx_sys_basetype f on c.type=f.systypeid
+{0}
+
+select ROW_NUMBER() over(order by opentime desc) id,lottery,lotterynum,
+convert(varchar(19),opentime,120) opentime,sum(money) bettmoney,sum(luckresult) luckresult  
+into #listgp
+from #list group by lottery,lotterynum,opentime order by opentime desc 
+
+declare @total int
+select @total=(select count(1)  from #listgp)
+
+if(@pagesize=-1)
+begin
+select *,@total TotalCount from #listgp
+end
+else
+begin
+select  *,@total TotalCount from #listgp where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex
+end
+
+end try
+begin catch
+select ERROR_MESSAGE() state
+end catch
+
+", condition);
+
+            return RDBSHelper.ExecuteDataset(CommandType.Text, commandText, parms).Tables[0];
+        }
         /// <summary>
         ///  获取投注记录(分页)
         /// </summary>
@@ -2414,6 +2476,105 @@ select ERROR_MESSAGE() state
 end catch
 
 ", type, bet, back);
+
+            DataTable dt = RDBSHelper.ExecuteTable(sql, parms)[0];
+            return dt;
+
+        }
+
+        /// <summary>
+        /// 盈利报表 彩票类型不参数分组,包含回水
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="pageNumber"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public DataTable GetProfitListGpByUser(int pageSize, int pageNumber, string start, string end)
+        {
+            DbParameter[] parms = {
+                                      GenerateInParam("@pagesize", SqlDbType.Int, 4, pageSize),
+                                      GenerateInParam("@pageindex", SqlDbType.Int, 4, pageNumber)
+                                  };
+
+            string bet = string.Empty; string back = string.Empty;
+
+            if (start != string.Empty)
+            {
+                bet += " and convert(varchar(10),b.opentime,120)>='" + start + "'";
+
+            }
+            if (end != string.Empty)
+            {
+                bet += " and convert(varchar(10),b.opentime,120)<='" + end + "'";
+            }
+            string sql = string.Format(@"
+begin try
+
+if OBJECT_ID('tempdb..#list') is not null
+drop table #list
+
+select a.uid,lotterynum expect,money,a.bettid,c.luckresult ,convert(varchar(10),b.opentime,120) opentime,
+b.type,d.username
+into #list
+from owzx_bett a
+join owzx_lotteryrecord b on a.lotteryid=b.type and a.lotterynum=b.expect
+join owzx_bettprofitloss c on a.bettid=c.bettid 
+join owzx_users d on a.uid=d.uid
+where isread=1 {0}
+
+
+if OBJECT_ID('tempdb..#listday') is not null
+drop table #listday
+
+if OBJECT_ID('tempdb..#listresult') is not null
+drop table #listresult
+
+create table #listresult
+(
+id int IDENTITY(1,1),
+username varchar(20),
+betttotal decimal(18,2),
+luckresult decimal(18,2)
+)
+
+
+select a.*
+into #listday
+from (
+select username,SUM(money) betttotal,SUM(luckresult) luckresult
+from #list a
+group by username )a
+union all
+select * from (
+select '合计' username,isnull(SUM(money),0) betttotal,isnull(SUM(luckresult),0) luckresult
+from #list ) a where betttotal>0
+
+
+
+insert into #listresult(username, betttotal,luckresult)
+select username,betttotal,luckresult 
+from #listday a
+
+
+declare @total int
+select @total=(select count(1)  from #listresult)
+
+if(@pagesize=-1)
+begin
+select *,@total TotalCount from #listresult
+end
+else
+begin
+select *,@total TotalCount from #listresult where id>@pagesize*(@pageindex-1) and id <=@pagesize*@pageindex
+end
+
+end try
+begin catch
+select ERROR_MESSAGE() state
+end catch
+
+", bet);
 
             DataTable dt = RDBSHelper.ExecuteTable(sql, parms)[0];
             return dt;

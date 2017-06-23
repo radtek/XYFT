@@ -17,7 +17,7 @@
      "subMenuList": [
             {
                 "title": "下注记录",
-                "url": "/admin/lottery/lotterylist"
+                "url": "/admin/lottery/lotterylistnew"
             }
      ]
      },
@@ -26,7 +26,7 @@
            "subMenuList": [
                {
                    "title": "盈利报表",
-                   "url": "/admin/lottery/profitlist"
+                   "url": "/admin/lottery/profitlistnew"
                }
            ]
        },

@@ -6,6 +6,8 @@ using OWZX.Core;
 using OWZX.Services;
 using OWZX.Web.Framework;
 using OWZX.Web.Admin.Models;
+using OWZX.Model;
+using System.Collections.Generic;
 
 namespace OWZX.Web.Admin.Controllers
 {
@@ -35,6 +37,7 @@ namespace OWZX.Web.Admin.Controllers
         /// </summary>
         public ActionResult Menu()
         {
+            
             return View();
         }
 

@@ -29,7 +29,25 @@ namespace OWZX.Web.Controllers
             DataSet list = Lottery.LastLottery("10");
             return View(list);
         }
-
+        /// <summary>
+        /// 获取提现或充值提示
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetTS()
+        {
+            List<OWZX.Model.DrawInfoModel> drawlist = Recharge.GetDrawList(1, -1, " where a.state in (0,1)");
+            List<OWZX.Model.MD_Remit> remitlist = NewUser.GetUserRemitList(1, -1, " where a.status in (0,1)");
+            int draw = 0; int remit = 0;
+            if (drawlist != null && drawlist.Count > 0)
+            {
+                draw = drawlist.Count;
+            }
+            if (remitlist != null && remitlist.Count > 0)
+            {
+                remit = remitlist.Count;
+            }
+            return Content(draw.ToString() + "_" + remit.ToString());
+        }
         public ActionResult History(string id="")
         {
             ViewData["ID"] = id;

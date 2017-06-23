@@ -176,7 +176,14 @@ namespace OWZX.Core
         /// <param name="id"></param>
         /// <returns></returns>
         string DeleteBett(string uid, int lotterytype, string expect, string bttype, string roomid);
-
+        /// <summary>
+        ///  获取投注记录(按照期数分组)
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="condition">没有where</param>
+        /// <returns></returns>
+        DataTable GetBettListGpByNum(int pageNumber, int pageSize, string condition = "");
         /// <summary>
         ///  获取投注记录(分页)
         /// </summary>
@@ -375,6 +382,16 @@ namespace OWZX.Core
         /// <param name="condition"></param>
         /// <returns></returns>
         DataTable GetProfitListNoLottery(string type, int pageSize, int pageNumber, string start, string end);
+
+        /// <summary>
+        /// 盈利报表 彩票类型不参数分组,包含回水
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pageSize">-1 取全部</param>
+        /// <param name="pageNumber"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        DataTable GetProfitListGpByUser(int pageSize, int pageNumber, string start, string end);
         #endregion
 
         #region 获取竞猜页用户信息

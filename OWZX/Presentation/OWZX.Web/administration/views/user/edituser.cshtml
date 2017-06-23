@@ -50,16 +50,16 @@
   <tr>
     <td width="86px" align="right">用户名：</td>
     <td>
-    @Html.TextBoxFor(x => x.UserName, new { @class = "input", size = "35",@readonly="true"})</td>
+    @Html.TextBoxFor(x => x.UserName.TrimEnd(), new { @class = "input", size = "35",@readonly="true"})</td>
     </tr>
 
       <tr>
     <td align="right">登录密码：</td>
-    <td>@Html.TextBoxFor(x => x.Password, new { @class = "input", size = "35" })@Html.ValidationMessageFor(x => x.Password)</td>
+    <td>@Html.TextBoxFor(x => x.Password.TrimEnd(), new { @class = "input", size = "35" })@Html.ValidationMessageFor(x => x.Password)</td>
     </tr>
           <tr>
     <td align="right">提现密码：</td>
-    <td>@Html.TextBoxFor(x => x.DrawPwd, new { @class = "input", size = "35" })@Html.ValidationMessageFor(x => x.DrawPwd)</td>
+    <td>@Html.TextBoxFor(x => x.DrawPwd.TrimEnd(), new { @class = "input", size = "35" })@Html.ValidationMessageFor(x => x.DrawPwd)</td>
     </tr>
           <tr>
     <td align="right">余额：</td>
@@ -74,7 +74,7 @@
     </tr>*@
     <tr>
         <td align="right">简介：</td>
-        <td>@Html.TextAreaFor(x => x.Bio, new { cols = "40", rows = "6",@maxlength=200 })@Html.ValidationMessageFor(x => x.Bio)</td>
+        <td>@Html.TextAreaFor(x => x.Bio.TrimEnd(), new { cols = "40", rows = "6", @maxlength = 200 })@Html.ValidationMessageFor(x => x.Bio)</td>
     </tr>
   <tr>
     <td align="right">&nbsp;</td>

@@ -476,6 +476,7 @@
     <Content Include="images\mall\top.png" />
     <Content Include="images\mall\wei.png" />
     <Content Include="images\mall\zhi.png" />
+    <Content Include="images\security.mp3" />
     <Content Include="images\tr.png" />
     <Content Include="images\dlogo.png" />
     <Content Include="images\tutu.png" />
@@ -609,6 +610,7 @@
     <Content Include="newstatic\js\jquery-1.11.3.min.js" />
     <Content Include="newstatic\js\jquery-2.1.4.min.js" />
     <Content Include="newstatic\js\jquery-private.js" />
+    <Content Include="newstatic\js\jquery.jplayer.min.js" />
     <Content Include="newstatic\js\jquery.rotate.min.js" />
     <Content Include="newstatic\js\jquery.toolbar.js" />
     <Content Include="newstatic\js\kefu.js" />
