@@ -478,7 +478,7 @@ namespace OWZX.Web.Controllers
                 StringBuilder strb = new StringBuilder();
                 strb.Append("{");
                 string Image = BSPConfig.ShopConfig.SiteUrl + "/upload/imgs/" + info.Image;
-                strb.Append("\"version\":\"" + info.BankAddress + "\",\"url\":\"" + info.Name + "\",\"qq\":\"" + info.Account + "\",\"wechat\":\"" + info.Bank + "\",\"img\":\"" + Image + "\"");
+                strb.Append("\"version\":\"" + info.BankAddress + "\",\"url\":\"" + info.Name + "\",\"kf\":\"" + info.Bank + "\"");
                 strb.Append("}");
                 return APIResult("success", strb.ToString(), true);
             }

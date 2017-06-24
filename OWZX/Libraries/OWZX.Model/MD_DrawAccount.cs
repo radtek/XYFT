@@ -19,7 +19,10 @@ namespace OWZX.Model
             get { return drawaccid; }
             set { drawaccid = value; }
         }
-
+        /// <summary>
+        /// 登录账号
+        /// </summary>
+        public string AccountName { get; set; }
         private int uid;
         public int Uid
         {

@@ -493,6 +493,14 @@ namespace OWZX.Web.controllers
                 return APIResult("error", "获取失败");
             }
         }
+        public ActionResult ExistsDrawAcc()
+        {
+            List<MD_DrawAccount> draw = Recharge.GetDrawAccountList(1, -1, " where b.Uid=" + WorkContext.Uid + "");
+            if (draw == null || draw.Count == 0)
+                return Content("1");
+            else
+                return Content("2");
+        }
         public ActionResult GetDrawAccountByid()
         {
             try

@@ -1145,9 +1145,17 @@ end catch
   join owzx_lotteryset b on a.bttypeid=b.bttypeid
   where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}' and a.roomid={4})
             begin
+            update a
+            set a.totalmoney=isnull(a.totalmoney,0)+b.money
+            from owzx_users a
+            join owzx_bett b on a.uid=b.uid and a.uid={0} 
+            join owzx_lotteryset c on b.bttypeid=c.bttypeid
+            where  b.lotteryid={3} and b.lotterynum={1} and RTRIM(c.item)='{2}' and b.roomid={4}          
+
             delete a from owzx_bett a 
   join owzx_lotteryset b on a.bttypeid=b.bttypeid
   where a.uid={0} and a.lotteryid={3} and a.lotterynum={1} and RTRIM(b.item)='{2}' and a.roomid={4}
+
             select '删除成功' state
             end
             else

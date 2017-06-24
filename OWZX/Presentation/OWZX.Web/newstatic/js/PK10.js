@@ -344,14 +344,12 @@ function bett(roomid,money, type, lotterytype, expect)
     layer.load(2);
     $.post("/nwlottery/bett", { "btroom": roomid, "expect": expect, "money": money, "lotterytype": lotterytype, "bttype": type }, function (data)
     {
-        setTimeout(function ()
-        {
-            layer.closeAll('loading');
-        }, 2000)
+        layer.closeAll('loading');
+        
         var dt = JSON.parse(data);
         if (dt.state == "success")
         {
-            layer.msg("投注成功");
+            layer.msg("投注成功", { time: 500 });
             //重新加载footer中数据
             ldfoot();
         } else
@@ -374,10 +372,8 @@ function delbet(roomid, type, lotterytype, expect,money)
     layer.load(2);
     $.post("/nwlottery/delbett", { "btroom": roomid, "expect": expect, "lotterytype": lotterytype, "bttype": type }, function (data)
     {
-        setTimeout(function ()
-        {
-            layer.closeAll('loading');
-        }, 2000)
+        layer.closeAll('loading');
+        
         var dt = JSON.parse(data);
         if (dt.state == "success")
         {

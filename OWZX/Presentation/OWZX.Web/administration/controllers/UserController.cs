@@ -86,7 +86,6 @@ namespace OWZX.Web.Admin.Controllers
             if (mobile != "")
                 strb.Append(" and a.mobile='" + mobile + "'");
 
-            strb.Append("order by a.uid desc");
 
 
             DataTable dt = AdminUsers.GetUserList(pageSize, pageNumber, strb.ToString());

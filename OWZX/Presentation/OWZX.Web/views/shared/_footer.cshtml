@@ -3,7 +3,7 @@
    
     <ul class="footer">
         <li><a href="/home/index" class="ft-on"><img src="~/newstatic/img/first1.png" /><br />首页</a></li>
-        <li><a href="/home/kfservice"><img src="~/newstatic/img/kefu.png" /><br />客服</a></li>
+        <li><a href="#" class="kf"><img src="~/newstatic/img/kefu.png" /><br />客服</a></li>
         <li><a href="/home/history"><img src="~/newstatic/img/zoushi.png" /><br />历史走势</a></li>
         <li><a href="/recharge/cqoperate?type=1"><img src="~/newstatic/img/zhuanqian.png" /><br />存取款</a></li>
         <li><a href="/ucenter/index"><img src="~/newstatic/img/my.png" /><br />我的</a></li>
@@ -18,7 +18,7 @@
             top: 100%;
             left: 10%;
             background: #fff;
-            z-index: 999;
+            z-index: 1999999;
             border-radius: 5px;
             text-align: center;
             padding-bottom: 1em;
@@ -36,13 +36,22 @@
                 margin: 1em .5em;
             }
     </style>
-    <div class="betbg"></div>
+    <div class="betbg" style="z-index:1999996"></div>
     <div class="tishi">
         <div class="ts">提示</div>
         <div class="tsnr"></div>
         <div class="btn" style="width:80%;">确定</div>
     </div>
     <script type="text/javascript">
+        $(function ()
+        {
+            $.post('/lottery/About',
+                function (data)
+                {
+                    var t = eval('(' + data + ')');
+                    $('.kf').attr("href",t.biz_content.kf);
+                });
+        })
         $(function() {
             $(".tishi .btn").click(function () {
                 $(".betbg").fadeOut(100);

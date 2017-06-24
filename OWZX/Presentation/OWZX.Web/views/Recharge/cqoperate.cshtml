@@ -185,11 +185,11 @@
     <div class="headblank"></div>
     <div class="tabpayways">
         <ul>
-            <li >充值</li>
+            <li class="paywayscur">充值</li>
             <li >提现</li>
         </ul>
     </div>
-    <div class="main main1" style="display: none;">
+    <div class="main main1" >
         @*<h3>线上充值</h3>
         <div class="jine" style="padding-bottom:1em;border:none">
             <p style="margin-bottom:0.8rem;border-bottom:1px solid #eee;margin-left:12%;padding:0 1em 0.5em;width:70%;" class="p1">
@@ -226,7 +226,7 @@
         </div>
 
         <a href='/recharge/chargelist' class="borbtn fl" style="margin-left:14%;">转账记录</a>
-        <a href="/home/kfservice" class="borbtn fr" style="margin-right:14%;">联系客服</a>
+        <a href="#" class="borbtn fr kf" style="margin-right:14%;">联系客服</a>
         <div class="clearfix"></div>
         <div class="footblank"></div>
 
@@ -262,6 +262,15 @@
     @Html.Partial("_footer")
     <!-- 底部导航 -->
     <script>
+        $(function ()
+        {
+            $.post('/lottery/About',
+                function (data)
+                {
+                    var t = eval('(' + data + ')');
+                    $('.kf').attr("href",t.biz_content.kf);
+                });
+        })
     $(function ()
     {
         $('.footer a').removeClass("ft-on");
@@ -284,17 +293,23 @@
             $(".tabpayways li:eq(1)").addClass("paywayscur").siblings().removeClass("paywayscur");
             $(".main1").hide();
             $(".main2").show();
-            
+
+            if ('@ViewData["setdraw"]' == "false")
+            {
+                tishi("请设置提现密码");
+                setTimeout(function () { window.location.href = "/ucenter/drawpwd"; }, 2000);
+                return false;
+            }
+            $.get("/appaccount/ExistsDrawAcc",function(data){
+                if(data=="1")
+                {
+                    tishi("请设置收款账户信息");
+                    setTimeout(function () { window.location.href = "/ucenter/banklist"; }, 2000);
+                    return false;
+                }
+            })
         }
         
-
-        if ('@ViewData["setdraw"]' == "false")
-        {
-            tishi("请设置提现密码");
-            setTimeout(function () { window.location.href = "/ucenter/drawpwd"; }, 2000);
-            return false;
-        }
-
         $("#sixDigitPassword").css("margin-right",($(document).width()-184)/2+"px")
 
         $(".tabpayways li").click(function(){
@@ -305,6 +320,21 @@
             }else{
                 $(".main2").show();
                 $(".main1").hide();
+
+                if ('@ViewData["setdraw"]' == "false")
+                {
+                    tishi("请设置提现密码");
+                    setTimeout(function () { window.location.href = "/ucenter/drawpwd"; }, 2000);
+                    return false;
+                }
+                $.get("/appaccount/ExistsDrawAcc",function(data){
+                    if(data=="1")
+                    {
+                        tishi("请设置收款账户信息");
+                        setTimeout(function () { window.location.href = "/ucenter/banklist"; }, 2000);
+                        return false;
+                    }
+                })
                 
             }
         })
@@ -361,7 +391,7 @@
 
         if(UnionPayId=="")
         {
-            tishi("请添加提现银行卡信息");
+            tishi("请设置收款账户信息");
             setTimeout(function () { window.location.href="/ucenter/banklist"; }, 2000);
         }
 
@@ -423,7 +453,7 @@
                     setTimeout(function () { window.location.href="/ucenter/drawpwd"; }, 2000);
                 }else if(data==6)
                 {
-                    tishi("请添加提现银行卡信息");
+                    tishi("请设置收款账户信息");
                     setTimeout(function () { window.location.href="/ucenter/banklist"; }, 2000);
                 }
             });

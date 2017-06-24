@@ -96,6 +96,7 @@ namespace OWZX.Web.controllers
                 count = 3 - list.Count;
             ViewData["drawcount"] = count;
             ViewData["setdraw"] = Recharge.ValidateDrawPwdByUid(WorkContext.Uid).ToString().ToLower();
+            
             return View();
         }
         #endregion

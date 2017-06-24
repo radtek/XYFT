@@ -84,6 +84,14 @@
             font-size: 200%;
             color: #fff;
         }
+        .borbtn {
+    padding: 0.3em 0.6em;
+    border: 1px solid #DA2020;
+    color: #DA2020;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
     </style>
 </head>
 
@@ -99,8 +107,9 @@
         </div>
         <ul>
             <li><i class="ico31"></i> 平台官网: <a href="#" id="url">http://</a></li>
-            <li><i class="ico31"></i> 客 服 QQ:<a href="#" id="qq">123456789</a></li>
-            <li><i class="ico3"></i> 客服微信: <a href="#" id="wx">baolili</a></li>
+            <li><i class="ico31"></i> 客 服 ：<a href="#" class="borbtn fr kf" style="margin-right:14%;">联系客服</a></li>
+            @*<li><i class="ico31"></i> 客 服 QQ:<a href="#" id="qq">123456789</a></li>
+            <li><i class="ico3"></i> 客服微信: <a href="#" id="wx">baolili</a></li>*@
         </ul>
     </div>
     <div class="share">
@@ -118,9 +127,8 @@
             $('.footer img').each(function ()
             {
                 $(this).attr("src", $(this).attr("src").replace("1.", "."))
-
             })
-            $ $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
+            $('.footer img:eq(4)').attr("src", $('.footer img:eq(4)').attr("src").replace(".", "1."));
         });
         $(function ()
         {
@@ -129,8 +137,7 @@
                             {
                                 var t = eval('(' + data + ')');
                                 $('#url').val(t.biz_content.url);
-                                $('#qq').val(t.biz_content.qq);
-                                $('#wx').val(t.biz_content.wechat);
+                                $('#kf').attr("href", t.biz_content.kf);
                             });
         })
     </script>

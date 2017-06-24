@@ -27,10 +27,10 @@
             <ul class="form">
                 
                 <li @if (!(bool)ViewData["isext"]) { <text>style="display:none;"</text>}
-                    ><label>原密码</label><input type="password" id="oldpwd" maxlength="4" ></li> 
-                <li><label>新密码</label><input type="password" id="pwd1" maxlength="4"></li>
-                <li><label>确认密码</label><input type="password" id="pwd2" maxlength="4"></li>
-                <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">修改</a>
+                    ><label>原密码</label><input type="password" id="oldpwd" maxlength="4" placeholder="4位数字密码 提款使用"></li> 
+                <li><label>新密码</label><input type="password" id="pwd1" maxlength="4" placeholder="4位数字密码 提款使用"></li>
+                <li><label>确认密码</label><input type="password" id="pwd2" maxlength="4" placeholder="4位数字密码 提款使用"></li>
+                <a class="btn" id="btn" style="width:80%;margin:2em auto;display:block;">保存</a>
             </ul>
         </form>
     </div>
@@ -84,7 +84,7 @@
                         if (result.state == "success")
                         {
                             tishi("保存成功");
-                            setTimeout(function () { window.location.href = "/ucenter/set"; }, 2000);
+                            setTimeout(function () { window.location.href = "/recharge/cqoperate"; }, 2000);
                             
                         }
                         else

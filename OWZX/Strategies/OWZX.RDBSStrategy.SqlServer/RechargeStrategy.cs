@@ -443,7 +443,7 @@ SELECT ROW_NUMBER() over(order by a.drawaccid ) id,
       ,a.[cardaddress]
       ,a.[drawpwd]
       ,a.[addtime]
-      ,a.[updatetime],b.mobile account
+      ,a.[updatetime],b.mobile account,b.username accountname
 into  #list
   FROM [{0}userdrawaccount] a
  join {0}users b on a.uid=b.uid and a.card is not null

@@ -134,7 +134,7 @@ function LotHMime(type, ctime, fcnum, totalime, stoptime)
             {
 
                 $(".lot-time").html(
-                    '距离 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>');
+                    '距 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>');
             } else
             {
 
@@ -147,7 +147,7 @@ function LotHMime(type, ctime, fcnum, totalime, stoptime)
             {
                 var txt=
                 $(".lot-time").html(
-                '距离 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>'
+                '距 ' + fcnum + ' 期开奖倒计时：<span id="time_show">' + formatSeconds(nS) + '</span>'
                 );
             } else
             {
@@ -186,6 +186,7 @@ function LotHMime(type, ctime, fcnum, totalime, stoptime)
 var lottime;
 function LotRTime(type, ctime, fcnum, totalime, stoptime)
 {
+    clearTimeout(lottime);
     var nS = parseInt(ctime);
 
     //ns 开奖时间
@@ -204,7 +205,7 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
             {
 
                 $(".ct-down").html(
-                    '距离本期封盘剩余：<span class="ct-time">' + rems + '</span> 秒');
+                    '距本期封盘剩余：<span class="ct-time">' + rems + '</span> 秒');
             } else
             {
 
@@ -216,7 +217,7 @@ function LotRTime(type, ctime, fcnum, totalime, stoptime)
             if (type != 13)
             {
                 $(".ct-down").html(
-                '距离本期开奖剩余：<span class="ct-time">' + nS + '</span> 秒');
+                '距本期开奖剩余：<span class="ct-time">' + nS + '</span> 秒');
             } else
             {
 

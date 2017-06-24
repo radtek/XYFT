@@ -195,7 +195,7 @@
 
 
         <a href='/recharge/chargelist' class="borbtn fl" style="margin-left:14%;">转账记录</a>
-        <a href="/home/kfservice" class="borbtn fr" style="margin-right:14%;">联系客服</a>
+        <a href="#" class="borbtn fr kf" style="margin-right:14%;">联系客服</a>
         <div class="clearfix"></div>
         <div class="footblank"></div>
 
@@ -205,6 +205,15 @@
     <!-- 底部导航 -->
 
     <script>
+        $(function ()
+        {
+            $.post('/lottery/About',
+                function (data)
+                {
+                    var t = eval('(' + data + ')');
+                    $('.kf').attr("href", t.biz_content.kf);
+                });
+        })
         $(function ()
         {
 

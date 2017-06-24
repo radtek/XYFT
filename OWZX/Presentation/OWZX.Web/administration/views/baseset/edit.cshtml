@@ -8,7 +8,11 @@
     <script type="text/javascript" src="/administration/scripts/jquery.validate.unobtrusive.js"></script>
     <link type="text/css" rel="stylesheet" href="/components/webuploader/webuploader.css" />
     <script type="text/javascript" src="/components/webuploader/webuploader.js"></script>
-
+    <style>
+    .kf {
+    height:30px;
+    }
+    </style>
     <script type="text/javascript">
         $(function () {
 
@@ -109,11 +113,11 @@
     </tr>
     <tr>
         <td align="right">附加字段1：</td>
-        <td>@Html.TextBoxFor(x => x.Bank, new { @class = "input", size = "70", placeholder = "开户银行" })@Html.ValidationMessageFor(x => x.Bank)</td>
+        <td>@Html.TextBoxFor(x => x.Bank, new { @class = "input kf", size = "100", placeholder = "开户银行" })@Html.ValidationMessageFor(x => x.Bank)</td>
     </tr>
     <tr>
         <td align="right">附加字段2：</td>
-        <td>@Html.TextBoxFor(x => x.BankAddress, new { @class = "input", size = "70", placeholder = "开户银行地址" })@Html.ValidationMessageFor(x => x.BankAddress)</td>
+        <td>@Html.TextBoxFor(x => x.BankAddress, new { @class = "input kf", size = "100", placeholder = "开户银行地址" })@Html.ValidationMessageFor(x => x.BankAddress)</td>
     </tr>
 
 
