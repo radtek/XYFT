@@ -951,7 +951,7 @@ isnull(d.bet_total,0) bet_total,isnull(d.lk_total,0) lk_total
 into #list
 from owzx_users a
 join owzx_userdetails b on a.uid=b.uid 
-join (
+left join (
 select a.uid,sum(a.money) bet_total,sum(b.luckresult) lk_total from owzx_bett a
  left join owzx_bettprofitloss b on a.bettid=b.bettid 
 group by a.uid

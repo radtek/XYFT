@@ -129,11 +129,19 @@
             $(this).addClass("hot").parent("li").children("h2").addClass("hot")
 
         })
-
-        setTimeout(function(){gettishi();},4000);
+        $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+                $("#jquery_jplayer_1").jPlayer("setMedia", {
+                    mp3: "@BSPConfig.ShopConfig.SiteUrl/images/security.mp3"
+                })//.jPlayer("play").jPlayer("repeat");
+            },
+            swfPath: "jPlayer",
+            supplied: "mp3"});
+        gettishi();
     })
     function gettishi()
     {
+
         $.get("/home/GetTS",function(data){
             var dt=data.split('_');
             if(dt[0]>0 || dt[1]>0)
@@ -146,18 +154,20 @@
                 {
                     $(".remit").text(dt[1]).show();
                 }
-                $("#jquery_jplayer_1").jPlayer({
-                    ready: function () {
-                        $("#jquery_jplayer_1").jPlayer("setMedia", {
-                            mp3: "@BSPConfig.ShopConfig.SiteUrl/images/security.mp3"
-                        }).jPlayer("play").jPlayer("repeat");
-                    },
-                    swfPath: "jPlayer",
-                    supplied: "mp3"
-                });
-
-
+                $("#jquery_jplayer_1").jPlayer('play');
+            }else
+            {
+                $("#jquery_jplayer_1").jPlayer("stop");
+                if(dt[0]==0)
+                {
+                    $(".draw").text("").hide();
+                }
+                if(dt[1]==0)
+                {
+                    $(".remit").text("").hide();
+                }
             }
+            setTimeout(gettishi(),5000);
         });
 
     }

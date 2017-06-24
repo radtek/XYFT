@@ -690,7 +690,7 @@ a.drawid,a.[uid],a.money,a.[state],a.[exception],a.[addtime] ,a.[updatetime],c.u
 into  #list
 FROM [owzx_userdraw] a
 join owzx_users b on a.uid=b.uid
-join owzx_userdrawaccount c on a.uid=c.uid
+join owzx_userdrawaccount c on a.uid=c.uid  and a.drawaccid=c.drawaccid
 {0}
 
 --(case  when [state]='0' or [state]='1' then totalmoney+100 else totalmoney end ) 

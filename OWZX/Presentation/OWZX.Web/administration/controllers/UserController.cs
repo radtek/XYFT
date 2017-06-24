@@ -455,48 +455,6 @@ namespace OWZX.Web.Admin.Controllers
             else
                 return PromptView("用户删除失败");
         }
-        /// <summary>
-        /// 导出excel
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        public FileResult ExportExcel(string username = "", string mobile = "")
-        {
-            StringBuilder strb = new StringBuilder();
-            strb.Append(" where 1=1");
-            if (username != "")
-                strb.Append(" and a.username like '" + username + "%'");
-
-            if (mobile != "")
-                strb.Append(" and a.mobile='" + mobile + "'");
-
-            strb.Append("order by a.uid desc");
-
-
-            DataTable dt = AdminUsers.GetUserList(-1, 1, strb.ToString());
-
-            Dictionary<string, string> listcol = new Dictionary<string, string>() { };
-            listcol["编号"] = "uid"; listcol["用户名"] = "username"; listcol["手机"] = "mobile"; listcol["姓名"] = "nickname"; listcol["职位"] = "userrank"; listcol["推荐人"] = "recomuser";
-            listcol["在用套餐"] = "hassuite"; listcol["剩余分钟数"] = "totalmin"; listcol["有效期"] = "remainmin"; listcol["充值总额"] = "recharge"; listcol["总赠送分钟数"] = "giftmin";
-            listcol["收益总额"] = "totalincome"; listcol["注册时间"] = "registertime";
-            listcol["访问时间"] = "lastvisittime";
-
-            string html = ExcelHelper.BuildHtml(dt, listcol);
-
-
-            //第一种:使用FileContentResult
-            byte[] fileContents = Encoding.Default.GetBytes(html);
-            return File(fileContents, "application/ms-excel", "用户信息" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls");
-
-            ////第二种:使用FileStreamResult
-            //var fileStream = new MemoryStream(fileContents);
-            //return File(fileStream, "application/ms-excel", "fileStream.xls");
-
-            ////第三种:使用FilePathResult
-            ////服务器上首先必须要有这个Excel文件,然会通过Server.MapPath获取路径返回.
-            //var fileName = Server.MapPath("~/Files/fileName.xls");
-            //return File(fileName, "application/ms-excel", "fileName.xls");
-        }
 
         private void Load(int regionId)
         {
