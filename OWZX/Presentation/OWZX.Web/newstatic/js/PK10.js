@@ -349,7 +349,7 @@ function bett(roomid,money, type, lotterytype, expect)
         var dt = JSON.parse(data);
         if (dt.state == "success")
         {
-            layer.msg("投注成功", { time: 500 });
+            layer.msg("投注成功", { time: 300 });
             //重新加载footer中数据
             ldfoot();
         } else
@@ -377,7 +377,7 @@ function delbet(roomid, type, lotterytype, expect,money)
         var dt = JSON.parse(data);
         if (dt.state == "success")
         {
-            layer.msg("撤销成功");
+            layer.msg("撤销成功", { time: 500 });
             //重新加载footer中数据
             ldfoot();
         } else

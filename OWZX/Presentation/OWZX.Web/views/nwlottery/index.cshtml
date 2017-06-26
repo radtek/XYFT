@@ -149,9 +149,7 @@
             text-shadow: 1px 1px 1px #000;
             color: #fff;
         }
-       .ifsfz .drawing-video {
-        width:1100px !important;
-        }
+     
     </style>
     <!--[if IE]>
         <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
@@ -163,9 +161,9 @@
     $(function(){
         var type=@ViewData["lottery"].ToString();
             if(type==10)
-            {   //https://www.1399p.com/mobile/pk10/
+            {  
                 setTimeout(function(){
-                    $(".ifsfz").attr("src","http://www.pk101.com/build/flash/pk10/pk10.html");
+                    $(".ifsfz").attr("src","https://www.1399p.com/mobile/pk10/");
                 },300000);
 
             }
@@ -194,16 +192,15 @@
     <div class="car" >
         @if (@ViewData["lottery"].ToString() == "10")
         {
-            <iframe id="ifsfz" name="ifsfz" class="ifsfz" src="http://www.pk101.com/build/flash/pk10/pk10.html" frameborder="no" border="0"
-                    marginwidth="0" marginheight="0" scrolling="no" style="background:#888;top:-20px;height:600px;"></iframe>
+            <iframe id="ifsfz" name="ifsfz" class="ifsfz" src="https://www.1399p.com/mobile/pk10/" frameborder="no" border="0"
+                    marginwidth="0" marginheight="0" scrolling="no" style="background:#888;"></iframe>
         }
         else if (@ViewData["lottery"].ToString() == "11")
         {
             <iframe class="ifsfz" src="http://www.1399p.com/xyft/h5shipin/" frameborder="no" border="0" 
                     marginwidth="0" marginheight="0" scrolling="no" style="background:#888;"></iframe>
         }
-        <div class="count" @if (@ViewData["lottery"].ToString() == "10") { <text> style="margin-top:235px;" </text>  }
-                                                                                                              >
+        <div class="count"  >
             <div class="ct-down">
                 @if (ViewData["lot_msg"] != "")
                 {
@@ -233,8 +230,7 @@
     </div>
     <!-- 赛车动画 -->
     <!-- 玩法 -->
-    <div class="mid" @if(@ViewData["lottery"].ToString() == "10") { <text> style="top:275px;" </text> }
-                                                                                                       >
+    <div class="mid" >
         <div class="arrow" style="display: none;"></div>
         <div class="mid-pk">
             <!-- 筹码设置 -->
